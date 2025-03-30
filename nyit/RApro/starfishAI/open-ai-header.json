@@ -1,0 +1,15 @@
+{
+    "Date": "Sat, 29 Mar 2025 16:50:39 GMT",
+    "Content-Type": "application/json; charset=utf-8",
+    "Content-Length": "337",
+    "Connection": "keep-alive",
+    "vary": "Origin",
+    "x-request-id": "req_6ec82c36be0984b628e9909aff953829",
+    "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+    "cf-cache-status": "DYNAMIC",
+    "Set-Cookie": "__cf_bm=dZwt6MXSOfWzDMmGhBOpR8f2yXaymmF4E8.J5QN_EkA-1743267039-1.0.1.1-zMH3OP2QU7GXvO3BovsI_BwqZdfCO_9xn5j4ZUHlo8tea2EkT.YgUakW0FYGP9CBZaBl2_hhlfaO7MiT53_1fIxRJKwVAUIGzgAc4M2guU4; path=/; expires=Sat, 29-Mar-25 17:20:39 GMT; domain=.api.openai.com; HttpOnly; Secure; SameSite=None, _cfuvid=ss5iPcmncpxUF0TxtwgM6UJ.d0N5LlUlWwZKiEw3Gpw-1743267039708-0.0.1.1-604800000; path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None",
+    "X-Content-Type-Options": "nosniff",
+    "Server": "cloudflare",
+    "CF-RAY": "9280de065b841df5-YVR",
+    "alt-svc": "h3='443'; ma=86400"
+}

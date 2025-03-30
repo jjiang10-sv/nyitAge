@@ -1,0 +1,5 @@
+npm install -g markdown-pdf
+markdown-pdf input.md -o output.pdf
+
+
+BC Care Aide and Community Health Worker Registry
