@@ -621,6 +621,48 @@
         <mxCell id="YhkGrtVXZhnwM7Ej6OhU-20" value="&lt;b&gt;Data Flow:&lt;/b&gt;&lt;br&gt;1. Split input cities into batches&lt;br&gt;2. Process through LLM pipeline&lt;br&gt;3. Validate and merge outputs&lt;br&gt;4. Store structured results" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;" vertex="1" parent="1">
           <mxGeometry x="80" y="500" width="180" height="120" as="geometry" />
         </mxCell>
+        <mxCell id="YhkGrtVXZhnwM7Ej6OhU-21" value="&#xa;  &#xa;    &#xa;      &#xa;        &#xa;        &#xa;        &#xa;        &#xa;          &#xa;        &#xa;&#xa;        &#xa;        &#xa;          &#xa;        &#xa;&#xa;        &#xa;          &#xa;        &#xa;&#xa;        &#xa;        &#xa;          &#xa;        &#xa;&#xa;        &#xa;          &#xa;        &#xa;&#xa;        &#xa;        &#xa;          &#xa;        &#xa;&#xa;        &#xa;          &#xa;        &#xa;&#xa;        &#xa;        &#xa;          &#xa;        &#xa;&#xa;        &#xa;          &#xa;        &#xa;&#xa;        &#xa;        &#xa;          &#xa;        &#xa;&#xa;        &#xa;          &#xa;        &#xa;&#xa;        &#xa;        &#xa;          &#xa;        &#xa;&#xa;        &#xa;        &#xa;          &#xa;        &#xa;&#xa;        &#xa;          &#xa;        &#xa;&#xa;        &#xa;          &#xa;        &#xa;&#xa;        &#xa;          &#xa;        &#xa;&#xa;        &#xa;        &#xa;          &#xa;        &#xa;      &#xa;    &#xa;  &#xa;" style="text;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="220" y="820" width="30" height="1250" as="geometry" />
+        </mxCell>
+        <mxCell id="YhkGrtVXZhnwM7Ej6OhU-22" value="&#xa;  &#xa;    &#xa;      &#xa;        &#xa;        &#xa;&#xa;        &#xa;        &#xa;          &#xa;        &#xa;&#xa;        &#xa;        &#xa;          &#xa;        &#xa;&#xa;        &#xa;          &#xa;        &#xa;      &#xa;    &#xa;  &#xa;" style="text;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="420" y="810" width="30" height="350" as="geometry" />
+        </mxCell>
+        <mxCell id="YhkGrtVXZhnwM7Ej6OhU-23" value="&#xa;  &#xa;    &#xa;      &#xa;        &#xa;        &#xa;        &#xa;        &#xa;          &#xa;        &#xa;&#xa;        &#xa;        &#xa;          &#xa;        &#xa;&#xa;        &#xa;          &#xa;        &#xa;&#xa;        &#xa;        &#xa;          &#xa;        &#xa;&#xa;        &#xa;          &#xa;        &#xa;&#xa;        &#xa;        &#xa;          &#xa;        &#xa;&#xa;        &#xa;          &#xa;        &#xa;&#xa;        &#xa;        &#xa;          &#xa;        &#xa;&#xa;        &#xa;          &#xa;        &#xa;&#xa;        &#xa;        &#xa;          &#xa;        &#xa;&#xa;        &#xa;          &#xa;        &#xa;&#xa;        &#xa;        &#xa;          &#xa;        &#xa;&#xa;        &#xa;        &#xa;          &#xa;        &#xa;&#xa;        &#xa;          &#xa;        &#xa;&#xa;        &#xa;          &#xa;        &#xa;&#xa;        &#xa;          &#xa;        &#xa;&#xa;        &#xa;        &#xa;          &#xa;        &#xa;      &#xa;    &#xa;  &#xa;" style="text;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="320" y="810" width="30" height="1250" as="geometry" />
+        </mxCell>
+        <mxCell id="YhkGrtVXZhnwM7Ej6OhU-24" value="data_factory Decorator" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
+          <mxGeometry x="310" y="780" width="600" height="430" as="geometry" />
+        </mxCell>
+        <mxCell id="YhkGrtVXZhnwM7Ej6OhU-25" value="Configuration" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="YhkGrtVXZhnwM7Ej6OhU-24">
+          <mxGeometry y="30" width="600" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="YhkGrtVXZhnwM7Ej6OhU-26" value="Batch Creation" style="shape=parallelogram;whiteSpace=wrap;html=1;" vertex="1" parent="YhkGrtVXZhnwM7Ej6OhU-24">
+          <mxGeometry y="110" width="600" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="YhkGrtVXZhnwM7Ej6OhU-27" value="Parallel Execution" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="YhkGrtVXZhnwM7Ej6OhU-24">
+          <mxGeometry y="170" width="600" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="YhkGrtVXZhnwM7Ej6OhU-28" value="Storage Manager" style="shape=cylinder;whiteSpace=wrap;html=1;" vertex="1" parent="YhkGrtVXZhnwM7Ej6OhU-24">
+          <mxGeometry y="230" width="600" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="YhkGrtVXZhnwM7Ej6OhU-29" value="Callback System" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;" vertex="1" parent="YhkGrtVXZhnwM7Ej6OhU-24">
+          <mxGeometry y="290" width="600" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="YhkGrtVXZhnwM7Ej6OhU-30" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;entryX=0.5;entryY=0;exitX=0.5;exitY=1;" edge="1" parent="YhkGrtVXZhnwM7Ej6OhU-24" source="YhkGrtVXZhnwM7Ej6OhU-25" target="YhkGrtVXZhnwM7Ej6OhU-26">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="YhkGrtVXZhnwM7Ej6OhU-31" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;entryX=0.5;entryY=0;exitX=0.5;exitY=1;" edge="1" parent="YhkGrtVXZhnwM7Ej6OhU-24" source="YhkGrtVXZhnwM7Ej6OhU-26" target="YhkGrtVXZhnwM7Ej6OhU-27">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="YhkGrtVXZhnwM7Ej6OhU-32" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;entryX=0.5;entryY=0;exitX=0.5;exitY=1;" edge="1" parent="YhkGrtVXZhnwM7Ej6OhU-24" source="YhkGrtVXZhnwM7Ej6OhU-27" target="YhkGrtVXZhnwM7Ej6OhU-28">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="YhkGrtVXZhnwM7Ej6OhU-33" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;" edge="1" parent="YhkGrtVXZhnwM7Ej6OhU-24" source="YhkGrtVXZhnwM7Ej6OhU-27" target="YhkGrtVXZhnwM7Ej6OhU-29">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="YhkGrtVXZhnwM7Ej6OhU-34" value="&lt;b&gt;Key Features:&lt;/b&gt;&lt;br&gt;• Parallel batch processing&lt;br&gt;• Automatic storage&lt;br&gt;• Error handling&lt;br&gt;• LLM chaining" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;" vertex="1" parent="YhkGrtVXZhnwM7Ej6OhU-24">
+          <mxGeometry y="350" width="600" height="80" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
