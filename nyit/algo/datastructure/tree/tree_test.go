@@ -24,3 +24,8 @@ func Test_avlTree(t *testing.T) {
 	//avlTree.preorder()
 	avlTree.inorder()
 }
+
+
+func Test_RBTree(t *testing.T) {
+	mainRbt()
+}

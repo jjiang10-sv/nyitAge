@@ -1,0 +1,14 @@
+Added dx="578" dy="389" grid="1" gridSize="10" in <mxGraphModel>
+
+This ensures proper rendering of the diagram.
+
+Ensured as="geometry" is present in all <mxGeometry> elements
+
+This prevents missing shapes.
+
+Fixed incorrect <mxGeometry> nesting inside edges
+
+Edge connections should not have their own <mxGeometry>.
+
+analyse the code below and generate drawio diagram on create_dataset_files with dx = "578" dy = "389" grid="1" gridSize="10" in <mxGraphModel>
+Edge connections should not have their own <mxGeometry> Ensured as="geometry" is present in all <mxGeometry> elements

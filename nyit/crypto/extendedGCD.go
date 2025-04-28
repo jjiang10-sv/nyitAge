@@ -2,10 +2,17 @@ package main
 
 import (
 	"crypto/rand"
-	"errors"
 	"fmt"
 	"math/big"
 )
+
+// euclidean computes the greatest common divisor of a and b using the Euclidean algorithm.
+func euclidean(a, b int) int {
+	for b != 0 {
+		a, b = b, a%b
+	}
+	return a
+}
 
 // ExtendedEuclidean computes the GCD and finds x, y such that ax + by = gcd(a, b)
 func ExtendedEuclidean(a, b int) (int, int, int, bool) {
@@ -13,22 +20,22 @@ func ExtendedEuclidean(a, b int) (int, int, int, bool) {
 		return a, 1, 0, true
 	}
 
-	gcd, x1, y1, _ := ExtendedEuclidean(b, a%b)
-	if gcd != 1 {
+	euclidean, x1, y1, _ := ExtendedEuclidean(b, a%b)
+	if euclidean != 1 {
 		return 0, 0, 0, false
 	}
 	x := y1
 	y := x1 - (a/b)*y1
 
-	return gcd, x, y, true
+	return euclidean, x, y, true
 
 }
 
-// ModInverse finds the modular inverse of a mod m using Extended Euclidean Algorithm
-func ModInverse(a, m int) (int, error) {
+// modInverse finds the modular inverse of a mod m using Extended Euclidean Algorithm
+func modInverse(a, m int) (int, error) {
 	_, x, _, found := ExtendedEuclidean(a, m)
 
-	// Inverse exists only if gcd(a, m) == 1
+	// Inverse exists only if euclidean(a, m) == 1
 	if !found {
 		return 0, fmt.Errorf("modular inverse does not exist for %d mod %d", a, m)
 	}
@@ -46,45 +53,6 @@ func ModInverse(a, m int) (int, error) {
 // 4. **Calculate Solution Components**: For each modulus, compute the product of the other moduli, find its modular inverse, and accumulate the sum of terms using the remainders and inverses.
 // 5. **Handle Negative Results**: Adjust the final result to ensure it's non-negative by taking modulo of the product of moduli.
 
-// ### Solution Code
-// ```go
-// package main
-
-// import (
-// 	"fmt"
-// 	"errors"
-// )
-
-// gcd computes the greatest common divisor of a and b using the Euclidean algorithm.
-func gcd(a, b int) int {
-	for b != 0 {
-		a, b = b, a%b
-	}
-	return a
-}
-
-// extendedGCD computes the extended Euclidean algorithm, returning gcd, x, y such that ax + by = gcd(a, b).
-func extendedGCD(a, b int) (g, x, y int) {
-	if b == 0 {
-		return a, 1, 0
-	}
-	g, x1, y1 := extendedGCD(b, a%b)
-	x = y1
-	y = x1 - (a/b)*y1
-	return g, x, y
-}
-
-// modInverse computes the modular inverse of a modulo m, returns error if inverse does not exist.
-func modInverse(a, m int) (int, error) {
-	g, x, _ := extendedGCD(a, m)
-	if g != 1 {
-		return 0, errors.New("no inverse exists")
-	}
-	// Ensure the result is positive modulo m
-	inverse := (x%m + m) % m
-	return inverse, nil
-}
-
 // ChineseRemainder solves the system of congruences using the Chinese Remainder Theorem.
 // a is the list of remainders, m is the list of moduli.
 // Returns the smallest non-negative solution x and an error if any checks fail.
@@ -101,7 +69,7 @@ func ChineseRemainder(a, m []int) (int, error) {
 	// Check pairwise coprime
 	for i := 0; i < len(m); i++ {
 		for j := i + 1; j < len(m); j++ {
-			if gcd(m[i], m[j]) != 1 {
+			if euclidean(m[i], m[j]) != 1 {
 				return 0, fmt.Errorf("moduli are not pairwise coprime")
 			}
 		}
@@ -295,13 +263,13 @@ func mainE() {
 	// ========================
 	n := big.NewInt(15)
 	a := big.NewInt(2)
-	
+
 	// Calculate φ(n) for n = 15 (3*5)
 	phi := new(big.Int).Mul(
 		new(big.Int).Sub(big.NewInt(3), big.NewInt(1)),
 		new(big.Int).Sub(big.NewInt(5), big.NewInt(1)),
 	)
-	
+
 	// Verify a^φ(n) ≡ 1 mod n
 	result := new(big.Int).Exp(a, phi, n)
 	fmt.Println("Euler's Theorem Demonstration:")
@@ -343,7 +311,7 @@ func millerRabin(n *big.Int, k int) bool {
 	for i := 0; i < k; i++ {
 		a := randomBase(n)
 		x := new(big.Int).Exp(a, d, n)
-		
+
 		if x.Cmp(big.NewInt(1)) == 0 || x.Cmp(new(big.Int).Sub(n, big.NewInt(1))) == 0 {
 			continue
 		}
@@ -368,6 +336,7 @@ func randomBase(n *big.Int) *big.Int {
 	a, _ := rand.Int(rand.Reader, new(big.Int).Sub(n, big.NewInt(3)))
 	return a.Add(a, big.NewInt(2))
 }
+
 // ```
 
 // **Output:**
@@ -417,7 +386,7 @@ func randomBase(n *big.Int) *big.Int {
 // **Mathematical Foundation:**
 
 // 1. **Euler's Theorem**
-//    - Valid when gcd(a, n) = 1
+//    - Valid when euclidean(a, n) = 1
 //    - Basis for RSA encryption/decryption
 //    - Generalization of Fermat's Little Theorem
 

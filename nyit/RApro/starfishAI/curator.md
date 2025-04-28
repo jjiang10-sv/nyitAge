@@ -1,3 +1,165 @@
+If you do not need the `PosthogClient` instance to persist beyond the scope of a function call, then you do not need to implement the singleton pattern. In this case, the instance will be created and released automatically when the function call finishes, as it will be garbage collected if there are no references to it.
+
+### When to Use Singleton:
+- **State Management**: If `PosthogClient` maintains state that should be shared across different parts of your application, a singleton might be appropriate.
+- **Resource Management**: If the client manages resources (like network connections) that should be reused, a singleton can help avoid the overhead of creating multiple instances.
+
+### When Not to Use Singleton:
+- **Stateless Operations**: If the client does not maintain any state or if each call to it is independent, you can create a new instance each time without needing a singleton.
+- **Short-lived Instances**: If the instance is only needed for a short duration (like within a single function call), creating a new instance is perfectly fine.
+
+### Example Without Singleton:
+If you decide not to use a singleton, you can simply instantiate `PosthogClient` as needed:
+
+```python
+{{ code }}
+```
+
+```language:.venv/lib/python3.11/site-packages/bespokelabs/curator/telemetry/client.py
+def some_function():
+    telemetry_client = PosthogClient(config=config)
+    # Use telemetry_client for some operations
+    # It will be released after this function call
+```
+
+### Conclusion:
+If your use case does not require shared state or resource management, you can safely create a new instance of `PosthogClient` each time you need it, and it will be released after the function call finishes.
+
+
+The `telemetry_client` in your code is not a singleton by default. A singleton is a design pattern that restricts a class to a single instance and provides a global point of access to that instance. In your current implementation, every time you import and execute the code that initializes `telemetry_client`, a new instance of `PosthogClient` will be created.
+
+To make `telemetry_client` a singleton, you can modify the `PosthogClient` class to ensure that only one instance is created. Here’s a simple way to implement a singleton pattern using a class variable:
+
+```python
+{{ code }}
+```
+
+Here’s how you can modify your `PosthogClient` class to implement the singleton pattern:
+
+```language:.venv/lib/python3.11/site-packages/bespokelabs/curator/telemetry/client.py
+class PosthogClient:
+    _instance = None  # Class variable to hold the singleton instance
+
+    def __new__(cls, *args, **kwargs):
+        if not cls._instance:
+            cls._instance = super(PosthogClient, cls).__new__(cls)
+        return cls._instance
+
+    # ... existing methods ...
+```
+
+### Explanation of Changes:
+1. **Singleton Implementation**: The `__new__` method is overridden to control the instantiation of the class. It checks if an instance already exists; if not, it creates one.
+2. **Class Variable**: `_instance` is a class variable that holds the single instance of `PosthogClient`.
+
+With this change, every time you import `telemetry_client`, it will refer to the same instance of `PosthogClient`.
+
+
+`asyncio.wait` and `asyncio.gather` are both used to manage multiple asynchronous tasks in Python's `asyncio` library, but they have different behaviors and use cases. Here’s a breakdown of their differences:
+
+### `asyncio.wait`
+
+- **Purpose**: It is used to wait for a collection of awaitable objects (like coroutines or tasks) to complete.
+- **Return Value**: It returns two sets: one for completed tasks and another for pending tasks.
+- **Behavior**: It allows you to wait for tasks to finish without necessarily collecting their results. You can specify whether to wait for all tasks to complete or just the first one to finish.
+- **Usage**: It is useful when you want to manage tasks individually or when you need to handle completed and pending tasks separately.
+
+**Example**:
+```python
+import asyncio
+
+async def task(n):
+    await asyncio.sleep(n)
+    return n
+
+async def main():
+    tasks = [asyncio.create_task(task(i)) for i in range(1, 4)]
+    done, pending = await asyncio.wait(tasks)
+    for task in done:
+        print(task.result())
+
+asyncio.run(main())
+```
+
+### `asyncio.gather`
+
+- **Purpose**: It is used to run multiple awaitable objects concurrently and gather their results.
+- **Return Value**: It returns a single list containing the results of the completed tasks in the order they were passed to `gather`.
+- **Behavior**: It raises an exception if any of the tasks fail, and it will not return results for the failed tasks.
+- **Usage**: It is useful when you want to run multiple tasks concurrently and need their results in a single collection.
+
+**Example**:
+```python
+import asyncio
+
+async def task(n):
+    await asyncio.sleep(n)
+    return n
+
+async def main():
+    results = await asyncio.gather(task(1), task(2), task(3))
+    print(results)  # Output: [1, 2, 3]
+
+asyncio.run(main())
+```
+
+### Summary of Differences
+
+| Feature                | `asyncio.wait`                          | `asyncio.gather`                       |
+|------------------------|-----------------------------------------|----------------------------------------|
+| Return Value           | Two sets (done, pending)                | List of results                        |
+| Exception Handling      | Does not raise until you check results | Raises immediately if any task fails   |
+| Use Case               | When you need to manage tasks separately | When you need results from all tasks   |
+| Order of Results       | Not guaranteed                          | Results are in the order of tasks     |
+
+In summary, use `asyncio.wait` when you need more control over the individual tasks and their states, and use `asyncio.gather` when you want to run multiple tasks and collect their results in a straightforward manner.
+
+
+The provided code snippet demonstrates the use of Python's `asyncio` library to handle asynchronous operations, specifically for creating request files in a batch processing context. Here's a breakdown of the logic:
+
+### Explanation of the `asyncio` Logic
+
+1. **Asynchronous Function Definition**:
+   ```python
+   async def create_all_request_files():
+   ```
+   This line defines an asynchronous function named `create_all_request_files`. The `async` keyword indicates that this function can perform asynchronous operations, allowing it to pause and yield control back to the event loop while waiting for I/O-bound tasks to complete.
+
+2. **Creating Tasks**:
+   ```python
+   tasks = [
+       self.acreate_request_file(
+           dataset,
+           request_files[i],
+           metadata_files[i],
+           start_idx=i * self.config.batch_size,
+       )
+       for i in range(num_batches)
+       if i in incomplete_files
+   ]
+   ```
+   - This list comprehension creates a list of tasks. Each task is a call to the `self.acreate_request_file` method, which is also an asynchronous function.
+   - The `for` loop iterates over a range of `num_batches`, which represents the number of batches of requests to be processed.
+   - The condition `if i in incomplete_files` ensures that only the batches that need to be created (i.e., those that are incomplete) are included in the tasks list.
+
+3. **Gathering Tasks**:
+   ```python
+   await asyncio.gather(*tasks)
+   ```
+   - The `await` keyword is used to pause the execution of the `create_all_request_files` function until all the tasks in the `tasks` list are completed.
+   - `asyncio.gather(*tasks)` takes multiple awaitable objects (in this case, the tasks) and runs them concurrently. It waits for all of them to finish and returns their results.
+
+4. **Running the Asynchronous Function**:
+   ```python
+   run_in_event_loop(create_all_request_files())
+   ```
+   - This line calls the `create_all_request_files` function within an event loop. The `run_in_event_loop` function is presumably a utility that ensures the asynchronous function is executed properly within the event loop context.
+   - This is necessary because asynchronous functions cannot be called directly in a synchronous context; they need to be awaited or run within an event loop.
+
+### Summary
+In summary, this code snippet is designed to create multiple request files asynchronously. It defines a function that generates tasks for creating request files, gathers those tasks to run them concurrently, and then executes the entire process within an event loop. This approach improves efficiency by allowing multiple I/O-bound operations (like file writing) to occur simultaneously, rather than waiting for each operation to complete before starting the next one.
+
+
 To clean up unused packages in a virtual environment (venv), you can use the `pip` command along with the `pip-autoremove` tool or manually uninstall packages that are no longer needed. Here are the steps for both methods:
 
 ### Method 1: Using `pip-autoremove`

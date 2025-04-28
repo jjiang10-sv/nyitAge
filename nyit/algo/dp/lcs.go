@@ -16,51 +16,55 @@ import "fmt"
 
 // LongestCommonSubsequence computes the LCS of two strings
 func LongestCommonSubsequence(s1, s2 string) string {
-    n, m := len(s1), len(s2)
-    dp := make([][]int, n+1)
-    for i := range dp {
-        dp[i] = make([]int, m+1)
-    }
+	n, m := len(s1), len(s2)
+	dp := make([][]int, n+1)
+	for i := range dp {
+		dp[i] = make([]int, m+1)
+	}
 
-    // Build the dp table
-    for i := 1; i <= n; i++ {
-        for j := 1; j <= m; j++ {
-            if s1[i-1] == s2[j-1] {
-                dp[i][j] = dp[i-1][j-1] + 1
-            } else {
-                dp[i][j] = max(dp[i-1][j], dp[i][j-1])
-            }
-        }
-    }
+	// Build the dp table
+	for i := 1; i <= n; i++ {
+		for j := 1; j <= m; j++ {
+			if s1[i-1] == s2[j-1] {
+				dp[i][j] = dp[i-1][j-1] + 1
+			} else {
+				dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+			}
+		}
+	}
 
-    // Reconstruct the LCS
-    lcs := []byte{}
-    i, j := n, m
-    for i > 0 && j > 0 {
-        if s1[i-1] == s2[j-1] {
-            lcs = append([]byte{s1[i-1]}, lcs...)
-            i--
-            j--
-        } else if dp[i-1][j] > dp[i][j-1] {
-            i--
-        } else {
-            j--
-        }
-    }
+	// Reconstruct the LCS
+	lcs := []byte{}
+	i, j := n, m
+	for i > 0 && j > 0 {
+		// if equal, then dialog; keep the order when backtracing by appending
+		// the existing lcs to the latest found common char in the table
+		if s1[i-1] == s2[j-1] {
+			lcs = append([]byte{s1[i-1]}, lcs...)
+			i--
+			j--
+		} else if dp[i-1][j] > dp[i][j-1] {
+			// this means the added char in the ith row not useful, so move to (i-1)th row
+			i--
+		} else {
+			// this means the added char in the jth col not useful, so move to (j-1)th col
+			j--
+		}
+	}
 
-    return string(lcs)
+	return string(lcs)
 }
 
 // Helper function to find the maximum of two integers
 func max(a, b int) int {
-    if a > b {
-        return a
-    }
-    return b
+	if a > b {
+		return a
+	}
+	return b
 }
 
-func main() {
-    s1 := "ABCBDAB"
-    s2 := "BDCAB"
-    fmt.Println("Longest Common Subsequence:", LongestCommonSubsequence(s1, s2))
+func mainLongestCommonSubsequence() {
+	s1 := "ABCBDAB"
+	s2 := "BDCAB"
+	fmt.Println("Longest Common Subsequence:", LongestCommonSubsequence(s1, s2))
 }

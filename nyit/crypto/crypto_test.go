@@ -5,6 +5,13 @@ import (
 	"testing"
 )
 
+func TestDigitalSig(t *testing.T) {
+	msg := "I owe you $2000"
+	mainDigitalSig(msg)
+	msg1 := "I owe you $6000"
+	mainDigitalSig(msg1)
+}
+
 func TestDecryptSim(t *testing.T) {
 	//decrypTable := getConstructionTable()
 	decrypTable := getDecryptTableComp()
@@ -18,7 +25,7 @@ func TestModInverse(t *testing.T) {
 	// 4321, 1234
 	divident, modular := 5, 3
 	//a, m := modular, divident // Example: Find 3⁻¹ mod 7
-	inverse, err := ModInverse(modular, divident)
+	inverse, err := modInverse(modular, divident)
 	if err != nil {
 		fmt.Println(err)
 	} else {

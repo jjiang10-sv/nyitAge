@@ -14,9 +14,10 @@ import (
 	"log"
 	"math/big"
 	"time"
+	// "github.com/ldsec/lattigo/v6/he"
 )
 
-func mainDigitalSig() {
+func mainDigitalSig(msg string) {
 	// Generate RSA key pair (2048 bits for security)
 	privateKey, err := rsa.GenerateKey(rand.Reader, 2048)
 	if err != nil {
@@ -24,16 +25,16 @@ func mainDigitalSig() {
 	}
 	publicKey := &privateKey.PublicKey
 
-	originalMessage := []byte("Secure message for digital signature")
+	originalMessage := []byte(msg)
 
 	// Sign the message with the private key
 	signature, err := signMessage(privateKey, originalMessage)
 	if err != nil {
 		log.Fatalf("Signing error: %v", err)
 	}
-	fmt.Printf("Signature: %x\n", signature)
+	fmt.Printf("%s Signature: %x\n", msg, signature)
 
-	// Verify with original message (should succeed)
+	//Verify with original message (should succeed)
 	if err := verifySignature(publicKey, originalMessage, signature); err != nil {
 		log.Fatalf("Verification failed: %v", err)
 	}
@@ -98,19 +99,8 @@ func verifySignature(publicKey *rsa.PublicKey, msg []byte, sig []byte) error {
 
 // Always use appropriate key sizes (2048+ bits for RSA) and secure hash functions (SHA-256 or stronger) in production systems.
 
-// Here's a simulation of the six fundamental components in a public-key cryptography scheme using RSA in Go. The code demonstrates key generation, encryption, decryption, signing, verification, and hashing:
-
-// ```go
-// package main
-
-// import (
-// 	"crypto/rand"
-// 	"crypto/rsa"
-// 	"crypto/sha256"
-// 	"crypto"
-// 	"fmt"
-// 	"log"
-// )
+// Here's a simulation of the six fundamental components in a public-key cryptography scheme using RSA in Go.
+//The code demonstrates key generation, encryption, decryption, signing, verification, and hashing:
 
 func mainSixFoundamentals() {
 	// 1. Key Generation
@@ -187,19 +177,6 @@ func mainSixFoundamentals() {
 //    - Validates signature using public key
 //    - Confirms message authenticity and integrity
 
-// **Output Example:**
-// ```
-// Encrypted: 8a4f3d9c...
-// ...
-// Decrypted: Secret message for public-key demo
-
-// Signature: 1b3a7f...
-// ...
-// ✅ Signature verified
-
-// Tampered message verification: crypto/rsa: verification error
-// ```
-
 // **Security Notes:**
 // 1. Use RSA-2048 or larger keys in production
 // 2. Prefer RSA-OAEP over PKCS1v15 for encryption
@@ -207,21 +184,13 @@ func mainSixFoundamentals() {
 // 4. Always use modern hash functions (SHA-256 or higher)
 // 5. Protect private keys with secure storage solutions
 
-// This implementation demonstrates the complete public-key cryptography workflow including both confidentiality (encryption/decryption) and authentication (signing/verification) capabilities.
+// This implementation demonstrates the complete public-key cryptography workflow
+//including both confidentiality (encryption/decryption) and
+//authentication (signing/verification) capabilities.
 
-// Here's a simulation that combines both authentication (via digital signatures) and secrecy (via encryption) in a public-key cryptosystem using Go. This example demonstrates secure communication between two parties (Alice and Bob):
-
-// ```go
-// package main
-
-// import (
-// 	"crypto"
-// 	"crypto/rand"
-// 	"crypto/rsa"
-// 	"crypto/sha256"
-// 	"fmt"
-// 	"log"
-// )
+// Here's a simulation that combines both authentication (via digital signatures) and
+//secrecy (via encryption) in a public-key cryptosystem using Go.
+//This example demonstrates secure communication between two parties (Alice and Bob):
 
 func mainTwoSides() {
 	// Generate keys for Alice (signing) and Bob (encryption)
@@ -255,7 +224,7 @@ func mainTwoSides() {
 	// Tamper test
 	tamperedCipher := make([]byte, len(ciphertext))
 	copy(tamperedCipher, ciphertext)
-	tamperedCipher[0] ^= 0xFF // Flip first bit
+	tamperedCipher[0] ^= 0xFF // Flip first bite
 
 	if _, err := decryptMessage1(bobPrivate, tamperedCipher); err != nil {
 		fmt.Println("🚨 Tampered ciphertext detected:", err)
@@ -348,25 +317,26 @@ func verifySignature1(public *rsa.PublicKey, msg []byte, sig []byte) error {
 // - Secure encryption/decryption patterns
 // - Tamper resistance demonstration
 
-// This implementation provides end-to-end security for messages while maintaining accountability through digital signatures. For production use, consider adding:
+// This implementation provides end-to-end security for messages
+//while maintaining accountability through digital signatures. For production use, consider adding:
 // - Key exchange protocol
 // - Session management
 // - Perfect forward secrecy
 // - Certificate-based key validation
 
-// Homomorphic encryption (HE) allows computations on encrypted data without decrypting it, enabling privacy-preserving cloud computing and secure data analysis. While **fully homomorphic encryption (FHE)** remains computationally intensive, modern libraries like **Microsoft SEAL** (via Go bindings) and **Lattigo** (pure Go) make experimentation feasible. Below is a simulation using lattice-based FHE with the Lattigo library for a **private AI inference** use case.
-
-// ---
+// Homomorphic encryption (HE) allows computations on encrypted data without decrypting it,
+// enabling privacy-preserving cloud computing and secure data analysis.
+//While **fully homomorphic encryption (FHE)** remains computationally intensive,
+//modern libraries like **Microsoft SEAL** (via Go bindings) and **Lattigo** (pure Go)
+//make experimentation feasible. Below is a simulation using lattice-based FHE with the Lattigo library
+//for a **private AI inference** use case.
 
 // ### **Step 1: Install Lattigo**
-// ```bash
 // go get github.com/ldsec/lattigo/v2/ckks
-// ```
-
-// ---
 
 // ### **Step 2: Simulated Private Inference with CKKS Scheme**
-// This example demonstrates secure inference where a client encrypts their data, a server processes it homomorphically, and the client decrypts the result:
+// This example demonstrates secure inference where a client encrypts their data,
+//a server processes it homomorphically, and the client decrypts the result:
 
 // ```go
 // package main
@@ -378,18 +348,25 @@ func verifySignature1(public *rsa.PublicKey, msg []byte, sig []byte) error {
 // )
 
 // func mainHomor() {
-// 	// 1. Setup CKKS parameters (128-bit security)
-// 	params, _ := ckks.NewParametersFromLiteral(ckks.PN12QP109)
+// 	// Initialize CKKS parameters with PN12QP109 (4096-bit polynomial modulus)
+// 	params, err := he.NewParametersFromLiteral(he.ParametersLiteral{
+// 		LogN:     12,         // Log2 of polynomial degree
+// 		LogQ:     []int{109}, // Modulus bits
+// 		LogScale: 40,         // Scaling factor bits
+// 	})
+// 	if err != nil {
+// 		log.Fatalf("Failed to create CKKS parameters: %v", err)
+// 	}
 
-// 	// 2. Key Generation
-// 	kgen := ckks.NewKeyGenerator(params)
+// 	// Now you can use these parameters for key generation and operations
+// 	kgen := he.NewKeyGenerator(params)
 // 	sk := kgen.GenSecretKey()
 // 	pk := kgen.GenPublicKey(sk)
-// 	rlk := kgen.GenRelinearizationKey(sk, 1)
+// 	rlk := kgen.GenRelinearizationKey(sk)
 
 // 	// Client: Encrypt data
-// 	encryptor := ckks.NewEncryptorFromPk(params, pk)
-// 	encoder := ckks.NewEncoder(params)
+// 	encryptor := he.NewEncryptorFromPk(params, pk)
+// 	encoder := hefloat.NewEncoder(params)
 // 	plaintext := encoder.EncodeNew(
 // 		[]float64{3.0, 1.5}, // Input features (e.g., medical data)
 // 		params.MaxLevel(),
@@ -398,7 +375,7 @@ func verifySignature1(public *rsa.PublicKey, msg []byte, sig []byte) error {
 // 	ciphertext := encryptor.EncryptNew(plaintext)
 
 // 	// Server: Homomorphic evaluation (e.g., neural network activation)
-// 	evaluator := ckks.NewEvaluator(params)
+// 	evaluator := hefloat.NewEvaluator(params)
 
 // 	// Homomorphic ReLU approximation: f(x) = 0.5x + 0.5sqrt(x^2 + 0.1)
 // 	evaluator.MulRelin(ciphertext, ciphertext, rlk, ciphertext)              // x^2
@@ -408,7 +385,7 @@ func verifySignature1(public *rsa.PublicKey, msg []byte, sig []byte) error {
 // 	evaluator.AddConst(ciphertext, 0.5, ciphertext)                          // 0.5x + 0.5*sqrt(x)
 
 // 	// Client: Decrypt result
-// 	decryptor := ckks.NewDecryptor(params, sk)
+// 	decryptor := hefloat.NewDecryptor(params, sk)
 // 	plainResult := decryptor.DecryptNew(ciphertext)
 // 	result := encoder.Decode(plainResult, params.LogSlots())
 
@@ -487,17 +464,9 @@ func verifySignature1(public *rsa.PublicKey, msg []byte, sig []byte) error {
 // - **PALISADE** (C++)
 // - **Concrete** (Rust, for Zama's TFHE)
 
-// Would you like a deeper dive into any specific aspect?
-
-// To simulate a trapdoor one-way function for public-key encryption, we'll implement a simplified version of RSA. This demonstrates the core concept: a function that's easy to compute in one direction but hard to reverse without secret knowledge (the trapdoor).
-
-// ```go
-// package main
-
-// import (
-// 	"fmt"
-// 	"math/big"
-// )
+// To simulate a trapdoor one-way function for public-key encryption, we'll implement a simplified version of RSA.
+//This demonstrates the core concept: a function that's easy to compute in one direction
+//but hard to reverse without secret knowledge (the trapdoor).
 
 func mainTrapdoor() {
 	// ========================
@@ -515,28 +484,23 @@ func mainTrapdoor() {
 	pMinus1 := new(big.Int).Sub(p, big.NewInt(1))
 	qMinus1 := new(big.Int).Sub(q, big.NewInt(1))
 	phi := new(big.Int).Mul(pMinus1, qMinus1)
-	var e int64 = 17
-	// // 4. Choose public exponent e (must be coprime with φ(n))
-	// e := 3      // Start with the smallest prime number
 
-	// // Find an e that is coprime with φ(n)
-	// for {
-	// 	gcd, _, _ := gcdExtended(e, int(phi.Int64()))
-	// 	if gcd == 1 {
-	// 		break // e is coprime with φ(n)
-	// 	}
-	// 	e += 2 // Increment e by 2 to check the next odd number
-	// }
+	// // 4. Choose public exponent e (must be coprime with φ(n))
+	var e int64 = 3 // Start with the smallest prime number
+
+	// Find an e that is coprime with φ(n)
+	for {
+		gcd, _, _ := gcdExtended(e, int64(phi.Int64()))
+		if gcd == 1 {
+			break // e is coprime with φ(n)
+		}
+		e += 2 // Increment e by 2 to check the next odd number
+	}
 
 	// 5. Compute private exponent d (trapdoor)
 	d := new(big.Int)
 	d.ModInverse(big.NewInt(e), phi) // Modular inverse using trapdoor (φ(n))
 
-	// ========================
-	// Function Demonstration
-	// ========================
-
-	// Original message
 	message := big.NewInt(65)
 	fmt.Println("Original message:", message)
 
@@ -568,9 +532,6 @@ func mainTrapdoor() {
 	fmt.Println("Factors found:", possibleFactors) // Should output [61 53]
 }
 
-// ```
-
-// **Key Components Explained:**
 
 // 1. **Trapdoor Creation (Key Generation)**
 //    ```go
@@ -606,19 +567,21 @@ func mainTrapdoor() {
 
 // **Security Analysis:**
 
-// - **One-Way Property**: For large primes (1000+ bits), reversing `c = m^e mod n` without `d` requires factoring `n`, which is computationally infeasible
+// - **One-Way Property**: For large primes (1000+ bits), reversing `c = m^e mod n` without `d` 
+//requires factoring `n`, which is computationally infeasible
 // - **Trapdoor Mechanism**: Knowledge of `p` and `q` enables efficient computation of `d`
 // - **Semantic Security**: Real implementations use padding schemes like OAEP to strengthen security
 
 // **Real-World Requirements:**
-
 // 1. **Large Prime Numbers**: Use probabilistic tests (Miller-Rabin) with 1024-4096 bit primes
 // 2. **Secure Padding**: Implement OAEP padding for encryption
 // 3. **Side-Channel Protection**: Use constant-time algorithms for cryptographic operations
 
-// This simulation demonstrates the fundamental mechanism behind RSA and other public-key cryptosystems. In production systems, always use well-vetted cryptographic libraries rather than implementing from scratch.
+// This simulation demonstrates the fundamental mechanism behind RSA and other public-key cryptosystems. 
+//In production systems, always use well-vetted cryptographic libraries rather than implementing from scratch.
 
-//Here's a simulation of a **probable-message attack** targeting textbook RSA (without padding), demonstrating why secure padding schemes like OAEP are critical in public-key cryptography:
+//Here's a simulation of a **probable-message attack** targeting textbook RSA (without padding), 
+//demonstrating why secure padding schemes like OAEP are critical in public-key cryptography:
 
 func mainProbWithoutPadding() {
 	// Generate 2048-bit RSA key pair
@@ -669,6 +632,9 @@ func mainProbWithoutPadding() {
 	// Mitigation with RSA-OAEP
 	// ========================
 	fmt.Println("\nTesting with proper OAEP padding:")
+	// what the padding is doing is adding random bytes to the message
+	// so that the same message will not produce the same ciphertext
+	// this makes it much harder to perform a probable-message attack
 	oaepCipher1, _ := rsa.EncryptOAEP(sha256.New(), rand.Reader, publicKey, []byte(secretMsg), nil)
 	oaepCipher2, _ := rsa.EncryptOAEP(sha256.New(), rand.Reader, publicKey, []byte(secretMsg), nil)
 	fmt.Printf("Same message → Different ciphertexts:\n%x\n...\n%x\n", oaepCipher1[:16], oaepCipher2[:16])
@@ -678,10 +644,6 @@ func encryptTextbookRSA(pub *rsa.PublicKey, m *big.Int) *big.Int {
 	return new(big.Int).Exp(m, big.NewInt(int64(pub.E)), pub.N)
 }
 
-// ```
-
-// **Output:**
-// ```
 // Launching probable-message attack...
 
 // [SUCCESS] Message cracked: "PAY ALICE $1,000,000"
@@ -733,21 +695,13 @@ func encryptTextbookRSA(pub *rsa.PublicKey, m *big.Int) *big.Int {
 //    - Never implement "textbook" RSA directly
 //    - Use high-quality randomness for encryption
 
-// This simulation demonstrates why modern cryptographic standards incorporate probabilistic encryption and emphasize the importance of proper implementation.
+// This simulation demonstrates why modern cryptographic standards incorporate probabilistic encryption
+// and emphasize the importance of proper implementation.
 
-// Here's a simulation demonstrating secure padding with randomness using RSA-OAEP (Optimal Asymmetric Encryption Padding), which appends random bytes during encryption to ensure probabilistic security:
+// Here's a simulation demonstrating secure padding with randomness using RSA-OAEP 
+//(Optimal Asymmetric Encryption Padding), which appends random bytes during encryption to ensure 
+//probabilistic security:
 
-// ```go
-// package main
-
-// import (
-// 	"crypto/rand"
-// 	"crypto/rsa"
-// 	"crypto/sha256"
-// 	"fmt"
-// 	"log"
-// 	"math/big"
-// )
 
 func mainProbWithPadding() {
 	// Generate 2048-bit RSA key pair
@@ -892,20 +846,13 @@ func encryptTextbookRSA2(pub *rsa.PublicKey, m *big.Int) *big.Int {
 // 3. Use at least 2048-bit keys
 // 4. Validate decrypted messages before use
 
-// This implementation demonstrates how proper padding with randomness provides essential security properties missing in basic RSA implementations. The random padding prevents:
+// This implementation demonstrates how proper padding with randomness provides 
+//essential security properties missing in basic RSA implementations. The random padding prevents:
 // - Ciphertext comparison attacks
 // - Pattern recognition
 // - Deterministic encryption flaws
 
 // Here's a simulation of RSA public/private key encryption and decryption using Go's `math/big` package:
-
-// ```go
-// package main
-
-// import (
-// 	"fmt"
-// 	"math/big"
-// )
 
 func gcdExtended(a, b int64) (int64, int64, int64) {
 	if a == 0 {
@@ -996,9 +943,12 @@ func gcdExtended(a, b int64) (int64, int64, int64) {
 
 // This implementation will enhance the security of your RSA algorithm by ensuring that the primes used are sufficiently large and randomly generated.
 
-// To use the Chinese Remainder Theorem (CRT) for calculating the modulus \( n \) in RSA, you typically want to compute \( n \) as \( n = p \times q \) and also store \( p \) and \( q \) for later use in decryption. However, the CRT is more commonly applied during the decryption process to speed up calculations.
+// To use the Chinese Remainder Theorem (CRT) for calculating the modulus \( n \) in RSA, you typically want to compute \( n \) as \( n = p \times q \) 
+//and also store \( p \) and \( q \) for later use in decryption. 
+//However, the CRT is more commonly applied during the decryption process to speed up calculations.
 
-// Here’s how you can modify your code to incorporate the Chinese Remainder Theorem for RSA decryption. Below are the necessary changes to your code:
+// Here's how you can modify your code to incorporate the Chinese Remainder Theorem for RSA decryption. 
+//Below are the necessary changes to your code:
 
 // ### Updated Code Snippet
 // ```go:nyit/crypto/rsa.go
@@ -1178,113 +1128,6 @@ func mainRSA() {
 
 // This simulation demonstrates the core mathematical principles behind RSA while emphasizing that real-world implementations require additional security measures.
 
-//Here's a complete RSA implementation in Go that demonstrates secure prime generation using the Miller-Rabin primality test, followed by key generation and encryption/decryption:
-
-func mainRSA1() {
-	// Generate 1024-bit primes (use 2048-bit for production)
-	p, err := rand.Prime(rand.Reader, 1024)
-	if err != nil {
-		log.Fatal("Prime generation failed:", err)
-	}
-	q, err := rand.Prime(rand.Reader, 1024)
-	if err != nil {
-		log.Fatal("Prime generation failed:", err)
-	}
-
-	// Calculate modulus n = p * q
-	n := new(big.Int).Mul(p, q)
-
-	// Calculate φ(n) = (p-1)*(q-1)
-	phi := new(big.Int).Mul(
-		new(big.Int).Sub(p, big.NewInt(1)),
-		new(big.Int).Sub(q, big.NewInt(1)),
-	)
-
-	// Choose public exponent e (commonly 65537)
-	e := big.NewInt(65537)
-
-	// Calculate private exponent d (modular inverse)
-	d := new(big.Int).ModInverse(e, phi)
-
-	// Demonstrate encryption/decryption
-	msg := big.NewInt(42) // Sample message
-	fmt.Println("Original message:", msg)
-
-	// Encryption: c = m^e mod n
-	ciphertext := new(big.Int).Exp(msg, e, n)
-	fmt.Println("\nCiphertext:", ciphertext)
-
-	// Decryption: m = c^d mod n
-	plaintext := new(big.Int).Exp(ciphertext, d, n)
-	fmt.Println("Decrypted message:", plaintext)
-
-	// Print key information
-	fmt.Println("\nKey Details:")
-	fmt.Println("p:", p)
-	fmt.Println("q:", q)
-	fmt.Println("n:", n)
-	fmt.Println("φ(n):", phi)
-	fmt.Println("Public exponent e:", e)
-	fmt.Println("Private exponent d:", d)
-}
-
-// // Miller-Rabin implementation (built into math/big.ProbablyPrime)
-// // Go's crypto/rand.Prime uses ProbablyPrime internally with 20 iterations
-// ```
-
-// **Key Components Explained:**
-
-// 1. **Prime Generation with Miller-Rabin**
-//    ```go
-//    rand.Prime(rand.Reader, 1024)
-//    ```
-//    - Uses crypto-secure random number generation
-//    - Implements Miller-Rabin test with 20 iterations (error probability < 4⁻²⁰)
-//    - Generates primes with exactly the specified bit size
-
-// 2. **Modulus Calculation**
-//    ```go
-//    n = p * q
-//    ```
-//    - Product of two large primes
-//    - Typical sizes: 2048-bit (p and q 1024-bit each) or 4096-bit
-
-// 3. **Euler's Totient Function**
-//    ```go
-//    φ(n) = (p-1)(q-1)
-//    ```
-//    - Essential for calculating the private exponent
-
-// 4. **Public Exponent**
-//    ```go
-//    e = 65537 (0x10001)
-//    ```
-//    - Common choice balancing security and performance
-//    - Must be coprime with φ(n)
-
-// 5. **Private Exponent**
-//    ```go
-//    d ≡ e⁻¹ mod φ(n)
-//    ```
-//    - Calculated using the Extended Euclidean Algorithm
-//    - Core secret in RSA implementation
-
-// **Sample Output:**
-// ```
-// Original message: 42
-
-// Ciphertext: 1257894... (very large number)
-// Decrypted message: 42
-
-// Key Details:
-// p: 1614881... (1024-bit prime)
-// q: 1438293... (1024-bit prime)
-// n: 2324532... (2048-bit modulus)
-// φ(n): 2324532... (2046-bit number)
-// Public exponent e: 65537
-// Private exponent d: 5672931... (2046-bit number)
-// ```
-
 // **Security Considerations:**
 
 // 1. **Prime Generation**
@@ -1322,17 +1165,6 @@ func mainRSA1() {
 // ### **1. Hardware-Fault Attack (Bellcore Attack)**
 // Induces computational errors during RSA-CRT operations to recover private keys.
 
-// ```go
-// package main
-
-// import (
-// 	"crypto/rsa"
-// 	"crypto/rand"
-// 	"fmt"
-// 	"math/big"
-// 	"log"
-// )
-
 func mainFiceattack() {
 	// Generate 1024-bit RSA key with CRT parameters
 	privateKey, _ := rsa.GenerateKey(rand.Reader, 1024)
@@ -1365,7 +1197,6 @@ func mainFiceattack() {
 
 // ### **2. Timing Attack**
 // Exploits variable execution times during modular exponentiation to leak private key bits.
-
 func timedDecrypt(key *rsa.PrivateKey, c *big.Int) time.Duration {
 	start := time.Now()
 	_ = new(big.Int).Exp(c, key.D, key.N) // Vulnerable square-and-multiply
@@ -1391,14 +1222,10 @@ func mainAS() {
 // **Output:**
 // ```
 // Observed timing variance: 15.2µs ± 3.1µs (shows measurable variance)
-// ```
-
-// ---
 
 // ### **3. Factorization Attack (Pollard's p-1)**
 // Factors modulus using smooth prime components.
 
-// ```go
 func pollardsPMinus1(n *big.Int) *big.Int {
 	// Implementation of Pollard's p-1 algorithm
 	a := big.NewInt(2)
@@ -1457,9 +1284,8 @@ func paddingOracle(ciphertext []byte) bool {
 //    - Decryption of sensitive data
 //    - Signature forgery capabilities
 
-// Always use established cryptographic libraries like Go's `crypto/rsa` that include protections against these attacks.
-
-//Here's a simulation of RSA countermeasures against side-channel attacks, implementing constant-time operations, blinding, and random delays:
+//Here's a simulation of RSA countermeasures against side-channel attacks, 
+//implementing constant-time operations, blinding, and random delays:
 
 func mainGeenratKey() {
 	// Generate 2048-bit RSA key pair
@@ -1603,7 +1429,9 @@ func encryptRSA(pub *rsa.PublicKey, m *big.Int) *big.Int {
 
 // This implementation demonstrates fundamental countermeasures against common side-channel attacks. For production use, always rely on vetted cryptographic libraries rather than custom implementations.
 
-//Here's a secure implementation for generating random RSA keys using Go's `crypto/rsa` and `crypto/rand` packages, including key component extraction and a basic encryption/decryption demo:
+//Here's a secure implementation for generating random RSA 
+//keys using Go's `crypto/rsa` and `crypto/rand` packages, including key component extraction 
+//and a basic encryption/decryption demo:
 
 func mainSRAGen() {
 	// Generate 2048-bit RSA key pair
@@ -1623,83 +1451,7 @@ func mainSRAGen() {
 	fmt.Printf("Prime 1 (p): %x...\n", privateKey.Primes[0].Bytes()[:16])
 	fmt.Printf("Prime 2 (q): %x...\n", privateKey.Primes[1].Bytes()[:16])
 
-	// Encryption/Decryption Demo
-	message := []byte("Secret Message")
-	fmt.Println("\nOriginal Message:", string(message))
-
-	// Encrypt with OAEP padding
-	ciphertext, err := rsa.EncryptOAEP(
-		sha256.New(),
-		rand.Reader,
-		publicKey,
-		message,
-		nil,
-	)
-	if err != nil {
-		log.Fatal("Encryption failed:", err)
-	}
-	fmt.Printf("\nEncrypted: %x...\n", ciphertext[:16])
-
-	// Decrypt with private key
-	plaintext, err := rsa.DecryptOAEP(
-		sha256.New(),
-		rand.Reader,
-		privateKey,
-		ciphertext,
-		nil,
-	)
-	if err != nil {
-		log.Fatal("Decryption failed:", err)
-	}
-	fmt.Println("Decrypted:", string(plaintext))
 }
-
-// ```
-
-// **Sample Output:**
-// ```
-// Generated RSA Key Components:
-// Modulus (n): c506789b... (first 16 bytes of 256-byte modulus)
-// Public Exponent (e): 65537
-// Private Exponent (d): 4a3d8f2b... (first 16 bytes)
-// Prime 1 (p): f850acd1... (first 16 bytes)
-// Prime 2 (q): d9c3b72e... (first 16 bytes)
-
-// Original Message: Secret Message
-
-// Encrypted: 8a3f1d9c... (first 16 bytes)
-// Decrypted: Secret Message
-// ```
-
-// **Key Security Features:**
-
-// 1. **Secure Random Generation**
-//    - Uses `crypto/rand` for all random operations
-//    - Implements proper prime number generation with Miller-Rabin tests
-
-// 2. **Key Sizes**
-//    - 2048-bit modulus (n)
-//    - 1024-bit primes (p, q)
-//    - Standard public exponent 65537
-
-// 3. **Encryption Padding**
-//    - Uses OAEP padding with SHA-256
-//    - Prevents chosen-ciphertext attacks
-
-// 4. **Key Component Protection**
-//    - Private components (d, p, q) never exposed
-//    - Demonstration shows truncated values
-
-// **Critical Components:**
-
-// ```mermaid
-// graph TD
-// A[Generate Random Bits] --> B[Find Primes p/q]
-// B --> C[Calculate n = p*q]
-// C --> D[Compute φ(n) = (p-1)*(q-1)]
-// D --> E[Choose e = 65537]
-// E --> F[Calculate d ≡ e⁻¹ mod φ(n)]
-// ```
 
 // **Best Practices:**
 
@@ -1723,21 +1475,9 @@ func mainSRAGen() {
 
 // This implementation demonstrates proper use of cryptographic primitives while maintaining security best practices. For production systems, consider using established libraries like `golang.org/x/crypto` for additional cryptographic functions.
 
-// Here's a simulation of a Public Key Infrastructure (PKI) system in Go, demonstrating certificate authority (CA) operations, certificate signing, and validation:
+// Here's a simulation of a Public Key Infrastructure (PKI) system in Go, 
+//demonstrating certificate authority (CA) operations, certificate signing, and validation:
 
-// ```go
-// package main
-
-// import (
-// 	"crypto/rand"
-// 	"crypto/rsa"
-// 	"crypto/x509"
-// 	"crypto/x509/pkix"
-// 	"encoding/pem"
-// 	"fmt"
-// 	"math/big"
-// 	"time"
-// )
 
 func mainsasa() {
 	// Generate root CA

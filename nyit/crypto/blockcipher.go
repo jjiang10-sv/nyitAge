@@ -584,7 +584,7 @@ func desDecrypt(block uint64, subkeys []uint64) uint64 {
 }
 
 // Example Usage
-func main() {
+func mainafd() {
 	// Test vector (FIPS PUB 81)
 	key := uint64(0x133457799BBCDFF1)
 	plaintext := uint64(0x0123456789ABCDEF)

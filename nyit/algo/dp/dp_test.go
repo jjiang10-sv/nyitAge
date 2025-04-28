@@ -11,3 +11,8 @@ func compare(x interface{}, y interface{}) bool {
 func Test_MultiStageFlow(t *testing.T) {
 	mainFlow()
 }
+
+func Test_LongestCommonSubsequence(t *testing.T) {
+	mainLongestCommonSubsequence()
+}
+
