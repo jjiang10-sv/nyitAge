@@ -1,4 +1,6 @@
-// Here's a Go implementation simulating wireless network elements with decreasing signal strength over time. This example models access points, clients, and signal degradation mechanics:
+// Here's a Go implementation simulating wireless network elements with 
+// decreasing signal strength over time. 
+// This example models access points, clients, and signal degradation mechanics:
 
 // ```go
 package transport
@@ -186,19 +188,12 @@ func (ap *AccessPoint) disconnectClient(c *WirelessClient) {
 // 4. Introduce QoS prioritization
 // 5. Add packet loss simulation based on signal strength
 
-// This simulation provides a foundation for modeling wireless network behavior with signal degradation mechanics while demonstrating Go's concurrency features for realistic network simulations.
+// This simulation provides a foundation for modeling wireless network behavior 
+//with signal degradation mechanics while demonstrating Go's concurrency features
+// for realistic network simulations.
 
-// Here's a Go implementation simulating both **passive** and **active scanning** in wireless networks, modeling access points (APs), clients, and frame exchanges:
-
-// ```go
-// package main
-
-// import (
-// 	"fmt"
-// 	"math/rand"
-// 	"sync"
-// 	"time"
-// )
+// Here's a Go implementation simulating both **passive** and **active scanning** 
+//in wireless networks, modeling access points (APs), clients, and frame exchanges:
 
 // Frame types
 const (
@@ -424,17 +419,9 @@ func (ap *AccessPoint1) handleProbeReq(frame WirelessFrame) {
 
 // This simulation demonstrates the fundamental behaviors of wireless scanning mechanisms while leveraging Go's concurrency features for realistic network interactions.
 
-// Here's a Go implementation simulating multiple access with carrier sensing (no collision detection) using CSMA-like behavior. Devices sense the medium before transmitting but may still collide:
+// Here's a Go implementation simulating multiple access with carrier sensing (no collision detection) using CSMA-like behavior. 
+//Devices sense the medium before transmitting but may still collide:
 
-// ```go
-// package main
-
-// import (
-// 	"fmt"
-// 	"math/rand"
-// 	"sync"
-// 	"time"
-// )
 
 type Medium struct {
 	mu                   sync.Mutex

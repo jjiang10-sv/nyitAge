@@ -15,8 +15,14 @@ func binaryDivision(dividend, generator int) (int, int) {
 	// Append (genLen - 1) zeros to the dividend
 	dividend <<= (genLen - 1)
 
+	// Determine the length of the dividend
+	dividendLen := 0
+	for temp := dividend; temp > 0; temp >>= 1 {
+		dividendLen++
+	}
+
 	// Perform division
-	for i := 31; i >= genLen-1; i-- {
+	for i := dividendLen - 1; i >= genLen-1; i-- {
 		if (dividend>>i)&1 == 1 {
 			// XOR operation for each bit
 			dividend ^= generator << (i - genLen + 1)

@@ -1,4 +1,5 @@
 nyit/venv
+nyit/RApro/modelTrain/ai-video-sentiment-model/dataset/
 .venv/
 .vscode/
 **/__pycache__/

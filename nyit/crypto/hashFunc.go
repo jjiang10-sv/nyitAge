@@ -108,9 +108,9 @@ func findCollision(maxAttempts int) (string, string, bool) {
 
 	for i := 0; i < maxAttempts; i++ {
 		s := randomString()
-		//hash := hex.EncodeToString(sha256.Sum256([]byte(s))[:])
-		hash := ""
-
+		_s := sha256.Sum256([]byte(s))
+		hash := hex.EncodeToString(_s[:])
+		
 		if orig, exists := seen[hash]; exists && orig != s {
 			return orig, s, true
 		}
@@ -169,12 +169,11 @@ func randomString() string {
 // - **Tamper-evident** (second pre-image resistant)
 // - **Unique** (collision resistant)
 
-// Real-world attacks use mathematical weaknesses rather than brute force. 
+// Real-world attacks use mathematical weaknesses rather than brute force.
 //For vulnerable hash functions (like MD5), these demonstrations would eventually find collisions given enough time.
 
-// Here's a simulation of a Man-in-the-Middle (MITM) attack with hash protection in Go, 
+// Here's a simulation of a Man-in-the-Middle (MITM) attack with hash protection in Go,
 //demonstrating both the attack and defense mechanisms:
-
 
 func mainHashFunc() {
 	// Simulate normal communication
@@ -389,9 +388,8 @@ func modifyCiphertext(ciphertext []byte) []byte {
 
 // **Important Note:** Always use established protocols (TLS, SSH) instead of custom implementations for production systems. This simulation simplifies concepts for educational purposes.
 
-// Here's a comprehensive simulation of four cryptographic protection strategies in Go, 
+// Here's a comprehensive simulation of four cryptographic protection strategies in Go,
 //demonstrating different approaches to securing messages and hash values:
-
 
 func mainFourMethods() {
 	key := generateKey() // 32-byte key for AES-256 and HMAC
@@ -589,13 +587,12 @@ func decrypt12(data []byte, key []byte) []byte {
 // 4. Implement proper key management with rotation
 // 5. Use **HKDF** for key derivation from master secrets
 
-// This simulation demonstrates fundamental cryptographic patterns, 
-// but real-world implementations should use established protocols like 
+// This simulation demonstrates fundamental cryptographic patterns,
+// but real-world implementations should use established protocols like
 // TLS or cryptographic libraries with proven implementations.
 
-// Here's a complete implementation of digital signatures in Go using both RSA and ECDSA, 
+// Here's a complete implementation of digital signatures in Go using both RSA and ECDSA,
 //demonstrating proper signing/verification and tamper detection:
-
 
 func mainKHkh() {
 	// Original message
@@ -777,7 +774,7 @@ func verifyTamperedECDSA(tamperedMsg, signature []byte, pubKey *ecdsa.PublicKey)
 
 // This implementation demonstrates the core principles of digital signatures while following Go's cryptographic best practices.
 
-// Here's a comprehensive simulation in Go covering three critical security concepts: 
+// Here's a comprehensive simulation in Go covering three critical security concepts:
 //secure password storage, intrusion detection, and cryptographic primitives (PRF/PRNG):
 
 func mainApplications() {
@@ -1039,7 +1036,7 @@ func createSampleFiles() []string {
 // Ones: 49.87%, Zeros: 50.13%
 // ```
 
-// This implementation demonstrates critical security systems 
+// This implementation demonstrates critical security systems
 // using Go's standard cryptographic primitives. In real-world applications, you should:
 
 // 1. Use established libraries for security functions
@@ -1048,8 +1045,10 @@ func createSampleFiles() []string {
 // 4. Use system-level integrity monitoring tools
 // 5. Follow password storage best practices (OWASP guidelines)
 
-//demonstrates cryptographic requirements and security properties using practical examples:
-//implementation demonstrating all requirements for a cryptographic hash function with security analysis:
+//demonstrates cryptographic requirements and security properties
+//using practical examples:
+//implementation demonstrating all requirements for a cryptographic
+//hash function with security analysis:
 
 func mainsdsd() {
 	// 1. Variable Input Size / Fixed Output Size
@@ -1179,36 +1178,16 @@ func randString(n int) string {
 	return string(b)
 }
 
-// func bruteForcePreimage(target [32]byte, max int) string {
-// 	for i := 0; i < max; i++ {
-// 		candidate := fmt.Sprintf("candidate-%d", i)
-// 		hash := sha256.Sum256([]byte(candidate))
-// 		if subtle.ConstantTimeCompare(hash[:], target[:]) == 1 {
-// 			return candidate
-// 		}
-// 	}
-// 	return ""
-// }
-
-// func findSecondPreimage(original string, target [32]byte, max int) string {
-// 	for i := 0; i < max; i++ {
-// 		candidate := fmt.Sprintf("%s-%d", original, i)
-// 		hash := sha256.Sum256([]byte(candidate))
-// 		if subtle.ConstantTimeCompare(hash[:], target[:]) == 1 && candidate != original {
-// 			return candidate
-// 		}
-// 	}
-// 	return ""
-// }
-
 func findCollisions(max int) int {
 	seen := make(map[string]bool)
 	collisions := 0
 
 	for i := 0; i < max; i++ {
-		//s := randString(10)
-		//hash := hex.EncodeToString(sha256.Sum256([]byte(s))[:])
-		hash := ""
+		s := randString(10)
+		_s := sha256.Sum256([]byte(s))
+		__s := _s[:]
+		hash := hex.EncodeToString(__s)
+		//hash := ""
 		if seen[hash] {
 			collisions++
 		}
@@ -1310,7 +1289,8 @@ func analyzeBitDistribution(data []byte) {
 // 5. **Performance Optimization**
 //    Hardware acceleration for large data
 
-// This implementation demonstrates all key properties of cryptographic hash functions as defined in modern security standards.
+// This implementation demonstrates all key properties of cryptographic hash functions 
+// as defined in modern security standards.
 
 // // ================== Helper Functions ==================
 // func generateRandomBytes(n int) []byte {
@@ -1394,14 +1374,15 @@ func analyzeBitDistribution(data []byte) {
 //    SHA-256 provides 128-bit collision resistance
 //    (Requires ~2¹²⁸ operations to find collision)
 
-// This implementation demonstrates core cryptographic properties using Go's standard library. 
+// This implementation demonstrates core cryptographic properties 
+//using Go's standard library.
 // For production systems:
 // - Use established protocols (TLS, JWT, etc.)
 // - Regularly update cryptographic libraries
 // - Follow key management best practices
 // - Use hardware security modules for sensitive operations
 
-// SHA-3 (Secure Hash Algorithm 3) and SHA-256 (part of the SHA-2 family) are both cryptographic hash functions, 
+// SHA-3 (Secure Hash Algorithm 3) and SHA-256 (part of the SHA-2 family) are both cryptographic hash functions,
 //but they differ in their design, structure, and security properties. Here's a detailed comparison:
 
 // ---

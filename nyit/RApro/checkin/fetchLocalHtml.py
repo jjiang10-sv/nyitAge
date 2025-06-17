@@ -292,7 +292,7 @@ def calculate_time(times_list):
                 left_early_mins = time_diff(times_list[3],scheduled_end,bigger=False)
         else:
             
-            lunch_break = time_diff(times_list[3],times_list[4])
+            lunch_break = time_diff(times_list[3],times_list[4],bigger=False)
             # not adding the 30 mins lunch break since active time not count lunch break
             # active_schedule_diff += 30
             # if lunch_break > 30:
@@ -331,7 +331,7 @@ def read_data():
     head_cols_len = len(head_cols)
 
     prod_data = get_prod_data()
-
+    not_in_sheet_deploy_ids = []
     for i in range (0,df_len):
         employ_id = df.iloc[i, 0]
         try:
@@ -362,12 +362,13 @@ def read_data():
                 }
         except Exception :
             print("this employ id not in the lily's sheet", employ_id)
+            not_in_sheet_deploy_ids.append(employ_id)
             continue
             #raise Exception("this employ id not in the lily's sheet")
             #break
 
-        print("the employee id is ",employ_id)
-        if employ_id in [9422]:
+        #print("the employee id is ",employ_id)
+        if employ_id in [10184]:
             print(employ_id)
         
         carry_over_time_to = to_deduct_hr = to_ot_hr_first_3 =to_ot_hr_second_3 = 0
@@ -378,16 +379,20 @@ def read_data():
         for j in range(5,head_cols_len-2):
             col_name = head_cols[j]
             print(col_name)
+            is_sat = ("Sat" in col_name) or (j == head_cols_len-4)
+            is_sun = ("Sun" in col_name) or (j == head_cols_len-3)
             text = df.iloc[i, j]
             print(text)
             times_list = ast.literal_eval(text)
+            
             active_schedule_diff, come_late_mins, lunch_break, left_early_mins ,carry_over_time = calculate_time(times_list)
-            # for public holiday (raw totoal  not None)
-            if times_list[7] == None and active_schedule_diff in (None,0) and employ_week_schedule["emplyee_type"] == "F/T" and ("Sat" not in col_name and "Sun" not in col_name):
+            # for public holiday (raw totoal as 7.36 and calcTotal as None; order could be diffent form report_data.csv)
+            if len(times_list) == 8 and times_list[7] == None and active_schedule_diff in (None,0) and employ_week_schedule["emplyee_type"] == "F/T" and ( not is_sat and not is_sun ):
                 if come_late_mins==lunch_break==left_early_mins== 0 and carry_over_time == None :
                     active_schedule_diff = 1
+
             # comes to work in late evening and work until next day on Saturday
-            if j == head_cols_len-4 and end_with_a(times_list[3]) and end_with_a(times_list[4]) and end_with_a(times_list[5]):
+            if is_sat and end_with_a(times_list[3]) and end_with_a(times_list[4]) and end_with_a(times_list[5]):
                 carry_over_time = [active_schedule_diff, come_late_mins, lunch_break, left_early_mins]
                 active_schedule_diff = come_late_mins = lunch_break = left_early_mins = 0
             
@@ -421,10 +426,10 @@ def read_data():
             else:
                 
                # weekend days
-                if j in (head_cols_len-4,head_cols_len-3) :
+                if is_sat or is_sun :
                     # if ot in weekend; active_schedule_diff is the ot hrs
                     if  active_schedule_diff > 0:
-                        if j == (head_cols_len-4):
+                        if is_sat:
                             weekend_day = sat
                         else:
                             weekend_day = sun
@@ -532,6 +537,7 @@ def read_data():
         
         data.append(employ_week_schedule)
     df_data_list = [data, diff_data]
+    print("these employ ids not in the finished sheet ", not_in_sheet_deploy_ids)
     for idx in range(0,2) :
         #df_1 = pd.DataFrame(item)
         item = df_data_list[idx]
@@ -555,18 +561,10 @@ def save_with_colored_diff(diff_data, filename):
 # Add global variables at the top of the file
     global weeklyHours, otFirst3, otAfter3, sickLeaveHours, annualLeaveDays, sat, sun, comments
 
-    # Create a function to apply color formatting
-    def highlight_diff(val, diff):
-        global diff_threshold
-        if diff > diff_threshold:
-            return 'background-color: #FFC7CE'  # Red for positive difference
-        elif diff < -diff_threshold:
-            return 'background-color: #C6EFCE'  # Green for negative difference
-        return ''
-    
     # Create a styled DataFrame
     styled_df = df.style
     global diff_threshold
+    local_diff_threashold = 5
     # Apply formatting to each row
     try:    
         # Create a new DataFrame to store formatted values
@@ -586,9 +584,9 @@ def save_with_colored_diff(diff_data, filename):
                     formatted_df.at[idx, col] = f"{current_val} ({prod_val}) {diff}"
                     
                     # Set the style based on the difference
-                    if diff > float(diff_threshold):
+                    if diff > float(local_diff_threashold):
                         style_df.at[idx, col] = 'background-color: #FFC7CE'
-                    elif diff < -float(diff_threshold):
+                    elif diff < -float(local_diff_threashold):
                         style_df.at[idx, col] = 'background-color: #C6EFCE'
         
         # Apply the styles
@@ -712,7 +710,7 @@ mapped_dict = parse_excel_to_dict("SYDPayroll.xlsx", "EM NO.", "col1")
 mapped_dict_keys = mapped_dict.keys()
 # Convert to a list if needed
 keys_list = list(mapped_dict_keys)
-#extra_data()
+extra_data()
 read_data()
 
 # truck driver no come_late / leave_earli  . calc time_diff for ot and deduct time

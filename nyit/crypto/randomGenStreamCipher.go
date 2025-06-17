@@ -107,19 +107,9 @@ func mainRandom() {
 
 // Psetdorandom function fixed length random numbers and stop
 
-// Here's a Go implementation that demonstrates both true random (cryptographically secure) and pseudo-random number generation, along with basic randomness tests:
+// Here's a Go implementation that demonstrates both true random (cryptographically secure) 
+//and pseudo-random number generation, along with basic randomness tests:
 
-// ```go
-// package main
-
-// import (
-// 	"crypto/rand"
-// 	"fmt"
-// 	"math"
-// 	"math/big"
-// 	"math/rand"
-// 	"time"
-// )
 
 func mainP() {
 	const sampleSize = 1000
@@ -261,19 +251,10 @@ func testRandomness(numbers []float64) {
 
 // For cryptographic applications, always use crypto/rand. For simulations and non-security purposes, math/rand is preferable for performance reasons.
 
-// Here's a simulation demonstrating the difference between Pseudo-Random Byte Number Generators (PRBNG) and Pseudo-Random Functions (PRF) in Go, highlighting their different characteristics and use cases:
+// Here's a simulation demonstrating the difference between Pseudo-Random Byte Number 
+// Generators (PRBNG) and Pseudo-Random Functions (PRF) in Go, 
+//highlighting their different characteristics and use cases:
 
-// ```go
-// package main
-
-// import (
-// 	"crypto/hmac"
-// 	"crypto/rand"
-// 	"crypto/sha256"
-// 	"fmt"
-// 	"math/rand"
-// 	"time"
-// )
 
 func mainPsRf() {
 	// Seed for deterministic PRBNG
@@ -407,20 +388,13 @@ func init() {
 // go run prbng_prf_demo.go
 // ```
 
-// This simulation shows why PRFs are used in security-critical applications (e.g., authentication tokens, key derivation) while PRBNGs are suitable for non-security purposes like simulations and testing.
+// This simulation shows why PRFs are used in security-critical applications 
+//(e.g., authentication tokens, key derivation) 
+//while PRBNGs are suitable for non-security purposes like simulations and testing.
 
-// Here's a comprehensive Go implementation of three statistical tests for random number generators: Frequency Test, Runs Test, and Maurer's Universal Statistical Test:
-
-// ```go
-// package main
-
-// import (
-// 	"bytes"
-// 	"crypto/rand"
-// 	"fmt"
-// 	"math"
-// 	"math/big"
-// )
+// Here's a comprehensive Go implementation of three statistical tests 
+//for random number generators: Frequency Test, Runs Test,
+// and Maurer's Universal Statistical Test:
 
 func mainRtest() {
 	// Generate test data (both random and biased for comparison)
@@ -651,15 +625,9 @@ func generateBiasedBytes(n int) []byte {
 // - Including confidence interval calculations
 // - Optimizing performance for large datasets
 
-// Here's a Go implementation of a Linear Congruential Generator (LCG) with explanations and example usage:
+// Here's a Go implementation of a Linear Congruential Generator (LCG) 
+//with explanations and example usage:
 
-// ```go
-// package main
-
-// import (
-// 	"fmt"
-// 	"math"
-// )
 
 // LCG represents a Linear Congruential Generator
 type LCG struct {
@@ -808,14 +776,6 @@ func mainLCG() {
 
 // Here's a Go implementation of the Blum Blum Shub (BBS) pseudorandom number generator:
 
-// ```go
-// package main
-
-// import (
-// 	"crypto/rand"
-// 	"fmt"
-// 	"math/big"
-// )
 
 type BBS struct {
 	n *big.Int // modulus (p * q)
@@ -1005,18 +965,11 @@ func mainBBS() {
 //    }
 //    ```
 
-// This implementation provides a secure foundation for cryptographic applications while demonstrating the core principles of the Blum Blum Shub algorithm.
+// This implementation provides a secure foundation for 
+//cryptographic applications while demonstrating the core principles of the Blum Blum Shub algorithm.
 
-// Here's a Go implementation demonstrating the generic structure of a typical stream cipher with all requested components:
-
-// ```go
-// package main
-
-// import (
-// 	"fmt"
-// 	"math/rand"
-// 	"time"
-// )
+// Here's a Go implementation demonstrating the generic structure of 
+//a typical stream cipher with all requested components:
 
 // StreamCipher represents the core components of a stream cipher
 type StreamCipher struct {
@@ -1186,17 +1139,13 @@ func mainGeStream() {
 // - RC4 (256-byte state table)
 // - AES-CTR (counter-based state)
 
-// For production use, always prefer established cryptographic primitives from standard libraries (`crypto/cipher` in Go).
+// For production use, always prefer established cryptographic primitives 
+//from standard libraries (`crypto/cipher` in Go).
 
 
-// Here's an implementation of the RC4 stream cipher algorithm in Go. Note that RC4 is considered cryptographically insecure and should not be used in production systems:
-
-// ```go
-// package main
-
-// import (
-// 	"fmt"
-// )
+// Here's an implementation of the RC4 stream cipher algorithm in Go. 
+//Note that RC4 is considered cryptographically insecure and 
+//should not be used in production systems:
 
 type RC4 struct {
 	S    [256]byte

@@ -1,3 +1,23 @@
+this friday  three payment 150 * 3 = 450
+
+left 400 in two weeks.
+
+a write of the report for the RA
+the work for the RA is done.
+the report will be ready in three weeks.
+
+compare the predictkube scaler with keda
+the same system : scale the service unless it detected as not legitimate.
+compare on the same fair environment.
+what we want to do but could not do it so develop our own tool of controller. the development of this tool will be an ongoing work in the future.
+
+a certain rate in predictkube and the same setting in Vegata.
+Log all the metrics of the system. and observation.
+grafana and prometheus. observe the number of failures.
+
+and repeat this on our platform.
+
+
 ## 10-09
 
 1, create microk8s with 2 cpu and 4G memory in local computer 
