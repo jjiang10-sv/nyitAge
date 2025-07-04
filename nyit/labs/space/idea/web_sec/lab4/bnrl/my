@@ -1,0 +1,13 @@
+[mysqld]
+# --- write every statement to a text file -------------
+general_log           = 1
+general_log_file      = /var/log/mysql/general.log
+log_output            = FILE          # FILE ensures it is written to disk
+
+# --- binary log keeps before/after images -------------
+log_bin               = /var/log/mysql/mysql-bin
+binlog_format         = ROW
+
+# --- (optional) slow-query log if you want timings ----
+slow_query_log        = 1
+long_query_time       = 0

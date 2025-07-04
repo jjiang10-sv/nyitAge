@@ -1,0 +1,15 @@
+   docker exec -it cve-dirty_pipe-vm su - testuser
+
+   gcc exploit.c -o exploit
+
+   # Build the image
+docker build -f Dockerfile.ubuntu2104 -t ubuntu-2104-dirtypipe .
+
+# Run vulnerability test
+docker run --rm ubuntu-2104-dirtypipe su -c "/exploits/test_dirtypipe" normaluser
+
+# Interactive session
+docker run -it --rm ubuntu-2104-dirtypipe bash
+
+# Show environment info
+docker run --rm ubuntu-2104-dirtypipe /info.sh

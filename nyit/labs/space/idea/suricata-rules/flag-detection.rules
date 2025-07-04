@@ -1,0 +1,74 @@
+alert http any any -> any any (
+    msg:"Flag Detected: fl_g pattern";
+    content:"fl_g=";
+    http_uri;
+    pcre:"/fl_g=[{]?[A-Za-z0-9_]+[}]?/";
+    classtype:policy-violation;
+    sid:1001001;
+    rev:1;
+    metadata:author "Security Team", created_at 2024_03_19;
+)
+
+alert http $HOME_NET any -> $EXTERNAL_NET any (
+    msg:"Suspicious enumeration of artists.php";
+    flow:established,to_server;
+    content:"GET";
+    http_method;
+    content:"/artists.php";
+    http_uri;
+    classtype:web-application-activity;
+    sid:1000003;
+    rev:1;
+    metadata:created_at 2024_03_19, author "Security Team";
+)
+
+alert http $HOME_NET any -> $EXTERNAL_NET any (
+    msg:"DetoxCrypto Ransomware CnC Activity"; 
+    flow:established,to_server; 
+    content:"POST";
+    http_method; 
+    content:"/ generate.php"; 
+    http_uri; 
+    content:"DetoxCrypto";
+    fast_pattern; 
+    http_user_agent; 
+    content:"publickey="; 
+    depth:10; 
+    http_client_body;
+    content:!"Referer|3a|"; 
+    http_header; 
+    pcre:"/\.php$/U";
+    reference:md5,e273508a2f2ed45c20a2412f7d62eceb; 
+    classtype:trojan- activity;
+    sid:1000000001; 
+    rev:1;
+)
+
+# Rule to detect flags matching pattern 'fl_g'
+alert tcp any any -> any any (
+    msg:"Potential Flag Detection - Pattern fl_g";
+    content:"fl_g";
+    nocase;
+    pcre:"/fl_g[a-zA-Z0-9_]+/";
+    classtype:bad-unknown;
+    sid:1000001;
+    rev:1;
+    metadata:created_at 2024_03_19;
+    metadata:author "Security Team";
+    metadata:description "Detects potential flags matching pattern fl_g";
+)
+
+# Rule to detect flags in HTTP traffic
+alert http any any -> any any (
+    msg:"Potential Flag in HTTP Traffic - Pattern fl_g";
+    content:"fl_g";
+    nocase;
+    pcre:"/fl_g[a-zA-Z0-9_]+/";
+    http.uri;
+    classtype:bad-unknown;
+    sid:1000002;
+    rev:1;
+    metadata:created_at 2024_03_19;
+    metadata:author "Security Team";
+    metadata:description "Detects potential flags in HTTP traffic matching pattern fl_g";
+) 

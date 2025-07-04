@@ -11,18 +11,21 @@ import logging
 from pathlib import Path
 import pickle
 from tqdm import tqdm
+from .utils import singleton
 
 from .config import get_default_config
 
 logger = logging.getLogger(__name__)
 
 
+
+@singleton
 class IndexManager:
     """Manages embeddings, FAISS index, and metadata for fast retrieval"""
     
     def __init__(self, config: Optional[Dict[str, Any]] = None):
         """
-        Initialize IndexManager
+        Initialize IndexManager (only once due to singleton)
         
         Args:
             config: Optional configuration dictionary
@@ -39,6 +42,8 @@ class IndexManager:
         self.chunk_to_frame = {}  # Maps chunk ID to frame number
         self.frame_to_chunks = {}  # Maps frame number to chunk IDs
         
+        IndexManager._initialized = True
+
     def _create_index(self) -> faiss.Index:
         """Create FAISS index based on configuration"""
         index_type = self.config["index"]["type"]

@@ -87,6 +87,7 @@ class MemvidRetriever:
         
         # Extract text from decoded data
         results = []
+
         for chunk_id, distance, metadata in search_results:
             frame_num = metadata["frame"]
             if frame_num in decoded_frames:

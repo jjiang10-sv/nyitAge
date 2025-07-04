@@ -1,0 +1,165 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Vagrantfile for CVE-2022-0847 (Dirty Pipe) testing
+# Uses Ubuntu 20.04.3 with vulnerable kernel 5.11.x
+
+Vagrant.configure("2") do |config|
+  # Use Ubuntu 20.04 box with kernel 5.11.x (vulnerable to Dirty Pipe)
+  config.vm.box = "ubuntu/focal64"
+  config.vm.box_version = "20210415.0.0"  # This version ships with kernel 5.11.x
+  
+  config.vm.hostname = "dirtypipe-lab"
+  
+  # Allocate resources
+  config.vm.provider "virtualbox" do |vb|
+    vb.name = "DirtyPipe-Vulnerable"
+    vb.memory = "2048"
+    vb.cpus = 2
+    vb.gui = false
+  end
+  
+  # Network configuration
+  config.vm.network "private_network", type: "dhcp"
+  
+  # Sync exploit files to VM
+  config.vm.synced_folder ".", "/home/vagrant/exploits", type: "rsync",
+    rsync__exclude: [".git/", ".vagrant/"]
+  
+  # Provisioning script
+  config.vm.provision "shell", inline: <<-SHELL
+    set -e
+    
+    echo "=== Setting up Dirty Pipe vulnerability testing environment ==="
+    
+    # Prevent any kernel updates to maintain vulnerability
+    echo "Holding kernel packages to prevent updates..."
+    apt-mark hold linux-*
+    apt-mark hold linux-image-*
+    apt-mark hold linux-headers-*
+    
+    # Disable automatic updates
+    systemctl disable unattended-upgrades || true
+    
+    # Update package lists but don't upgrade kernel
+    apt-get update
+    
+    # Install development tools
+    apt-get install -y \
+      gcc \
+      build-essential \
+      make \
+      gdb \
+      strace \
+      ltrace \
+      vim \
+      nano \
+      curl \
+      wget
+    
+    # Create test users
+    useradd -m -s /bin/bash testuser
+    echo 'testuser:password' | chpasswd
+    
+    useradd -m -s /bin/bash normaluser  
+    echo 'normaluser:password' | chpasswd
+    
+    # Create test files for exploitation
+    echo "Original content in readonly file" > /tmp/readonly_test.txt
+    chmod 444 /tmp/readonly_test.txt
+    chown root:root /tmp/readonly_test.txt
+    
+    # Create SUID binary for testing
+    cp /bin/cat /tmp/suid_test
+    chmod 4755 /tmp/suid_test
+    chown root:root /tmp/suid_test
+    
+    # Compile exploit programs
+    cd /home/vagrant/exploits
+    
+    if [ -f test_dirtypipe.c ]; then
+      echo "Compiling test_dirtypipe..."
+      gcc test_dirtypipe.c -o test_dirtypipe
+      chmod +x test_dirtypipe
+    fi
+    
+    if [ -f exploit.c ]; then
+      echo "Compiling exploit..."
+      gcc exploit.c -o exploit
+      chmod +x exploit
+    fi
+    
+    if [ -f exploit_fixed.c ]; then
+      echo "Compiling exploit_fixed..."
+      gcc exploit_fixed.c -o exploit_fixed
+      chmod +x exploit_fixed
+    fi
+    
+    if [ -f exploit_work.c ]; then
+      echo "Compiling exploit_work..."
+      gcc exploit_work.c -o exploit_work
+      chmod +x exploit_work
+    fi
+    
+    # Set proper ownership
+    chown -R vagrant:vagrant /home/vagrant/exploits
+    
+    # Show system information
+    echo ""
+    echo "=== System Information ==="
+    echo "Kernel version: $(uname -r)"
+    echo "Kernel build date: $(uname -v)"
+    echo "Architecture: $(uname -m)"
+    echo "OS: $(lsb_release -d | cut -f2)"
+    
+    # Check vulnerability status
+    KERNEL_VERSION=$(uname -r | cut -d'-' -f1)
+    echo "Kernel version for comparison: $KERNEL_VERSION"
+    
+    # Simple vulnerability check
+    if [[ "$KERNEL_VERSION" > "5.8.0" && "$KERNEL_VERSION" < "5.15.25" ]]; then
+      echo "🚨 STATUS: LIKELY VULNERABLE to CVE-2022-0847 (Dirty Pipe)"
+      echo "   This kernel version is in the vulnerable range"
+    elif [[ "$KERNEL_VERSION" > "5.15.25" ]]; then
+      echo "✅ STATUS: Likely patched (kernel > 5.15.25)"
+    elif [[ "$KERNEL_VERSION" < "5.8.0" ]]; then
+      echo "✅ STATUS: Not vulnerable (kernel < 5.8.0)"
+    else
+      echo "❓ STATUS: Unknown - manual testing required"
+    fi
+    
+    echo ""
+    echo "=== Quick Test Instructions ==="
+    echo "1. SSH into VM: vagrant ssh"
+    echo "2. Switch to test user: sudo su - testuser"
+    echo "3. Run exploit: cd /home/vagrant/exploits && ./test_dirtypipe"
+    echo "4. For SUID test: ./exploit /tmp/suid_test"
+    echo ""
+    echo "Target files created:"
+    echo "  /tmp/readonly_test.txt (read-only, root owned)"
+    echo "  /tmp/suid_test (SUID binary for hijacking)"
+    echo ""
+    echo "=== Setup Complete ==="
+  SHELL
+  
+  # Message to user
+  config.vm.post_up_message = <<-MSG
+    ╔══════════════════════════════════════════════════════════════╗
+    ║                   CVE-2022-0847 Test Environment            ║
+    ║                        (Dirty Pipe)                         ║
+    ╠══════════════════════════════════════════════════════════════╣
+    ║                                                              ║
+    ║  VM is ready for Dirty Pipe vulnerability testing!          ║
+    ║                                                              ║
+    ║  Quick Start:                                                ║
+    ║    vagrant ssh                                               ║
+    ║    sudo su - testuser                                        ║
+    ║    cd /home/vagrant/exploits                                 ║
+    ║    ./test_dirtypipe                                          ║
+    ║                                                              ║
+    ║  ⚠️  WARNING: This VM has an INTENTIONALLY VULNERABLE       ║
+    ║      kernel for educational testing purposes only!           ║
+    ║                                                              ║
+    ╚══════════════════════════════════════════════════════════════╝
+  MSG
+end 

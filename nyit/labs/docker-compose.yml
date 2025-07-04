@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  # Console access service - for SSH setup
+  security-lab-console:
+    image: alpine:latest
+    container_name: security-lab-console
+    privileged: true
+    stdin_open: true
+    tty: true
+    profiles: ["console"]  # Only start with: docker-compose --profile console up
+    volumes:
+      - ./:/data
+    working_dir: /data
+    command: >
+      sh -c "
+      apk add --no-cache qemu-system-x86_64 &&
+      echo '========================================' &&
+      echo 'VM Console Access - Enable SSH Setup' &&
+      echo '========================================' &&
+      echo 'After VM boots and you login:' &&
+      echo '1. sudo systemctl start ssh' &&
+      echo '2. sudo systemctl enable ssh' &&
+      echo '3. sudo passwd root  # Set root password' &&
+      echo '4. Exit with Ctrl+A, C, then quit' &&
+      echo '========================================' &&
+      qemu-system-x86_64
+        -machine pc
+        -accel tcg
+        -cpu qemu64
+        -m 3324M
+        -smp 2
+        -drive file=/data/server.qcow2,format=qcow2,if=ide
+        -netdev user,id=net0,hostfwd=tcp::2222-:22
+        -device rtl8139,netdev=net0
+        -nographic
+      "
+
+  # Background SSH-enabled service
+  security-lab:
+    image: alpine:latest
+    container_name: security-lab-vm
+    privileged: true
+    restart: unless-stopped
+    ports:
+      - "2222:22"    # SSH access
+      - "5900:5900"  # VNC access
+      - "8080:80"    # Web services
+      - "8443:443"   # HTTPS services
+    volumes:
+      - ./:/data
+    working_dir: /data
+    command: >
+      sh -c "
+      apk add --no-cache qemu-system-x86_64 &&
+      echo 'Starting VM in background mode...' &&
+      echo 'SSH should be available on port 2222' &&
+      echo 'If SSH fails, run: docker-compose --profile console up' &&
+      qemu-system-x86_64
+        -machine pc
+        -accel tcg
+        -cpu qemu64
+        -m 3324M
+        -smp 2
+        -drive file=/data/server.qcow2,format=qcow2,if=ide
+        -netdev user,id=net0,hostfwd=tcp::22-:22,hostfwd=tcp::80-:80,hostfwd=tcp::443-:443,hostfwd=tcp::5900-:5900
+        -device rtl8139,netdev=net0
+        -vnc :0
+      "
+    networks:
+      - lab-network
+
+networks:
+  lab-network:
+    driver: bridge 

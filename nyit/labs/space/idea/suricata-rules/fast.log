@@ -1,0 +1,6 @@
+03/04/2025-13:54:59.648722  [**] [1:2000002:1] Flag 2 Detected: galf={Guilty._It_Was_Me} [**] [Classification: Potential Corporate Privacy Violation] [Priority: 1] {TCP} 10.0.88.4:43110 -> 44.228.249.3:80
+03/04/2025-15:04:08.820766  [**] [1:2000003:1] Flag 3 Detected: uaddress contains base64 Guilty._It_Was_Me [**] [Classification: Potential Corporate Privacy Violation] [Priority: 1] {TCP} 10.0.88.4:53432 -> 44.228.249.3:80
+03/04/2025-13:54:59.648722  [**] [1:2000002:1] Flag 2 Detected: galf={Guilty._It_Was_Me} [**] [Classification: Potential Corporate Privacy Violation] [Priority: 1] {TCP} 10.0.88.4:43110 -> 44.228.249.3:80
+03/04/2025-15:04:08.820766  [**] [1:2000003:1] Flag 3 Detected: uaddress contains base64 Guilty._It_Was_Me [**] [Classification: Potential Corporate Privacy Violation] [Priority: 1] {TCP} 10.0.88.4:53432 -> 44.228.249.3:80
+03/04/2025-13:54:59.648722  [**] [1:2000002:1] Flag 2 Detected: galf={Guilty._It_Was_Me} [**] [Classification: Potential Corporate Privacy Violation] [Priority: 1] {TCP} 10.0.88.4:43110 -> 44.228.249.3:80
+03/04/2025-15:04:08.820766  [**] [1:2000003:1] Flag 3 Detected: uaddress contains base64 Guilty._It_Was_Me [**] [Classification: Potential Corporate Privacy Violation] [Priority: 1] {TCP} 10.0.88.4:53432 -> 44.228.249.3:80

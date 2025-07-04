@@ -1,0 +1,196 @@
+version: "3"
+
+services:
+    HostA:
+        image: handsonsecurity/seed-ubuntu:large-arm
+        container_name: hostA-10.9.0.5
+        tty: true
+        cap_add:
+                - ALL
+        sysctls:
+                - net.ipv4.ip_forward=1
+        networks:
+            net-10.9.0.0:
+                ipv4_address: 10.9.0.5
+        command: bash -c "
+                      ip route add 192.168.60.0/24 via 10.9.0.11 &&
+                      /etc/init.d/openbsd-inetd start  &&
+                      tail -f /dev/null
+                 "
+
+    Host1:
+        image: handsonsecurity/seed-ubuntu:large-arm
+        container_name: host1-192.168.60.5
+        tty: true
+        cap_add:
+                - ALL
+        networks:
+            net-192.168.60.0:
+                ipv4_address: 192.168.60.5
+        command: bash -c "
+                      ip route del default  &&
+                      ip route add default via 192.168.60.11  &&
+                      /etc/init.d/openbsd-inetd start  &&
+                      tail -f /dev/null
+                 "
+                  
+    Host2:
+        image: handsonsecurity/seed-ubuntu:large-arm
+        container_name: host2-192.168.60.6
+        tty: true
+        cap_add:
+                - ALL
+        networks:
+            net-192.168.60.0:
+                ipv4_address: 192.168.60.6
+        command: bash -c "
+                      ip route del default  &&
+                      ip route add default via 192.168.60.11  &&
+                      /etc/init.d/openbsd-inetd start  &&
+                      tail -f /dev/null
+                 "
+
+    Host3:
+        image: handsonsecurity/seed-ubuntu:large-arm
+        container_name: host3-192.168.60.7
+        tty: true
+        cap_add:
+                - ALL
+        networks:
+            net-192.168.60.0:
+                ipv4_address: 192.168.60.7
+        command: bash -c "
+                      ip route del default  &&
+                      ip route add default via 192.168.60.11  &&
+                      /etc/init.d/openbsd-inetd start  &&
+                      tail -f /dev/null
+                 "
+
+    Router:
+        build: router
+        image: seed-router-image
+        container_name: seed-router
+        tty: true
+        cap_add:
+                - ALL
+        sysctls:
+                - net.ipv4.ip_forward=1
+        volumes:
+                - ./volumes:/volumes
+
+        networks:
+            net-10.9.0.0:
+                ipv4_address: 10.9.0.11
+            net-192.168.60.0:
+                ipv4_address: 192.168.60.11
+        command: bash -c "
+                      ip route del default  &&
+                      ip route add default via 10.9.0.1 &&
+                      /etc/init.d/openbsd-inetd start  &&
+                      tail -f /dev/null
+                 "
+
+networks:
+    net-192.168.60.0:
+        # name: net-192.168.60.0
+        ipam:
+            config:
+                - subnet: 192.168.60.0/24
+
+    net-10.9.0.0:
+        # name: net-10.9.0.0
+        ipam:
+            config:
+                - subnet: 10.9.0.0/24
+
+
+# This Docker Compose configuration sets up a network lab environment with multiple containers 
+#representing hosts and a router. Here's a breakdown of the components and their purposes:
+
+# ### **1. Network Architecture**
+# The setup creates two subnets:
+# - **Subnet 1**: `10.9.0.0/24` (Network: `net-10.9.0.0`)
+# - **Subnet 2**: `192.168.60.0/24` (Network: `net-192.168.60.0`)
+
+# The **Router** connects these two subnets, enabling communication between them.
+
+# ---
+
+# ### **2. Services (Containers)**
+
+# #### **HostA** (`10.9.0.5`)
+# - **Role**: Host on Subnet 1 (`10.9.0.0/24`).
+# - **Key Configurations**:
+#   - **Static Route**: Directs traffic for `192.168.60.0/24` via the Router (`10.9.0.11`).
+#   - **IP Forwarding Enabled**: Can act as a router (though not used here).
+#   - **Services**: Starts `openbsd-inetd` (a network service daemon).
+
+# #### **Host1, Host2, Host3** (`192.168.60.5-7`)
+# - **Role**: Hosts on Subnet 2 (`192.168.60.0/24`).
+# - **Key Configurations**:
+#   - **Default Gateway**: Set to the Router (`192.168.60.11`).
+#   - **Services**: Starts `openbsd-inetd`.
+
+# #### **Router** (`10.9.0.11` and `192.168.60.11`)
+# - **Role**: Interconnects Subnet 1 and Subnet 2.
+# - **Key Configurations**:
+#   - **Dual IP Addresses**:
+#     - `10.9.0.11` (Subnet 1)
+#     - `192.168.60.11` (Subnet 2)
+#   - **IP Forwarding Enabled**: Routes traffic between subnets.
+#   - **Default Route**: Set to `10.9.0.1` (assumed external gateway).
+#   - **Volumes**: Mounts `./volumes` for persistent storage.
+
+# ---
+
+# ### **3. Key Features**
+
+# #### **Network Isolation**
+# - Subnets `10.9.0.0/24` and `192.168.60.0/24` are isolated but connected via the Router.
+# - **HostA** can reach Subnet 2 via the static route.
+# - **Host1-3** use the Router as their default gateway.
+
+# #### **Security Settings**
+# - `cap_add: ALL`: Grants all Linux capabilities (used for privileged operations like modifying network routes).
+# - `sysctls: net.ipv4.ip_forward=1`: Enables IP forwarding (critical for routing).
+
+# #### **Services**
+# - `openbsd-inetd`: Manages network services (e.g., SSH, FTP) for testing.
+# - `tail -f /dev/null`: Keeps containers running indefinitely.
+
+# ---
+
+# ### **4. Traffic Flow**
+# 1. **HostA → Subnet 2**:
+#    - Traffic for `192.168.60.0/24` is routed via `10.9.0.11` (Router).
+#    - The Router forwards it to `192.168.60.11` (Subnet 2).
+
+# 2. **Host1-3 → External**:
+#    - All traffic uses the Router (`192.168.60.11`) as the default gateway.
+#    - The Router forwards traffic to `10.9.0.1` (external network).
+
+# ---
+
+# ### **5. Use Cases**
+# This setup is typical for:
+# - **Network Labs**: Testing routing, firewalls, or network attacks.
+# - **Security Education**: Part of the SEED Labs environment (common in cybersecurity training).
+# - **Service Isolation**: Running services on separate subnets for segmentation.
+
+# ---
+
+# ### **6. Security Notes**
+# - `cap_add: ALL` is **highly insecure** in production but used here for lab flexibility.
+# - The SEED Ubuntu image (`handsonsecurity/seed-ubuntu`) is preconfigured for security experiments.
+
+# ---
+
+# ### **Summary**
+# This Docker Compose file creates a multi-subnet environment where:
+# - HostA resides on `10.9.0.0/24`.
+# - Host1-3 reside on `192.168.60.0/24`.
+# - The Router bridges the two subnets and handles traffic routing.
+
+# The setup is ideal for experimenting with networking concepts, routing, or security scenarios.
+
+

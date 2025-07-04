@@ -1,0 +1,5 @@
+03/04/2025-13:37:47.996614  [**] [1:2000001:2] Flag 1 Detected: fl_g= to target server [**] [Classification: Potential Corporate Privacy Violation] [Priority: 1] {TCP} 10.0.88.4:50012 -> 44.228.249.3:80
+03/04/2025-13:54:59.648722  [**] [1:2000002:2] Flag 2 Detected: galf= to target server [**] [Classification: Potential Corporate Privacy Violation] [Priority: 1] {TCP} 10.0.88.4:43110 -> 44.228.249.3:80
+03/04/2025-14:29:16.906476  [**] [1:2000004:3] Flag 4 Detected: creditcard field to target server [**] [Classification: Potential Corporate Privacy Violation] [Priority: 1] {TCP} 10.0.88.4:39540 -> 44.228.249.3:80
+03/04/2025-15:04:08.820766  [**] [1:2000003:2] Flag 3 Detected: uaddress base64 to target server [**] [Classification: Potential Corporate Privacy Violation] [Priority: 1] {TCP} 10.0.88.4:53432 -> 44.228.249.3:80
+03/04/2025-15:04:08.820766  [**] [1:2100006:2] XSS Attack Detected: IMG with Events to target server [**] [Classification: Web Application Attack] [Priority: 1] {TCP} 10.0.88.4:53432 -> 44.228.249.3:80

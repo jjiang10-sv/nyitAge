@@ -1,0 +1,77 @@
+openssl enc -d -aes-256-cbc -in output.enc -out decrypted.bmp
+openssl enc -e -aes-256-cbc -in output.bmp -out decrypted.bmp
+
+openssl enc -d -aes-256-ecb -in output.enc -out decrypted.bmp
+openssl enc -e -aes-256-ecb -in pic_original.bmp -out ecb_decrypted.bmp
+
+seedlab/Secret-Key-Encryption/README.MD
+
+nyvxuqmhtipaczlgbred
+
+tr 'nyvxuqmhtipaczlgbred' 'eothasinrdluymwfgcbpkvjqxz' < ciphertext.txt > out1.txt
+
+wcorvpgubajxemftsqnd
+tr 'wcorvpgubajxemftsqnd' 'eothasinrdluymwfgcbpkvjqxz' < ciphertext1.txt > out1.txt
+
+
+openssl enc -aes-128-cbc -e -in plaintext.txt -out cbc_cipher.bin \
+-K 00112233445566778889aabbccddeeff \
+-iv 0102030405060708090a0b0c0d0e0f10
+
+openssl enc -aes-128-cbc -d -in cbc_cipher.bin -out cbc_plain.txt \
+-K 00112233445566778889aabbccddeeff \
+-iv 0102030405060708090a0b0c0d0e0f10
+
+openssl enc  -aes-128-ecb  -e -in big_file.txt -out output_ecb.bin -K 00112233445566778889aabbccddeeff 
+
+\ #replace cbc as cfb,ofb
+openssl enc  -aes-128-cbc  -e -in big_file.txt -out output_cbc.bin -K 00112233445566778889aabbccddeeff -iv 0102030405060708090a0b0c0d0e0f10
+
+openssl enc  -aes-128-cfb  -e -in big_file.txt -out output_cfb.bin -K 00112233445566778889aabbccddeeff -iv 0102030405060708090a0b0c0d0e0f10
+
+openssl enc  -aes-128-ofb  -e -in big_file.txt -out output_ofb.bin -K 00112233445566778889aabbccddeeff -iv 0102030405060708090a0b0c0d0e0f10
+
+To corrupt the 55th byte (0x37) of `output.bin` and set it to `0x00` using the `dd` command, you can follow these steps:
+
+### Command to Corrupt the Byte
+
+1. **Open Terminal**: Launch your terminal application.
+
+2. **Run the `dd` Command**:
+   Use the following command:
+
+   ```bash
+   printf '\x00' | dd of=output.bin bs=1 count=1 seek=54 conv=notrunc
+   ```
+
+### Explanation of the Command
+
+- `printf '\x00'`: This generates a single null byte (0x00) as output.
+- `|`: This pipes the output of `printf` into the `dd` command.
+- `dd of=output.bin`: This specifies that `output.bin` is the output file where the change will be made.
+- `bs=1`: This sets the block size to 1 byte, meaning each read/write operation will handle one byte at a time.
+- `count=1`: This specifies that we want to write 1 byte.
+- `seek=54`: This tells `dd` to skip the first 54 bytes of `output.bin` (the 55th byte is at position 54, since indexing starts at 0).
+- `conv=notrunc`: This option prevents `dd` from truncating the output file, ensuring that only the specified byte is changed.
+
+### Important Note
+- **Backup Your File**: Before running commands that modify binary files, it's a good practice to create a backup of the original file to prevent data loss.
+
+### Verification
+After running the command, you can verify that the 55th byte has been changed to `0x00` by using a hex viewer or the `xxd` command:
+
+```bash
+xxd output.bin | less
+```
+
+This will display the contents of `output.bin` in a hex format, allowing you to confirm that the 55th byte has been corrupted to `00`.
+
+printf '\x00' | dd of=output_ofb.bin bs=1 count=1 seek=54 conv=notrunc
+
+xxd -s 54 -l 1 output_cbc.bin
+
+openssl enc  -aes-128-cbc  -d -in output_cbc.bin -out decrypted_cbc.txt \
+-K 00112233445566778889aabbccddeeff -iv 0102030405060708090a0b0c0d0e0f10
+
+
+python solution.py "This is a top secret." 764aa26b55a4da654df6b19e4bce00f4ed05e09346fb0e762583cb7da2ac93a2 aabbccddeeff00998877665544332211

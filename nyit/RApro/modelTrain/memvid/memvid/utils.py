@@ -20,6 +20,14 @@ from .config import get_default_config, codec_parameters
 
 logger = logging.getLogger(__name__)
 
+# simple singleton pattern. not concurrent safe.
+def singleton(cls):
+    instances = {}
+    def get_instance(*args, **kwargs):
+        if cls not in instances:
+            instances[cls] = cls(*args, **kwargs)
+        return instances[cls]
+    return get_instance
 
 def encode_to_qr(data: str) -> Image.Image:
     """

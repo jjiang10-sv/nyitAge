@@ -94,6 +94,13 @@ class MemvidEncoder:
         else:
             logger.warning(f"No text extracted from PDF: {pdf_path}")
 
+    def add_multiple_pdfs(self, pdf_paths: List[str], chunk_size: int = DEFAULT_CHUNK_SIZE, overlap: int = DEFAULT_OVERLAP):
+        """
+        Extract text from multiple PDFs and add as chunks
+        """
+        for pdf_path in pdf_paths:
+            self.add_pdf(pdf_path, chunk_size, overlap)
+    
     def add_epub(self, epub_path: str, chunk_size: int = DEFAULT_CHUNK_SIZE, overlap: int = DEFAULT_OVERLAP):
         """
         Extract text from EPUB and add as chunks
@@ -574,3 +581,8 @@ class MemvidEncoder:
             encoder.add_text(doc, chunk_size, overlap)
 
         return encoder
+    
+if __name__ == "__main__":
+    encoder = MemvidEncoder()
+    encoder.add_text("Hello, world!")
+    encoder.build_video("test.mp4", "test.index")

@@ -1,0 +1,24 @@
+{
+    "proxy": {
+        "request_listeners": [
+            {
+                "listen_port": 8082,
+                "listen_all_interfaces": true,
+                "certificate_mode": "per_host",
+                "listen_specific_address": "0.0.0.0"
+            }
+        ]
+    },
+    "target": {
+        "scope": {
+            "advanced_mode": true
+        }
+    },
+    "user_options": {
+        "display": {
+            "user_interface": {
+                "look_and_feel": "Dark"
+            }
+        }
+    }
+} 

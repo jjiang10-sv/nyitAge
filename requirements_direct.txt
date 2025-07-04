@@ -1,0 +1,8 @@
+bentoml==1.4.17
+ipykernel==6.29.5
+matplotlib==3.9.4
+memvid==0.1.3
+pandas==2.3.0
+pipdeptree==2.26.1
+pytest==8.4.0
+starfish-core==0.1.3

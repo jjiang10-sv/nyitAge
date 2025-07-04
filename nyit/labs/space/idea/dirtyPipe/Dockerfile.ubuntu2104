@@ -1,0 +1,76 @@
+# Dockerfile for Dirty Pipe (CVE-2022-0847) - Ubuntu 21.04 (Hirsute)
+# This version predates the Dirty Pipe patches and may be vulnerable
+
+FROM ubuntu:21.04
+
+# Prevent interactive prompts
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=UTC
+
+# Ubuntu 21.04 reached EOL, so we need to use old-releases archive
+# Handle both AMD64 and ARM64 architectures
+RUN sed -i 's|http://archive.ubuntu.com/ubuntu/|http://old-releases.ubuntu.com/ubuntu/|g' /etc/apt/sources.list && \
+    sed -i 's|http://security.ubuntu.com/ubuntu/|http://old-releases.ubuntu.com/ubuntu/|g' /etc/apt/sources.list && \
+    sed -i 's|http://ports.ubuntu.com/ubuntu-ports|http://old-releases.ubuntu.com/ubuntu|g' /etc/apt/sources.list && \
+    cat /etc/apt/sources.list
+
+# Add metadata
+LABEL description="Ubuntu 21.04 environment potentially vulnerable to Dirty Pipe (CVE-2022-0847)"
+LABEL ubuntu_version="21.04 (Hirsute Hippo)"
+LABEL kernel_expected="5.11.x series (vulnerable)"
+LABEL cve="CVE-2022-0847"
+LABEL security_warning="FOR EDUCATIONAL USE ONLY - May contain vulnerabilities"
+
+# Update and install packages
+RUN apt-get update && apt-get install -y \
+    gcc \
+    build-essential \
+    sudo \
+    vim \
+    nano \
+    wget \
+    curl \
+    strace \
+    ltrace \
+    gdb \
+    file \
+    openssh-server \
+    net-tools \
+    procps \
+    psmisc \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create users with different privilege levels
+RUN useradd -m -s /bin/bash -G sudo testuser && \
+    echo 'testuser:password' | chpasswd && \
+    echo 'testuser ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
+RUN useradd -m -s /bin/bash normaluser && \
+    echo 'normaluser:password' | chpasswd
+
+RUN useradd -m -s /bin/bash lowpriv && \
+    echo 'lowpriv:password' | chpasswd
+
+# Set up exploit directory
+WORKDIR /exploits
+
+# Copy test program and info script
+# COPY test_dirtypipe.c /exploits/
+COPY info.sh /info.sh
+
+COPY exploit_fixed.c /exploits/
+
+# Compile test program and exploit files
+RUN gcc /exploits/exploit_fixed.c -o /exploits/exploit_fixed
+# Set permissions
+RUN chmod +x /exploits/*.sh 2>/dev/null || true && \
+    chown -R testuser:testuser /exploits
+
+# Make info script executable
+RUN chmod +x /info.sh
+
+
+# Set proper permissions
+RUN chmod 1777 /tmp
+
+CMD ["tail", "-f", "/dev/null"] 

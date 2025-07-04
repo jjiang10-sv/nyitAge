@@ -1,0 +1,39 @@
+# MySQL Port 3307 Malicious Traffic Detection Rules
+
+# Rule 1: MySQL Port Scanning Detection (Any connection attempts)
+alert tcp any any -> any 3307 (msg: "John Jiang - MySQL Port 3307 Connection Attempt Detected"; flags: S; flow: to_server; threshold: type threshold, track by_src, count 5, seconds 60; sid: 100001; rev: 3;)
+
+# Rule 2: MySQL Port 3307 Failed Authentication Brute Force (Fixed dsize)
+alert tcp any any -> any 3307 (msg: "John Jiang - MySQL Port 3307 Potential Brute Force Attack"; flow: to_server, established; dsize: 20<>200; detection_filter: track by_src, count 3, seconds 30; sid: 100002; rev: 4;)
+
+# Rule 3: Suspicious MySQL Protocol on Non-Standard Port
+alert tcp any any -> any 3307 (msg: "John Jiang - Suspicious MySQL Protocol Traffic on Port 3307"; content: "|00 00 00|"; depth: 3; flow: to_server; sid: 100003; rev: 1;)
+
+# Rule 4: MySQL NULL Password Attempt
+alert tcp any any -> any 3307 (msg: "John Jiang - MySQL NULL Password Login Attempt on Port 3307"; content: "|00|root|00|"; flow: to_server, established; sid: 100004; rev: 1;)
+
+# Rule 5: High Frequency Connection Attempts to MySQL 3307
+alert tcp any any -> any 3307 (msg: "John Jiang - High Frequency MySQL Port 3307 Connections"; flags: S; flow: to_server; detection_filter: track by_src, count 10, seconds 60; sid: 100005; rev: 1;)
+
+# CVE-2003-0352 references attacks using malformed TCP flags for stealth port scanning
+# CVE-2020-28196 relates to brute-force or repeated probing behavior
+
+# HTTP Flag Detection Rules - Updated for specific destination
+
+# Detects the first flag in HTTP traffic to specific server
+alert http any any -> 44.228.249.3 80 (msg:"Flag 1 Detected: fl_g= to target server"; content:"fl_g="; http_uri; classtype:policy-violation; sid:2000001; rev:2; metadata:author "Security Team", description "Detects the first flag in HTTP URI to target server";)
+
+# Detects the second flag in HTTP form data (POST body) to specific server
+alert http any any -> 44.228.249.3 80 (msg:"Flag 2 Detected: galf= to target server"; content:"galf="; http_client_body; classtype:policy-violation; sid:2000002; rev:2; metadata:author "Security Team", description "Detects the second flag in HTTP POST body to target server";)
+
+# Detects the third flag in HTTP form data (POST body) to specific server
+alert http any any -> 44.228.249.3 80 (msg:"Flag 3 Detected: uaddress base64 to target server"; content:"uaddress=\"R3VpbHR5Ll9JdF9XYXNfTWU=\""; http_client_body; classtype:policy-violation; sid:2000003; rev:2; metadata:author "Security Team", description "Detects the third flag (base64) in HTTP POST body to target server";)
+
+# Fixed fourth flag detection - targeting specific server
+alert http any any -> 44.228.249.3 80 (msg:"Flag 4 Detected: creditcard field to target server"; content:"creditcard="; http_client_body; content:"DANNY"; http_client_body; distance:0; within:100; classtype:policy-violation; sid:2000004; rev:3; metadata:author "Security Team", description "Detects the fourth flag in HTTP POST body to target server";)
+
+# Comprehensive rule to catch suspicious form fields and XSS using regex
+alert http any any -> 44.228.249.3 80 (msg:"COMPREHENSIVE: Suspicious Form Fields and XSS Detection"; pcre:"/(?:[a-zA-Z_]+=[^&\s]{20,})|(?:<(?:script|img|svg|iframe)[^>]*(?:on\w+|javascript:|data:)|(?:alert|eval|document\.|window\.)\s*[\(\.])/i"; http_client_body; classtype:policy-violation; sid:2000010; rev:2; metadata:author "John Jiang", description "Detects suspicious form data and XSS payloads without knowing specific content";)
+
+# Enhanced XSS detection rules - targeting specific server
+alert http any any -> 44.228.249.3 80 (msg:"XSS Attack Detected: IMG with Events to target server"; content:"<img"; http_client_body; content:"onerror"; http_client_body; distance:0; within:50; nocase; classtype:web-application-attack; sid:2100006; rev:2; metadata:author "Security Team", description "Detects IMG with onerror events to target server";)

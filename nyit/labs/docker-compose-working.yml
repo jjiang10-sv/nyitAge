@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  # Working VM using original VMDK
+  security-lab:
+    image: alpine:latest
+    container_name: security-lab-vm-working
+    privileged: true
+    restart: unless-stopped
+    ports:
+      - "2222:22"    # SSH access
+      - "5900:5900"  # VNC access  
+      - "8080:80"    # Web services
+      - "8443:443"   # HTTPS services
+    volumes:
+      - ./local:/data
+    working_dir: /data
+    command: >
+      sh -c "
+      apk add --no-cache qemu-system-x86_64 &&
+      echo 'Starting Security Lab VM with working configuration...' &&
+      echo 'Using original VMDK file (proven to work)' &&
+      qemu-system-x86_64
+        -machine pc
+        -accel tcg
+        -cpu qemu64
+        -m 3324M
+        -smp 2
+        -drive file=/data/vm-disk001.vmdk,format=vmdk,if=ide
+        -netdev user,id=net0,hostfwd=tcp::22-:22,hostfwd=tcp::80-:80,hostfwd=tcp::443-:443,hostfwd=tcp::5900-:5900
+        -device rtl8139,netdev=net0
+        -vnc :0
+        -boot c
+      "
+    networks:
+      - lab-network
+
+  # Console access for SSH setup (using working VMDK)
+  security-lab-console:
+    image: alpine:latest
+    container_name: security-lab-console-working
+    privileged: true
+    stdin_open: true
+    tty: true
+    profiles: ["console"]
+    volumes:
+      - ./local:/data
+    working_dir: /data
+    command: >
+      sh -c "
+      apk add --no-cache qemu-system-x86_64 &&
+      echo '========================================' &&
+      echo 'VM Console Access - Working Configuration' &&
+      echo '========================================' &&
+      echo 'After VM boots and you login:' &&
+      echo '1. sudo systemctl start ssh' &&
+      echo '2. sudo systemctl enable ssh' &&
+      echo '3. sudo passwd root' &&
+      echo '4. Exit with Ctrl+A, C, then quit' &&
+      echo '========================================' &&
+      qemu-system-x86_64
+        -machine pc
+        -accel tcg
+        -cpu qemu64
+        -m 3324M
+        -smp 2
+        -drive file=/data/vm-disk001.vmdk,format=vmdk,if=ide
+        -netdev user,id=net0,hostfwd=tcp::2222-:22
+        -device rtl8139,netdev=net0
+        -nographic
+        -boot c
+      "
+
+networks:
+  lab-network:
+    driver: bridge 

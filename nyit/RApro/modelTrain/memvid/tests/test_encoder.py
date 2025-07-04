@@ -2,12 +2,13 @@
 Tests for MemvidEncoder
 """
 
-import pytest
+#import pytest
 import tempfile
 import os
 from pathlib import Path
 
 from memvid import MemvidEncoder
+# from nyit.RApro.modelTrain.memvid.memvid.encoder import MemvidEncoder
 
 
 def test_encoder_initialization():
@@ -15,6 +16,7 @@ def test_encoder_initialization():
     encoder = MemvidEncoder()
     assert encoder.chunks == []
     assert encoder.index_manager is not None
+
 
 
 def test_add_chunks():
@@ -37,6 +39,7 @@ def test_add_text():
     assert all(chunk for chunk in encoder.chunks)  # No empty chunks
 
 
+
 def test_build_video():
     """Test video building (integration test)"""
     encoder = MemvidEncoder()
@@ -53,7 +56,7 @@ def test_build_video():
         
         # Build video
         stats = encoder.build_video(video_file, index_file, show_progress=False)
-        
+        encoder.search_video(video_file, index_file, "Test chunk 1: Important information")
         # Check files exist
         assert os.path.exists(video_file)
         assert os.path.exists(index_file)
@@ -65,6 +68,7 @@ def test_build_video():
         assert stats["video_size_mb"] > 0
         assert stats["duration_seconds"] > 0
 
+test_build_video()
 
 def test_encoder_stats():
     """Test encoder statistics"""

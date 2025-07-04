@@ -1,7 +1,6 @@
 """
 Tests for MemvidRetriever
 """
-
 import pytest
 import tempfile
 import os
@@ -54,7 +53,7 @@ def test_search(setup_test_memory):
     results = retriever.search("artificial intelligence", top_k=3)
     assert len(results) <= 3
     assert any("neural" in result.lower() or "machine" in result.lower() for result in results)
-
+#test_search(setup_test_memory())
 
 def test_search_with_metadata(setup_test_memory):
     """Test search with metadata"""

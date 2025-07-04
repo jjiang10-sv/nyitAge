@@ -1,0 +1,44 @@
+version: '3.8'
+
+# apt update &&
+#         apt install -y gcc build-essential sudo &&
+services:
+  cve-dirty_pipe:
+    image: iridium191/cve-2022-0847
+    container_name: cve-dirty_pipe-vm
+    privileged: true
+    restart: unless-stopped
+    command: >
+      sh -c "
+        echo 'Installing required packages...' &&
+        apt update &&
+        apt install -y gcc build-essential sudo &&
+        
+        echo 'Setting up /tmp permissions...' &&
+        chmod 1777 /tmp &&
+        
+        echo 'Creating testuser...' &&
+        id testuser >/dev/null 2>&1 || useradd -m -s /bin/bash testuser &&
+        echo 'testuser:password' | chpasswd &&
+        
+        echo 'Adding testuser to sudo group...' &&
+        usermod -aG sudo testuser &&
+        
+        echo 'Setting up data directory permissions...' &&
+        chown -R testuser:testuser /data &&
+        
+        echo 'Ensuring testuser can access /tmp...' &&
+        mkdir -p /tmp &&
+        chmod 1777 /tmp &&
+        
+        echo 'Setup completed! Login as testuser to test privilege escalation' &&
+        echo 'testuser password: password' &&
+        echo 'testuser has sudo access and /tmp write permissions' &&
+        sleep infinity
+      "
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./:/data
+    working_dir: /data
+    user: "0:0"  # Start as root to setup user, then switch manually

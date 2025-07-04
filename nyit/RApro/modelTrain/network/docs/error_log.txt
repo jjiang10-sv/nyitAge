@@ -1,0 +1,13 @@
+ERROR    | All JSON parsing strategies failed. Errors: Direct parsing: Expecting property name enclosed in double quotes: line 3 column 46 (char 53), Backslash escaping: Expecting property name enclosed in double quotes: line 3 column 46 (char 53), Control character sanitization: Expecting property name enclosed in double quotes: line 3 column 46 (char 53), Sanitized + escaped: Expecting property name enclosed in double quotes: line 3 column 46 (char 53)
+2025-07-02 17:20:49 | WARNING  | Failed to extract JSON from LLM response: Failed to parse JSON after trying all strategies. Errors: Direct parsing: Expecting property name enclosed in double quotes: line 3 column 46 (char 53) | Backslash escaping: Expecting property name enclosed in double quotes: line 3 column 46 (char 53) | Control character sanitization: Expecting property name enclosed in double quotes: line 3 column 46 (char 53) | Sanitized + escaped: Expecting property name enclosed in double quotes: line 3 column 46 (char 53)
+2025-07-02 17:20:49 | ERROR    | Error running task: 'NoneType' object is not iterable
+2025-07-02 17:20:49 | ERROR    | consecutive_not_completed: in 3 times, stopping this job; please adjust factory config and input data then resume_from_checkpoint(120c7441-4328-49b5-97ef-ff9e7f83b030)
+/Users/john/Documents/projects/base/go-algorithms-master/.venv/lib/python3.11/site-packages/nest_asyncio.py:139: RuntimeWarning: coroutine 'OpenAIChatCompletion.acompletion' was never awaited
+  handle = None
+RuntimeWarning: Enable tracemalloc to get the object allocation traceback
+2025-07-02 17:20:49 | INFO     | [JOB FINISHED] Final Status: Completed: 149/300 | Attempted: 150 (Failed: 1, Filtered: 0, Duplicate: 0, InDeadQueue: 0)
+{'dst_host_count': 5, 'dst_host_serror_rate': 0.2, 'dst_host_srv_serror_rate': 0.1, 'dst_host_same_src_port_rate': 0.4, 'srv_count': 3, 'dst_host_diff_srv_rate': 0.6, 'logged_in': 0, 'dst_host_srv_count': 2, 'dst_bytes': 1500, 'src_bytes': 200, 'attack_type': 2}
+Exception ignored in: <function Task.__del__ at 0x11747cb80>
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/tasks.py", line 124, in __del__
+AttributeError: 'NoneType' object has no attribute '_PENDING'

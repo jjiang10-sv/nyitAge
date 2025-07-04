@@ -1,0 +1,232 @@
+[65 - Suricata-Main] 2025-06-16 23:20:16 Notice: suricata: This is Suricata version 7.0.10 RELEASE running in USER mode
+[65 - Suricata-Main] 2025-06-16 23:20:16 Info: cpu: CPUs/cores online: 5
+[65 - Suricata-Main] 2025-06-16 23:20:16 Info: suricata: Setting engine mode to IDS mode by default
+[65 - Suricata-Main] 2025-06-16 23:20:16 Info: exception-policy: master exception-policy set to: auto
+[65 - Suricata-Main] 2025-06-16 23:20:16 Info: logopenfile: fast output device (regular) initialized: fast.log
+[65 - Suricata-Main] 2025-06-16 23:20:16 Info: logopenfile: eve-log output device (regular) initialized: eve.json
+[65 - Suricata-Main] 2025-06-16 23:20:16 Info: logopenfile: stats output device (regular) initialized: stats.log
+[65 - Suricata-Main] 2025-06-16 23:20:16 Warning: detect: No rule files match the pattern /var/lib/suricata/rules/flags.rules
+[65 - Suricata-Main] 2025-06-16 23:20:16 Warning: detect: 1 rule files specified, but no rules were loaded!
+[65 - Suricata-Main] 2025-06-16 23:20:16 Info: threshold-config: Threshold config parsed: 0 rule(s) found
+[65 - Suricata-Main] 2025-06-16 23:20:16 Info: detect: 0 signatures processed. 0 are IP-only rules, 0 are inspecting packet payload, 0 inspect application layer, 0 are decoder event only
+[65 - Suricata-Main] 2025-06-16 23:20:17 Info: unix-manager: unix socket '/var/run/suricata-command.socket'
+[66 - RX#01] 2025-06-16 23:20:17 Info: pcap: Starting file run for lab44.pcapng
+[65 - Suricata-Main] 2025-06-16 23:20:17 Notice: threads: Threads created -> RX: 1 W: 5 FM: 1 FR: 1   Engine started.
+[66 - RX#01] 2025-06-16 23:20:17 Info: checksum: More than 1/10th of packets have an invalid checksum, assuming checksum offloading is used (177/1000)
+[66 - RX#01] 2025-06-16 23:20:17 Info: pcap: pcap file lab44.pcapng end of file reached (pcap err code 0)
+[65 - Suricata-Main] 2025-06-16 23:20:17 Notice: suricata: Signal Received.  Stopping engine.
+[65 - Suricata-Main] 2025-06-16 23:20:17 Info: suricata: time elapsed 0.381s
+[66 - RX#01] 2025-06-16 23:20:17 Notice: pcap: read 1 file, 4786 packets, 1450615 bytes
+[65 - Suricata-Main] 2025-06-16 23:20:17 Info: counters: Alerts: 0
+[81 - Suricata-Main] 2025-06-16 23:22:15 Notice: suricata: This is Suricata version 7.0.10 RELEASE running in USER mode
+[81 - Suricata-Main] 2025-06-16 23:22:15 Info: cpu: CPUs/cores online: 5
+[81 - Suricata-Main] 2025-06-16 23:22:15 Info: suricata: Setting engine mode to IDS mode by default
+[81 - Suricata-Main] 2025-06-16 23:22:15 Info: exception-policy: master exception-policy set to: auto
+[81 - Suricata-Main] 2025-06-16 23:22:16 Info: logopenfile: fast output device (regular) initialized: fast.log
+[81 - Suricata-Main] 2025-06-16 23:22:16 Info: logopenfile: eve-log output device (regular) initialized: eve.json
+[81 - Suricata-Main] 2025-06-16 23:22:16 Info: logopenfile: stats output device (regular) initialized: stats.log
+[81 - Suricata-Main] 2025-06-16 23:22:16 Error: detect-parse: no rule options.
+[81 - Suricata-Main] 2025-06-16 23:22:16 Error: detect: error parsing signature "```suricata" from file /workspace/suricata-rules/flags.rules at line 2
+[81 - Suricata-Main] 2025-06-16 23:22:16 Error: detect-parse: Signature missing required value "sid".
+[81 - Suricata-Main] 2025-06-16 23:22:16 Error: detect: error parsing signature "alert tcp any any -> any 3307 (" from file /workspace/suricata-rules/flags.rules at line 3
+[81 - Suricata-Main] 2025-06-16 23:22:16 Error: detect-parse: no rule options.
+[81 - Suricata-Main] 2025-06-16 23:22:16 Error: detect: error parsing signature ")" from file /workspace/suricata-rules/flags.rules at line 10
+[81 - Suricata-Main] 2025-06-16 23:22:16 Error: detect-parse: no rule options.
+[81 - Suricata-Main] 2025-06-16 23:22:16 Error: detect: error parsing signature "```" from file /workspace/suricata-rules/flags.rules at line 11
+[81 - Suricata-Main] 2025-06-16 23:22:16 Error: detect-parse: no rule options.
+[81 - Suricata-Main] 2025-06-16 23:22:16 Error: detect: error parsing signature "```suricata" from file /workspace/suricata-rules/flags.rules at line 18
+[81 - Suricata-Main] 2025-06-16 23:22:16 Error: detect-parse: Signature missing required value "sid".
+[81 - Suricata-Main] 2025-06-16 23:22:16 Error: detect: error parsing signature "alert tcp any any -> any 3307 (" from file /workspace/suricata-rules/flags.rules at line 19
+[81 - Suricata-Main] 2025-06-16 23:22:16 Error: detect-parse: no rule options.
+[81 - Suricata-Main] 2025-06-16 23:22:16 Error: detect: error parsing signature ")" from file /workspace/suricata-rules/flags.rules at line 27
+[81 - Suricata-Main] 2025-06-16 23:22:16 Error: detect-parse: no rule options.
+[81 - Suricata-Main] 2025-06-16 23:22:16 Error: detect: error parsing signature "```" from file /workspace/suricata-rules/flags.rules at line 28
+[81 - Suricata-Main] 2025-06-16 23:22:16 Error: detect-parse: no terminating ";" found
+[81 - Suricata-Main] 2025-06-16 23:22:16 Error: detect: error parsing signature "**CVE-2020-28196** relates to **brute-force or repeated probing** behavior observed in exposed services (while the CVE references PostgreSQL, the behavior pattern fits general DB probing via abnormal TCP behavior and timeouts)." from file /workspace/suricata-rules/flags.rules at line 30
+[81 - Suricata-Main] 2025-06-16 23:22:16 Error: detect-parse: Signature missing required value "sid".
+[81 - Suricata-Main] 2025-06-16 23:22:16 Error: detect: error parsing signature "alert http any any -> any any (" from file /workspace/suricata-rules/flags.rules at line 34
+[81 - Suricata-Main] 2025-06-16 23:22:16 Error: detect-parse: no rule options.
+[81 - Suricata-Main] 2025-06-16 23:22:16 Error: detect: error parsing signature ")" from file /workspace/suricata-rules/flags.rules at line 42
+[81 - Suricata-Main] 2025-06-16 23:22:16 Error: detect-parse: Signature missing required value "sid".
+[81 - Suricata-Main] 2025-06-16 23:22:16 Error: detect: error parsing signature "alert http any any -> any any (" from file /workspace/suricata-rules/flags.rules at line 45
+[81 - Suricata-Main] 2025-06-16 23:22:16 Error: detect-parse: no rule options.
+[81 - Suricata-Main] 2025-06-16 23:22:16 Error: detect: error parsing signature ")" from file /workspace/suricata-rules/flags.rules at line 53
+[81 - Suricata-Main] 2025-06-16 23:22:16 Error: detect-parse: Signature missing required value "sid".
+[81 - Suricata-Main] 2025-06-16 23:22:16 Error: detect: error parsing signature "alert http any any -> any any (" from file /workspace/suricata-rules/flags.rules at line 56
+[81 - Suricata-Main] 2025-06-16 23:22:16 Error: detect-parse: no rule options.
+[81 - Suricata-Main] 2025-06-16 23:22:16 Error: detect: error parsing signature ")" from file /workspace/suricata-rules/flags.rules at line 64
+[81 - Suricata-Main] 2025-06-16 23:22:16 Error: detect-parse: Signature missing required value "sid".
+[81 - Suricata-Main] 2025-06-16 23:22:16 Error: detect: error parsing signature "alert http any any -> any any (" from file /workspace/suricata-rules/flags.rules at line 67
+[81 - Suricata-Main] 2025-06-16 23:22:16 Error: detect-parse: no rule options.
+[81 - Suricata-Main] 2025-06-16 23:22:16 Error: detect: error parsing signature ")" from file /workspace/suricata-rules/flags.rules at line 75
+[81 - Suricata-Main] 2025-06-16 23:22:16 Error: detect-parse: Signature missing required value "sid".
+[81 - Suricata-Main] 2025-06-16 23:22:16 Error: detect: error parsing signature "alert http any any -> any any (" from file /workspace/suricata-rules/flags.rules at line 78
+[81 - Suricata-Main] 2025-06-16 23:22:16 Error: detect-parse: no rule options.
+[81 - Suricata-Main] 2025-06-16 23:22:16 Error: detect: error parsing signature ")" from file /workspace/suricata-rules/flags.rules at line 86
+[81 - Suricata-Main] 2025-06-16 23:22:16 Warning: detect: 1 rule files specified, but no rules were loaded!
+[81 - Suricata-Main] 2025-06-16 23:22:16 Info: threshold-config: Threshold config parsed: 0 rule(s) found
+[81 - Suricata-Main] 2025-06-16 23:22:16 Info: detect: 0 signatures processed. 0 are IP-only rules, 0 are inspecting packet payload, 0 inspect application layer, 0 are decoder event only
+[81 - Suricata-Main] 2025-06-16 23:22:16 Info: unix-manager: unix socket '/var/run/suricata-command.socket'
+[82 - RX#01] 2025-06-16 23:22:16 Info: pcap: Starting file run for lab44.pcapng
+[81 - Suricata-Main] 2025-06-16 23:22:16 Notice: threads: Threads created -> RX: 1 W: 5 FM: 1 FR: 1   Engine started.
+[82 - RX#01] 2025-06-16 23:22:16 Info: checksum: More than 1/10th of packets have an invalid checksum, assuming checksum offloading is used (101/1000)
+[82 - RX#01] 2025-06-16 23:22:16 Info: pcap: pcap file lab44.pcapng end of file reached (pcap err code 0)
+[81 - Suricata-Main] 2025-06-16 23:22:16 Notice: suricata: Signal Received.  Stopping engine.
+[81 - Suricata-Main] 2025-06-16 23:22:16 Info: suricata: time elapsed 0.272s
+[82 - RX#01] 2025-06-16 23:22:16 Notice: pcap: read 1 file, 4786 packets, 1450615 bytes
+[81 - Suricata-Main] 2025-06-16 23:22:16 Info: counters: Alerts: 0
+[93 - Suricata-Main] 2025-06-16 23:23:20 Notice: suricata: This is Suricata version 7.0.10 RELEASE running in USER mode
+[93 - Suricata-Main] 2025-06-16 23:23:20 Info: cpu: CPUs/cores online: 5
+[93 - Suricata-Main] 2025-06-16 23:23:20 Info: suricata: Setting engine mode to IDS mode by default
+[93 - Suricata-Main] 2025-06-16 23:23:20 Info: exception-policy: master exception-policy set to: auto
+[93 - Suricata-Main] 2025-06-16 23:23:20 Info: logopenfile: fast output device (regular) initialized: fast.log
+[93 - Suricata-Main] 2025-06-16 23:23:20 Info: logopenfile: eve-log output device (regular) initialized: eve.json
+[93 - Suricata-Main] 2025-06-16 23:23:20 Info: logopenfile: stats output device (regular) initialized: stats.log
+[93 - Suricata-Main] 2025-06-16 23:23:20 Error: detect-parse: Signature missing required value "sid".
+[93 - Suricata-Main] 2025-06-16 23:23:20 Error: detect: error parsing signature "alert tcp any any -> any 3307 (" from file /workspace/suricata-rules/flags.rules at line 3
+[93 - Suricata-Main] 2025-06-16 23:23:20 Error: detect-parse: no rule options.
+[93 - Suricata-Main] 2025-06-16 23:23:20 Error: detect: error parsing signature ")" from file /workspace/suricata-rules/flags.rules at line 10
+[93 - Suricata-Main] 2025-06-16 23:23:20 Error: detect-parse: Signature missing required value "sid".
+[93 - Suricata-Main] 2025-06-16 23:23:20 Error: detect: error parsing signature "alert tcp any any -> any 3307 (" from file /workspace/suricata-rules/flags.rules at line 16
+[93 - Suricata-Main] 2025-06-16 23:23:20 Error: detect-parse: no rule options.
+[93 - Suricata-Main] 2025-06-16 23:23:20 Error: detect: error parsing signature ")" from file /workspace/suricata-rules/flags.rules at line 24
+[93 - Suricata-Main] 2025-06-16 23:23:20 Error: detect-parse: Signature missing required value "sid".
+[93 - Suricata-Main] 2025-06-16 23:23:20 Error: detect: error parsing signature "alert http any any -> any any (" from file /workspace/suricata-rules/flags.rules at line 31
+[93 - Suricata-Main] 2025-06-16 23:23:20 Error: detect-parse: no rule options.
+[93 - Suricata-Main] 2025-06-16 23:23:20 Error: detect: error parsing signature ")" from file /workspace/suricata-rules/flags.rules at line 39
+[93 - Suricata-Main] 2025-06-16 23:23:20 Error: detect-parse: Signature missing required value "sid".
+[93 - Suricata-Main] 2025-06-16 23:23:20 Error: detect: error parsing signature "alert http any any -> any any (" from file /workspace/suricata-rules/flags.rules at line 42
+[93 - Suricata-Main] 2025-06-16 23:23:20 Error: detect-parse: no rule options.
+[93 - Suricata-Main] 2025-06-16 23:23:20 Error: detect: error parsing signature ")" from file /workspace/suricata-rules/flags.rules at line 50
+[93 - Suricata-Main] 2025-06-16 23:23:20 Error: detect-parse: Signature missing required value "sid".
+[93 - Suricata-Main] 2025-06-16 23:23:20 Error: detect: error parsing signature "alert http any any -> any any (" from file /workspace/suricata-rules/flags.rules at line 53
+[93 - Suricata-Main] 2025-06-16 23:23:20 Error: detect-parse: no rule options.
+[93 - Suricata-Main] 2025-06-16 23:23:20 Error: detect: error parsing signature ")" from file /workspace/suricata-rules/flags.rules at line 61
+[93 - Suricata-Main] 2025-06-16 23:23:20 Error: detect-parse: Signature missing required value "sid".
+[93 - Suricata-Main] 2025-06-16 23:23:20 Error: detect: error parsing signature "alert http any any -> any any (" from file /workspace/suricata-rules/flags.rules at line 64
+[93 - Suricata-Main] 2025-06-16 23:23:20 Error: detect-parse: no rule options.
+[93 - Suricata-Main] 2025-06-16 23:23:20 Error: detect: error parsing signature ")" from file /workspace/suricata-rules/flags.rules at line 72
+[93 - Suricata-Main] 2025-06-16 23:23:20 Error: detect-parse: Signature missing required value "sid".
+[93 - Suricata-Main] 2025-06-16 23:23:20 Error: detect: error parsing signature "alert http any any -> any any (" from file /workspace/suricata-rules/flags.rules at line 75
+[93 - Suricata-Main] 2025-06-16 23:23:20 Error: detect-parse: no rule options.
+[93 - Suricata-Main] 2025-06-16 23:23:20 Error: detect: error parsing signature ")" from file /workspace/suricata-rules/flags.rules at line 83
+[93 - Suricata-Main] 2025-06-16 23:23:20 Warning: detect: 1 rule files specified, but no rules were loaded!
+[93 - Suricata-Main] 2025-06-16 23:23:20 Info: threshold-config: Threshold config parsed: 0 rule(s) found
+[93 - Suricata-Main] 2025-06-16 23:23:20 Info: detect: 0 signatures processed. 0 are IP-only rules, 0 are inspecting packet payload, 0 inspect application layer, 0 are decoder event only
+[93 - Suricata-Main] 2025-06-16 23:23:20 Info: unix-manager: unix socket '/var/run/suricata-command.socket'
+[94 - RX#01] 2025-06-16 23:23:20 Info: pcap: Starting file run for lab44.pcapng
+[93 - Suricata-Main] 2025-06-16 23:23:20 Notice: threads: Threads created -> RX: 1 W: 5 FM: 1 FR: 1   Engine started.
+[94 - RX#01] 2025-06-16 23:23:20 Info: checksum: Less than 1/10th of packets have an invalid checksum, assuming checksum offloading is NOT used (94/1000)
+[94 - RX#01] 2025-06-16 23:23:20 Info: pcap: pcap file lab44.pcapng end of file reached (pcap err code 0)
+[93 - Suricata-Main] 2025-06-16 23:23:20 Notice: suricata: Signal Received.  Stopping engine.
+[93 - Suricata-Main] 2025-06-16 23:23:20 Info: suricata: time elapsed 0.183s
+[94 - RX#01] 2025-06-16 23:23:20 Notice: pcap: read 1 file, 4786 packets, 1450615 bytes
+[93 - Suricata-Main] 2025-06-16 23:23:20 Info: counters: Alerts: 0
+[105 - Suricata-Main] 2025-06-16 23:25:37 Notice: suricata: This is Suricata version 7.0.10 RELEASE running in USER mode
+[105 - Suricata-Main] 2025-06-16 23:25:37 Info: cpu: CPUs/cores online: 5
+[105 - Suricata-Main] 2025-06-16 23:25:37 Info: suricata: Setting engine mode to IDS mode by default
+[105 - Suricata-Main] 2025-06-16 23:25:37 Info: exception-policy: master exception-policy set to: auto
+[105 - Suricata-Main] 2025-06-16 23:25:38 Info: logopenfile: fast output device (regular) initialized: fast.log
+[105 - Suricata-Main] 2025-06-16 23:25:38 Info: logopenfile: eve-log output device (regular) initialized: eve.json
+[105 - Suricata-Main] 2025-06-16 23:25:38 Info: logopenfile: stats output device (regular) initialized: stats.log
+[105 - Suricata-Main] 2025-06-16 23:25:38 Error: detect-parse: Signature missing required value "sid".
+[105 - Suricata-Main] 2025-06-16 23:25:38 Error: detect: error parsing signature "alert tcp any any -> any 3307 (" from file /workspace/suricata-rules/flags.rules at line 4
+[105 - Suricata-Main] 2025-06-16 23:25:38 Error: detect-parse: no rule options.
+[105 - Suricata-Main] 2025-06-16 23:25:38 Error: detect: error parsing signature ")" from file /workspace/suricata-rules/flags.rules at line 11
+[105 - Suricata-Main] 2025-06-16 23:25:38 Error: detect-parse: Signature missing required value "sid".
+[105 - Suricata-Main] 2025-06-16 23:25:38 Error: detect: error parsing signature "alert tcp any any -> any 3307 (" from file /workspace/suricata-rules/flags.rules at line 16
+[105 - Suricata-Main] 2025-06-16 23:25:38 Error: detect-parse: no rule options.
+[105 - Suricata-Main] 2025-06-16 23:25:38 Error: detect: error parsing signature ")" from file /workspace/suricata-rules/flags.rules at line 24
+[105 - Suricata-Main] 2025-06-16 23:25:38 Error: detect-parse: Signature missing required value "sid".
+[105 - Suricata-Main] 2025-06-16 23:25:38 Error: detect: error parsing signature "alert http any any -> any any (" from file /workspace/suricata-rules/flags.rules at line 31
+[105 - Suricata-Main] 2025-06-16 23:25:38 Error: detect-parse: no rule options.
+[105 - Suricata-Main] 2025-06-16 23:25:38 Error: detect: error parsing signature ")" from file /workspace/suricata-rules/flags.rules at line 39
+[105 - Suricata-Main] 2025-06-16 23:25:38 Error: detect-parse: Signature missing required value "sid".
+[105 - Suricata-Main] 2025-06-16 23:25:38 Error: detect: error parsing signature "alert http any any -> any any (" from file /workspace/suricata-rules/flags.rules at line 42
+[105 - Suricata-Main] 2025-06-16 23:25:38 Error: detect-parse: no rule options.
+[105 - Suricata-Main] 2025-06-16 23:25:38 Error: detect: error parsing signature ")" from file /workspace/suricata-rules/flags.rules at line 50
+[105 - Suricata-Main] 2025-06-16 23:25:38 Error: detect-parse: Signature missing required value "sid".
+[105 - Suricata-Main] 2025-06-16 23:25:38 Error: detect: error parsing signature "alert http any any -> any any (" from file /workspace/suricata-rules/flags.rules at line 53
+[105 - Suricata-Main] 2025-06-16 23:25:38 Error: detect-parse: no rule options.
+[105 - Suricata-Main] 2025-06-16 23:25:38 Error: detect: error parsing signature ")" from file /workspace/suricata-rules/flags.rules at line 61
+[105 - Suricata-Main] 2025-06-16 23:25:38 Error: detect-parse: Signature missing required value "sid".
+[105 - Suricata-Main] 2025-06-16 23:25:38 Error: detect: error parsing signature "alert http any any -> any any (" from file /workspace/suricata-rules/flags.rules at line 64
+[105 - Suricata-Main] 2025-06-16 23:25:38 Error: detect-parse: no rule options.
+[105 - Suricata-Main] 2025-06-16 23:25:38 Error: detect: error parsing signature ")" from file /workspace/suricata-rules/flags.rules at line 72
+[105 - Suricata-Main] 2025-06-16 23:25:38 Error: detect-parse: Signature missing required value "sid".
+[105 - Suricata-Main] 2025-06-16 23:25:38 Error: detect: error parsing signature "alert http any any -> any any (" from file /workspace/suricata-rules/flags.rules at line 75
+[105 - Suricata-Main] 2025-06-16 23:25:38 Error: detect-parse: no rule options.
+[105 - Suricata-Main] 2025-06-16 23:25:38 Error: detect: error parsing signature ")" from file /workspace/suricata-rules/flags.rules at line 85
+[105 - Suricata-Main] 2025-06-16 23:25:38 Warning: detect: 1 rule files specified, but no rules were loaded!
+[105 - Suricata-Main] 2025-06-16 23:25:38 Info: threshold-config: Threshold config parsed: 0 rule(s) found
+[105 - Suricata-Main] 2025-06-16 23:25:38 Info: detect: 0 signatures processed. 0 are IP-only rules, 0 are inspecting packet payload, 0 inspect application layer, 0 are decoder event only
+[105 - Suricata-Main] 2025-06-16 23:25:38 Info: unix-manager: unix socket '/var/run/suricata-command.socket'
+[106 - RX#01] 2025-06-16 23:25:38 Info: pcap: Starting file run for lab44.pcapng
+[105 - Suricata-Main] 2025-06-16 23:25:38 Notice: threads: Threads created -> RX: 1 W: 5 FM: 1 FR: 1   Engine started.
+[106 - RX#01] 2025-06-16 23:25:38 Info: checksum: More than 1/10th of packets have an invalid checksum, assuming checksum offloading is used (131/1000)
+[106 - RX#01] 2025-06-16 23:25:38 Info: pcap: pcap file lab44.pcapng end of file reached (pcap err code 0)
+[105 - Suricata-Main] 2025-06-16 23:25:38 Notice: suricata: Signal Received.  Stopping engine.
+[105 - Suricata-Main] 2025-06-16 23:25:38 Info: suricata: time elapsed 0.261s
+[106 - RX#01] 2025-06-16 23:25:38 Notice: pcap: read 1 file, 4786 packets, 1450615 bytes
+[105 - Suricata-Main] 2025-06-16 23:25:38 Info: counters: Alerts: 0
+[117 - Suricata-Main] 2025-06-16 23:26:23 Notice: suricata: This is Suricata version 7.0.10 RELEASE running in USER mode
+[117 - Suricata-Main] 2025-06-16 23:26:23 Info: cpu: CPUs/cores online: 5
+[117 - Suricata-Main] 2025-06-16 23:26:23 Info: suricata: Setting engine mode to IDS mode by default
+[117 - Suricata-Main] 2025-06-16 23:26:23 Info: exception-policy: master exception-policy set to: auto
+[117 - Suricata-Main] 2025-06-16 23:26:23 Info: logopenfile: fast output device (regular) initialized: fast.log
+[117 - Suricata-Main] 2025-06-16 23:26:23 Info: logopenfile: eve-log output device (regular) initialized: eve.json
+[117 - Suricata-Main] 2025-06-16 23:26:23 Info: logopenfile: stats output device (regular) initialized: stats.log
+[117 - Suricata-Main] 2025-06-16 23:26:23 Error: detect-pcre: pcre2 compile of "/(svg|img|script|scRiPT)[^>]*?(onload|onerror)[^>]*?=|alert\\s*\\(|eval\\s*\\(|document\\.cookie/i" failed at offset 95: missing closing parenthesis
+[117 - Suricata-Main] 2025-06-16 23:26:23 Error: detect: error parsing signature "alert http any any -> any any (msg:"Possible XSS Payload Detected"; content:"<"; http_client_body; nocase; pcre:"/(svg|img|script|scRiPT)[^>]*?(onload|onerror)[^>]*?=|alert\\s*\\(|eval\\s*\\(|document\\.cookie/i"; classtype:web-application-attack; sid:2100001; rev:1; metadata:author "Security Team", description "Detects common XSS payloads in HTTP body";)" from file /workspace/suricata-rules/flags.rules at line 28
+[117 - Suricata-Main] 2025-06-16 23:26:23 Info: detect: 1 rule files processed. 6 rules successfully loaded, 1 rules failed, 0
+[117 - Suricata-Main] 2025-06-16 23:26:23 Info: threshold-config: Threshold config parsed: 0 rule(s) found
+[117 - Suricata-Main] 2025-06-16 23:26:23 Info: detect: 6 signatures processed. 0 are IP-only rules, 0 are inspecting packet payload, 4 inspect application layer, 0 are decoder event only
+[117 - Suricata-Main] 2025-06-16 23:26:23 Info: unix-manager: unix socket '/var/run/suricata-command.socket'
+[118 - RX#01] 2025-06-16 23:26:23 Info: pcap: Starting file run for lab44.pcapng
+[117 - Suricata-Main] 2025-06-16 23:26:23 Notice: threads: Threads created -> RX: 1 W: 5 FM: 1 FR: 1   Engine started.
+[118 - RX#01] 2025-06-16 23:26:23 Info: checksum: More than 1/10th of packets have an invalid checksum, assuming checksum offloading is used (166/1000)
+[118 - RX#01] 2025-06-16 23:26:23 Info: pcap: pcap file lab44.pcapng end of file reached (pcap err code 0)
+[117 - Suricata-Main] 2025-06-16 23:26:23 Notice: suricata: Signal Received.  Stopping engine.
+[117 - Suricata-Main] 2025-06-16 23:26:23 Info: suricata: time elapsed 0.259s
+[118 - RX#01] 2025-06-16 23:26:23 Notice: pcap: read 1 file, 4786 packets, 1450615 bytes
+[117 - Suricata-Main] 2025-06-16 23:26:23 Info: counters: Alerts: 2
+[129 - Suricata-Main] 2025-06-16 23:27:02 Notice: suricata: This is Suricata version 7.0.10 RELEASE running in USER mode
+[129 - Suricata-Main] 2025-06-16 23:27:02 Info: cpu: CPUs/cores online: 5
+[129 - Suricata-Main] 2025-06-16 23:27:02 Info: suricata: Setting engine mode to IDS mode by default
+[129 - Suricata-Main] 2025-06-16 23:27:02 Info: exception-policy: master exception-policy set to: auto
+[129 - Suricata-Main] 2025-06-16 23:27:03 Info: logopenfile: fast output device (regular) initialized: fast.log
+[129 - Suricata-Main] 2025-06-16 23:27:03 Info: logopenfile: eve-log output device (regular) initialized: eve.json
+[129 - Suricata-Main] 2025-06-16 23:27:03 Info: logopenfile: stats output device (regular) initialized: stats.log
+[129 - Suricata-Main] 2025-06-16 23:27:03 Error: detect-pcre: pcre2 compile of "/(?:svg|img|script)[^>]*?(?:onload|onerror)[^>]*?=|alert\\s*\\(|eval\\s*\\(|document\\.cookie/i" failed at offset 92: missing closing parenthesis
+[129 - Suricata-Main] 2025-06-16 23:27:03 Error: detect: error parsing signature "alert http any any -> any any (msg:"Possible XSS Payload Detected"; content:"<"; http_client_body; nocase; pcre:"/(?:svg|img|script)[^>]*?(?:onload|onerror)[^>]*?=|alert\\s*\\(|eval\\s*\\(|document\\.cookie/i"; classtype:web-application-attack; sid:2100001; rev:1; metadata:author "Security Team", description "Detects common XSS payloads in HTTP body";)" from file /workspace/suricata-rules/flags.rules at line 28
+[129 - Suricata-Main] 2025-06-16 23:27:03 Info: detect: 1 rule files processed. 6 rules successfully loaded, 1 rules failed, 0
+[129 - Suricata-Main] 2025-06-16 23:27:03 Info: threshold-config: Threshold config parsed: 0 rule(s) found
+[129 - Suricata-Main] 2025-06-16 23:27:03 Info: detect: 6 signatures processed. 0 are IP-only rules, 0 are inspecting packet payload, 4 inspect application layer, 0 are decoder event only
+[129 - Suricata-Main] 2025-06-16 23:27:03 Info: unix-manager: unix socket '/var/run/suricata-command.socket'
+[130 - RX#01] 2025-06-16 23:27:03 Info: pcap: Starting file run for lab44.pcapng
+[129 - Suricata-Main] 2025-06-16 23:27:03 Notice: threads: Threads created -> RX: 1 W: 5 FM: 1 FR: 1   Engine started.
+[130 - RX#01] 2025-06-16 23:27:03 Info: checksum: More than 1/10th of packets have an invalid checksum, assuming checksum offloading is used (171/1000)
+[130 - RX#01] 2025-06-16 23:27:03 Info: pcap: pcap file lab44.pcapng end of file reached (pcap err code 0)
+[129 - Suricata-Main] 2025-06-16 23:27:03 Notice: suricata: Signal Received.  Stopping engine.
+[129 - Suricata-Main] 2025-06-16 23:27:03 Info: suricata: time elapsed 0.280s
+[130 - RX#01] 2025-06-16 23:27:03 Notice: pcap: read 1 file, 4786 packets, 1450615 bytes
+[129 - Suricata-Main] 2025-06-16 23:27:03 Info: counters: Alerts: 2
+[141 - Suricata-Main] 2025-06-16 23:27:38 Notice: suricata: This is Suricata version 7.0.10 RELEASE running in USER mode
+[141 - Suricata-Main] 2025-06-16 23:27:38 Info: cpu: CPUs/cores online: 5
+[141 - Suricata-Main] 2025-06-16 23:27:38 Info: suricata: Setting engine mode to IDS mode by default
+[141 - Suricata-Main] 2025-06-16 23:27:38 Info: exception-policy: master exception-policy set to: auto
+[141 - Suricata-Main] 2025-06-16 23:27:38 Info: logopenfile: fast output device (regular) initialized: fast.log
+[141 - Suricata-Main] 2025-06-16 23:27:38 Info: logopenfile: eve-log output device (regular) initialized: eve.json
+[141 - Suricata-Main] 2025-06-16 23:27:38 Info: logopenfile: stats output device (regular) initialized: stats.log
+[141 - Suricata-Main] 2025-06-16 23:27:38 Info: detect: 1 rule files processed. 7 rules successfully loaded, 0 rules failed, 0
+[141 - Suricata-Main] 2025-06-16 23:27:38 Info: threshold-config: Threshold config parsed: 0 rule(s) found
+[141 - Suricata-Main] 2025-06-16 23:27:38 Info: detect: 7 signatures processed. 0 are IP-only rules, 0 are inspecting packet payload, 5 inspect application layer, 0 are decoder event only
+[141 - Suricata-Main] 2025-06-16 23:27:38 Info: unix-manager: unix socket '/var/run/suricata-command.socket'
+[142 - RX#01] 2025-06-16 23:27:38 Info: pcap: Starting file run for lab44.pcapng
+[141 - Suricata-Main] 2025-06-16 23:27:38 Notice: threads: Threads created -> RX: 1 W: 5 FM: 1 FR: 1   Engine started.
+[142 - RX#01] 2025-06-16 23:27:38 Info: checksum: More than 1/10th of packets have an invalid checksum, assuming checksum offloading is used (159/1000)
+[142 - RX#01] 2025-06-16 23:27:38 Info: pcap: pcap file lab44.pcapng end of file reached (pcap err code 0)
+[141 - Suricata-Main] 2025-06-16 23:27:38 Notice: suricata: Signal Received.  Stopping engine.
+[141 - Suricata-Main] 2025-06-16 23:27:39 Info: suricata: time elapsed 0.307s
+[142 - RX#01] 2025-06-16 23:27:39 Notice: pcap: read 1 file, 4786 packets, 1450615 bytes
+[141 - Suricata-Main] 2025-06-16 23:27:39 Info: counters: Alerts: 2

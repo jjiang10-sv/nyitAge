@@ -1,0 +1,3 @@
+Task 1:
+Congrats on getting the flag
+FLAG{3asY_R1gHT?}

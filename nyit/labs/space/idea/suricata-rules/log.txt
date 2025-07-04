@@ -1,0 +1,68 @@
+1.    Collect the XSS payloads found during Task 2.1
+2.    Analyze patterns or similarities across all four payloads.
+3, Write one Suricata rule that can detect all four XSS payloads.
+4.    Explain your logic and approach for designing this detection rule.
+5.    Your rules don’t need to be overly generic or overly specific.
+
+jq -r '
+  select(
+    .event_type == "http" and (
+      (.http.url and (.http.url | test("<|>|script|onload|alert|svg|%3C|%3E|%22|%27|%3D"; "i"))) or
+      (.http.http_user_agent and (.http.http_user_agent | test("<|>|script|onload|alert|svg|%3C|%3E|%22|%27|%3D"; "i")))
+    )
+  )
+  | "Source:      \(.src_ip):\(.src_port)\nDestination: \(.dest_ip):\(.dest_port)\nURL:         \(.http.url)\nUser-Agent:  \(.http.http_user_agent)\n-----------------------------"
+' logs/eve.json
+
+tshark -r lab44.pcapng \
+  -Y 'http.request.uri matches "(<|>|script|onload|alert|svg|%3[Cc]|%3[Ee]|%22|%27|%3[Dd])" || http.user_agent matches "(<|>|script|onload|alert|svg|%3[Cc]|%3[Ee]|%22|%27|%3[Dd])"' \
+  -T fields -e frame.number -e ip.src -e tcp.srcport -e ip.dst -e tcp.dstport -e http.request.method -e http.request.uri -e http.user_agent
+
+jq -r '
+  select(.event_type == "http" and (.http.url | test("fl_g")))
+  | "\(.src_ip):\(.src_port) -> \(.dest_ip):\(.dest_port) | \(.http.url)"
+' logs/eve.json
+
+tshark -r lab44.pcapng \
+  -Y 'ip.src==10.0.88.4 && tcp.srcport==50012 && ip.dst==44.228.249.3 && tcp.dstport==80 && http.request.uri contains "fl_g={John_is_not}"' \
+    -w filtered_output.pcap
+
+tshark -r lab44.pcapng -Y 'frame contains "galf"' -V
+
+tshark -r lab44.pcapng \
+  -Y 'ip.src==10.0.88.4 && tcp.srcport==50012 && ip.dst==44.228.249.3 && tcp.dstport==80 && http.request.uri contains "fl_g={John_is_not}"' -V
+
+tshark -r lab44.pcapng \
+  -Y 'ip.src==10.0.88.4 && tcp.srcport==42750 && ip.dst==44.228.249.3 && tcp.dstport==80 && http.request.uri contains "artists.php?artist=%22"' -V
+
+
+
+tshark -r lab44.pcapng \
+  -Y 'ip.src==10.0.88.4 && tcp.srcport==43110 && ip.dst==44.228.249.3 && tcp.dstport==80 && http.request.uri contains "document.cookie()"' -V
+
+tshark -r lab44.pcapng -Y 'frame contains "R3VpbHR5Ll9JdF9XYXNfTWU="' -V
+
+
+     tshark -r lab44.pcapng -Y 'http && frame contains "creditcard"' -V
+
+10.0.88.4
+
+44.228.249.3
+
+HOME_NET: "[192.168.0.0/16,10.0.0.0/8,172.16.0.0/12]"
+
+
+----task 1
+tshark -r mysql.pcapng \
+  -Y 'tcp.dstport == 3307 && tcp.flags.syn == 1 && tcp.flags.fin == 1 && tcp.flags.push == 1 && tcp.flags.ack == 1' \
+  -T fields -e frame.number -e ip.src -e ip.dst -e tcp.srcport -e tcp.dstport -e tcp.flags
+
+
+tshark -r mysql.pcapng -Y 'tcp.port == 3307' -V
+
+suricata -c ./suricata.yaml -r lab44.pcapng
+
+
+alert tcp any:any -> any:any {"msg":"abcd"; "content":""}
+drop
+

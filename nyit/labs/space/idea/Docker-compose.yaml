@@ -1,0 +1,52 @@
+version: "3.9"
+
+services:
+  attacker:
+    # image: kalilinux/kali-rolling
+    container_name: kali
+    # command: >
+    #   bash -c "
+    #     export DEBIAN_FRONTEND=noninteractive &&
+    #     echo 'wireshark-common wireshark-common/install-setuid boolean true' | debconf-set-selections &&
+    #     apt update --fix-missing &&
+    #     apt install -y --fix-missing iproute2 nmap net-tools curl iputils-ping dnsutils whois nikto hashcat sqlmap netcat-traditional socat tcpdump tshark aircrack-ng masscan zmap &&
+    #     apt remove --purge -y llvm-18* || true &&
+    #     apt install -y metasploit-framework &&
+    #     rm -rf /tmp/bootsnap* &&
+    #     echo 'Tools installation completed!' &&
+    #     sleep infinity
+    #   "
+    
+    tty: true
+    stdin_open: true
+    network_mode: host
+    # networks:
+    #   - testnet
+    platform: linux/arm64 # native to M1 Mac
+      # Add these for packet capture
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    privileged: true
+    environment:
+      - DEBIAN_FRONTEND=noninteractive
+      - DISABLE_BOOTSNAP=1
+    working_dir: /workspace
+    volumes:
+      - .:/workspace
+    build:
+      context: .
+      dockerfile: dockerfile.small.yaml
+
+#   target:
+#     image: tleemcjr/metasploitable2
+#     container_name: metasploitable
+#     platform: linux/arm64 # native to M1 Mac
+#     networks:
+#       - testnet
+#     #platform: linux/amd64  # emulate x86_64
+#     tty: true
+
+# networks:
+#   testnet:
+#     driver: bridge

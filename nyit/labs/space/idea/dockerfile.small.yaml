@@ -1,0 +1,78 @@
+# === Stage 1: Builder ===
+FROM kalilinux/kali-rolling as builder
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV DISABLE_BOOTSNAP=1
+
+RUN echo 'wireshark-common wireshark-common/install-setuid boolean true' | debconf-set-selections && \
+    apt update --fix-missing && \
+    apt install -y --fix-missing \
+    iproute2 \
+    nmap \
+    net-tools \
+    curl \
+    iputils-ping \
+    dnsutils \
+    whois \
+    nikto \
+    hashcat \
+    sqlmap \
+    netcat-traditional \
+    socat \
+    tcpdump \
+    tshark \
+    aircrack-ng \
+    masscan \
+    gdb \
+    gdb-multiarch \
+    zmap \
+    jq \
+    suricata \
+    metasploit-framework \
+    findutils \
+    gcc \
+    build-essential \
+    make \
+    git \
+    python3-pip && \
+    apt remove --purge -y llvm-18* || true && \
+    apt clean && rm -rf /var/lib/apt/lists/* /tmp/*
+
+# Install GDB extensions manually for ARM compatibility
+RUN git clone https://github.com/longld/peda.git /opt/peda || true && \
+    git clone https://github.com/pwndbg/pwndbg.git /opt/pwndbg || true && \
+    cd /opt/pwndbg && ./setup.sh || true
+
+# Create a copyout directory for the tools and their dependencies
+RUN mkdir -p /copyout/bin /copyout/lib
+
+# Define the list of tools
+ENV TOOL_LIST="ip nmap ifconfig curl ping dig whois nikto hashcat sqlmap nc socat tcpdump tshark aircrack-ng masscan gdb zmap jq suricata msfconsole gcc make"
+
+# Copy binaries and their shared libraries to /copyout
+RUN for tool in $TOOL_LIST; do \
+      BIN_PATH=$(which $tool 2>/dev/null); \
+      if [ -n "$BIN_PATH" ]; then \
+        cp --parents $BIN_PATH /copyout/bin 2>/dev/null || true; \
+        ldd $BIN_PATH | awk '{print $3}' | grep -E '^/' | xargs -I '{}' cp --parents '{}' /copyout/lib 2>/dev/null || true; \
+      fi; \
+    done
+
+# === Stage 2: Minimal Final Image ===
+FROM debian:bullseye-slim
+
+# Install runtime dependencies (add or remove based on actual tool needs)
+RUN apt update && apt install -y libpcap0.8 libssl1.1 libpython3.9 python3 perl && \
+    apt clean && rm -rf /var/lib/apt/lists/*
+
+# Copy tools and libraries from builder
+COPY --from=builder /copyout/bin /usr
+COPY --from=builder /copyout/lib /usr
+
+# Set working directory
+WORKDIR /workspace
+
+# Set packet capture capability (may not exist for all setups)
+RUN setcap cap_net_raw,cap_net_admin=eip /usr/bin/dumpcap || true
+
+CMD ["bash"]

@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  burp-suite:
+    build: .
+    container_name: burp-suite-proxy
+    ports:
+      - "8082:8082"  # Burp proxy port
+      - "6080:6080"  # noVNC web interface
+      - "5900:5900"  # VNC port (optional)
+    volumes:
+      - burp-data:/home/burp/.BurpSuite
+      - burp-projects:/tmp
+      - ./certificates:/tmp/certificates
+    environment:
+      - DISPLAY=:0
+      - JAVA_OPTS=-Xmx2g
+      - VNC_RESOLUTION=1280x720
+      - VNC_PASSWORD=burp123
+    networks:
+      - burp-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "8082"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+volumes:
+  burp-data:
+    driver: local
+  burp-projects:
+    driver: local
+
+networks:
+  burp-network:
+    driver: bridge 
