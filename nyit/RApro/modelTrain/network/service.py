@@ -87,3 +87,6 @@ class IntrusionDetection:
 #         label = preprocess_and_predict(flow)
 #         if label != 'Normal':
 #             print(f"ALERT: {label} detected! Flow: {flow}")
+
+
+

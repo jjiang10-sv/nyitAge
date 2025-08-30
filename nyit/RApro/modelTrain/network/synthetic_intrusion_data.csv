@@ -1,4 +1,4 @@
-dst_host_count,dst_host_serror_rate,dst_host_srv_serror_rate,dst_host_same_src_port_rate,srv_count,dst_host_diff_srv_rate,logged_in,dst_host_srv_count,dst_bytes,src_bytes,attack_type
+dst_host_count,dst_host_serror_rate,dst_host_srv_serror_rate,dst_host_same_src_port_rate,srv_count,dst_host_diff_srv_rate,logged_in,dst_host_srv_count,dst_bytes,src_bytes,labels
 5,0.2,0.1,0.4,3,0.6,0,2,1500,200,2
 1000,0.05,0.02,0.95,1,0.01,0,1000,0,5000000,1
 10,0.0,0.0,0.2,5,0.8,1,8,1500,2000,0

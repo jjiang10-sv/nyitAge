@@ -87,6 +87,7 @@ func multiplexTcpSender() {
 		go func(serverAddr string) {
 			defer wg.Done()
 
+			defer wg.Done()
 			// Establish a TCP connection
 			conn, err := net.Dial("tcp", serverAddr)
 			if err != nil {
@@ -105,6 +106,7 @@ func multiplexTcpSender() {
 
 			fmt.Printf("Sent: %s to %s\n", message, serverAddr)
 		}(addr)
+
 	}
 
 	// Wait for all connections to finish
@@ -113,10 +115,8 @@ func multiplexTcpSender() {
 
 func handleConnection(conn net.Conn, port string) {
 	defer conn.Close()
-
 	// Buffer to hold incoming data
 	buffer := make([]byte, 1024)
-
 	// Read data from the connection
 	n, err := conn.Read(buffer)
 	if err != nil {
@@ -126,6 +126,7 @@ func handleConnection(conn net.Conn, port string) {
 
 	// Print the received data
 	fmt.Printf("Received on port %s: %s\n", port, string(buffer[:n]))
+	//conn.Write(buffer)
 }
 
 func startServer(port string, wg *sync.WaitGroup , serverUpSignal chan(string)) {
@@ -137,7 +138,6 @@ func startServer(port string, wg *sync.WaitGroup , serverUpSignal chan(string)) 
 		fmt.Printf("Error resolving TCP address for %s: %v\n", port, err)
 		return
 	}
-
 	// Start listening on the specified port
 	listener, err := net.ListenTCP("tcp", addr)
 	if err != nil {

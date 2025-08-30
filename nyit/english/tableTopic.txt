@@ -1,0 +1,28 @@
+Watch Ashley Madison: Sex, Lies & Scandal
+Dont funk with the cat
+Cyber bunker
+
+two large national banks in canada suffered ransomware attacks. its services 
+have been severely distrupted, and residentail and corporate cusomters can national
+access their accounts. Banks began investigating the incident. the attackers ar asking 
+for $10 million in cryptocurrency to provide the encryption key and solve
+the situation. their backups ar not working.
+
+1, should they hire an external investigations team?
+2, should they report this incident to the authorities? why? what conditions
+would make this reportable?
+3, Which activities should they perform to go back to operations?
+4, Should they pay the ransom?
+
+
+1, Yes. a good external professional investigations team can identify the
+problems and help the bank to recover from business soon.
+2, yes, they shold report this incident to the authorities. by reporting it,
+the authorities can provide information and guidance to the bank. And also,
+it help the authorities such as govenment anti-fraud department to create the 
+profile and add to the records databases. When the bank can confirm that this 
+is indeed an ransomware attacks which should be pretty obvious. and they gathered
+the information like the timeline and impact of this attack.
+3, They should focus on get the backups to work in order to go back to operations.
+4, They should not pay the ransom for it benefits the attackers and they will
+do the same thing again to the bank or possibly to other institutions.

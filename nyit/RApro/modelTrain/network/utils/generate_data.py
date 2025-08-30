@@ -26,17 +26,17 @@ intrusion_llm = StructuredLLM(
     Generate a datapoint for traffic type: {{traffic_type}}""",
     
     output_schema=[
-        {'name': 'dst_host_count', 'type': 'int', 'description': 'Number of connections to the same destination host'},
-        {'name': 'dst_host_serror_rate', 'type': 'float', 'description': 'Percentage of connections to the same destination host that have SYN errors'},
-        {'name': 'dst_host_srv_serror_rate', 'type': 'float', 'description': 'Percentage of connections to the same destination host and service that have SYN errors'},
-        {'name': 'dst_host_same_src_port_rate', 'type': 'float', 'description': 'Percentage of connections to the same destination host from the same source port'},
-        {'name': 'srv_count', 'type': 'int', 'description': 'Number of connections to the same service'},
-        {'name': 'dst_host_diff_srv_rate', 'type': 'float', 'description': 'Percentage of connections to the same destination host that use different services'},
-        {'name': 'logged_in', 'type': 'int', 'description': '1 if successfully logged in, 0 otherwise'},
-        {'name': 'dst_host_srv_count', 'type': 'int', 'description': 'Number of connections to the same destination host and service'},
-        {'name': 'dst_bytes', 'type': 'int', 'description': 'Number of data bytes sent from destination to source'},
-        {'name': 'src_bytes', 'type': 'int', 'description': 'Number of data bytes sent from source to destination'},
-        {'name': 'attack_type', 'type': 'int', 'description': 'Attack type: 0=normal, 1=DoS, 2=R2L, 3=U2R, 4=probe'}
+        {"name": "dst_host_count", "type": "int", "description": "Number of connections to the same destination host"},
+        {"name": "dst_host_serror_rate", "type": "float", "description": "Percentage of connections to the same destination host that have SYN errors"},
+        {"name": "dst_host_srv_serror_rate", "type": "float", "description": "Percentage of connections to the same destination host and service that have SYN errors"},
+        {"name": "dst_host_same_src_port_rate", "type": "float", "description": "Percentage of connections to the same destination host from the same source port"},
+        {"name": "srv_count", "type": "int", "description": "Number of connections to the same service"},
+        {"name": "dst_host_diff_srv_rate", "type": "float", "description": "Percentage of connections to the same destination host that use different services"},
+        {"name": "logged_in", "type": "int", "description": "1 if successfully logged in, 0 otherwise"},
+        {"name": "dst_host_srv_count", "type": "int", "description": "Number of connections to the same destination host and service"},
+        {"name": "dst_bytes", "type": "int", "description": "Number of data bytes sent from destination to source"},
+        {"name": "src_bytes", "type": "int", "description": "Number of data bytes sent from source to destination"},
+        {"name": "labels", "type": "int", "description": "Attack type: 0=normal, 1=DoS, 2=R2L, 3=U2R, 4=probe"}
     ],
     model_kwargs={"temperature": 0.3},
 )
@@ -65,7 +65,7 @@ def synthetic_data_gen(num:int):
     return generated_intrusion_dataset
 
 if __name__ == "__main__":
-    data = synthetic_data_gen(300)
+    data = synthetic_data_gen(100)
     print(data[0])
     df = pd.DataFrame(data)
-    df.to_csv("synthetic_intrusion_data.csv", index=False)
+    df.to_csv("synthetic_intrusion_data_1.csv", index=False)
