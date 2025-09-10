@@ -1,6 +1,7 @@
 Design a news feeding system
 Feature: 100M users. Each user posts 1 post/day and subscribes 10 others. Text length is 1K. 
 Optional: Some users are subscribed by 100M users.
+each user can only see the top 10 posts from other users since subscription
 
 Here’s a crisp system-design for a Twitter-style **news feed** at the scale you gave.
 
