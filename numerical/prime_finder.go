@@ -23,3 +23,9 @@ func PrimesUpTo(upperBound int) []int {
 
 	return primes
 }
+
+// func PrimesUpTo1001(upperBound int) []int {
+// 	var lp = make([]int, upperBound+1)
+// 	var primes = make([]int, 0)
+
+// }

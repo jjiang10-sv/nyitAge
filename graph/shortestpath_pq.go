@@ -16,6 +16,19 @@ var (
 	_ = heap.Interface(&heapData{}) // heapData is a standard heap
 )
 
+type heapData1001 struct {
+	queue []*Vertex
+}
+
+var (
+	_ = heap.Interface(&heapData1001{}) // heapData1001 is a standard heap
+)
+func (h *heapData1001) Less(i, j int) bool {
+	if i > len(h.queue) || j > len(h.queue) {
+		return false
+	}
+	return h.queue[i].Distance < h.queue[j].Distance
+}
 // Less compares two objects and returns true if the first one should go
 // in front of the second one in the heap.
 func (h *heapData) Less(i, j int) bool {
@@ -24,6 +37,8 @@ func (h *heapData) Less(i, j int) bool {
 	}
 	return h.queue[i].Distance < h.queue[j].Distance
 }
+
+func (h *heapData1001) Len() int {return len(h.queue)}
 
 // Len returns the number of items in the Heap.
 func (h *heapData) Len() int { return len(h.queue) }
@@ -35,8 +50,16 @@ func (h *heapData) Swap(i, j int) {
 
 }
 
+func (h *heapData1001) Swap(i, j int) {
+	h.queue[i], h.queue[j] = h.queue[j], h.queue[i]
+}
+
 // Push is supposed to be called by heap.Push only.
 func (h *heapData) Push(kv interface{}) {
+	keyValue := kv.(*Vertex)
+	h.queue = append(h.queue, keyValue)
+}
+func (h *heapData1001) Push(kv interface{}) {
 	keyValue := kv.(*Vertex)
 	h.queue = append(h.queue, keyValue)
 }
@@ -45,6 +68,12 @@ func (h *heapData) Push(kv interface{}) {
 func (h *heapData) Pop() interface{} {
 	item := h.queue[len(h.queue)-1]
 	h.queue = h.queue[0 : len(h.queue)-1]
+	return item
+}
+
+func (h *heapData1001) Pop() interface{} {
+	item := h.queue[len(h.queue)-1]
+	h.queue = h.queue[0:len(h.queue)-1]
 	return item
 }
 
@@ -61,6 +90,7 @@ func getShortestPath1(startNode *Node, endNode *Node, g *ItemGraph) ([]string, i
 		Node:     startNode,
 		Distance: 0,
 	}
+
 	for _, nval := range g.Nodes {
 		dist[nval.Value] = math.MaxInt64
 	}

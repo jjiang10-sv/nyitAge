@@ -7,12 +7,14 @@ import (
 
 // Graph represents an undirected graph using adjacency list
 type Graph struct {
+	numOfNode     int
 	adjacencyList map[int][]int
 }
 
 // NewGraph creates a new empty graph
 func NewGraph() *Graph {
 	return &Graph{
+
 		adjacencyList: make(map[int][]int),
 	}
 }
@@ -70,22 +72,25 @@ func (g *Graph) DFSIterativeStack(start int) []int {
 	return result
 }
 func (g *Graph) DFSIterativeStack1(start int) []int {
-	result := []int{}
+	if len(g.adjacencyList) == 0 {
+		return []int{}
+	}
+	visited := map[int]bool{}
+	result := make([]int, 0)
 	stack := list.New()
 	stack.PushBack(start)
-	visited := make(map[int]bool)
-
 	for stack.Len() > 0 {
-		current := stack.Remove(stack.Back()).(int)
-		if !visited[current] {
-			result = append(result, current)
-			for _, node := range g.adjacencyList[current] {
-				if !visited[node] {
-					stack.PushBack(node)
+		item := stack.Remove(stack.Back()).(int)
+		if !visited[item] {
+			result = append(result, item)
+			for _, neighbor := range g.adjacencyList[item] {
+				if !visited[item] {
+					stack.PushBack(neighbor)
 				}
+
 			}
-			visited[current] = true
 		}
+		visited[item] = true
 
 	}
 	return result
@@ -269,6 +274,87 @@ func (g *Graph) DetectCycleDFS() bool {
 		}
 	}
 	return false
+}
+
+// DetectCycleDFS detects cycle in directed graph using DFS
+func (g *Graph) DetectCycleDFSDirected() bool {
+	//visited := make(map[int]bool)
+	// 0: unvisited 1: visiting	2: visited(done with the children nodes)
+	nodeState := make(map[int]int)
+	var hasCycleDFS func(node int) bool
+	hasCycleDFS = func(node int) bool {
+		//visited[node] = true
+		if nodeState[node] == 1 {
+			return true
+		}
+		if nodeState[node] == 2 {
+			return false
+		}
+		nodeState[node] = 1
+		for _, neighbor := range g.adjacencyList[node] {
+			if hasCycleDFS(neighbor) {
+				return true
+			}
+
+		}
+		nodeState[node] = 2
+		return false
+	}
+
+	for node := range g.adjacencyList {
+		if nodeState[node] == 0 {
+			if hasCycleDFS(node) {
+				return true
+			}
+		}
+
+	}
+	return false
+}
+
+// DetectCycleBSFIndegree detects cycle in directed graph using BFS
+// the ideas is that every node has a set of prerequisites which is recorded as the indegree
+// it start to process nodes which has indegree as 0 which has no prerequisistes.
+// then all the toNodes whch the processed node point to will have its indgree minus 1 for one
+//
+//	of the prerequisistes get processed
+//
+// it keep going like this. if all nodes can be processed with this constraint. it means no cycle
+// if can not process all nodes, then there is a cycle which nodes depends on each other
+func (g *Graph) DetectCycleBSFIndegree() bool {
+	nodeNum := g.numOfNode
+	indegree := make([]int, nodeNum)
+	for _, nodes := range g.adjacencyList {
+		for _, node := range nodes {
+			indegree[convertFromNodeNumToIndgreeIndex(node)] += 1
+		}
+	}
+	toProcessNodes := list.New()
+	for node, numOfIndgree := range indegree {
+		if numOfIndgree == 0 {
+			toProcessNodes.PushBack(convertFromIndgreeIndexToNodeNum(node))
+		}
+	}
+	count := 0
+	for toProcessNodes.Len() > 0 {
+		count += 1
+		processingNode := toProcessNodes.Remove(toProcessNodes.Front()).(int)
+		for _, nextNode := range g.adjacencyList[processingNode] {
+			indegree[convertFromNodeNumToIndgreeIndex(nextNode)] -= 1
+			if indegree[convertFromNodeNumToIndgreeIndex(nextNode)] == 0 {
+				toProcessNodes.PushBack(nextNode)
+			}
+		}
+	}
+	return count != nodeNum
+}
+
+func convertFromNodeNumToIndgreeIndex(nodeNum int) int {
+	return nodeNum - 1
+}
+
+func convertFromIndgreeIndexToNodeNum(indgreeNum int) int {
+	return indgreeNum + 1
 }
 
 // TopologicalSortDFS performs topological sort using DFS (for DAGs)

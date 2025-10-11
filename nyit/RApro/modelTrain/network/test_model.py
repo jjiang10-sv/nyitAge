@@ -17,7 +17,8 @@ data = [{
 
 # Send POST request to BentoML API
 response = requests.post(
-    "http://localhost:3000/predict",  # Update if your endpoint is different
+    #"http://localhost:3000/predict",  # Update if your endpoint is different
+    "https://my-synthetic-classifier-67630700.mt-guc1.bentoml.ai/predict",
     json={"flow": data}
 )
 

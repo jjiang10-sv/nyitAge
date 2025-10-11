@@ -88,6 +88,79 @@ func TestDetectCycleDFS(t *testing.T) {
 	}
 }
 
+func TestDetectCycleBFS(t *testing.T) {
+	graph := NewGraph()
+	graph.numOfNode = 5
+	graph.AddDirectedEdge(1, 2)
+	graph.AddDirectedEdge(1, 3)
+	graph.AddDirectedEdge(2, 4)
+	graph.AddDirectedEdge(4, 5)
+	graph.AddDirectedEdge(3, 2)
+	graph.AddDirectedEdge(3, 5)
+	// this add a cycle
+	addCycle := false
+	if addCycle {
+		graph.AddDirectedEdge(5, 3)
+		if !graph.DetectCycleBSFIndegree() {
+			t.Errorf("DetectCycleBSFIndegree should detect a cycle")
+		}
+	} else {
+		if graph.DetectCycleBSFIndegree() {
+			t.Errorf("DetectCycleBSFIndegree should not detect a cycle")
+		}
+	}
+
+}
+
+// it will fail the case for this method only applies in undirected graph
+func TestDetectCycleDFS1(t *testing.T) {
+	graph := NewGraph()
+	graph.numOfNode = 5
+	graph.AddDirectedEdge(1, 2)
+	graph.AddDirectedEdge(1, 3)
+	graph.AddDirectedEdge(2, 4)
+	graph.AddDirectedEdge(4, 5)
+	graph.AddDirectedEdge(3, 2)
+	graph.AddDirectedEdge(3, 5)
+	// this add a cycle
+	addCycle := false
+	if addCycle {
+		graph.AddDirectedEdge(5, 3)
+		if !graph.DetectCycleDFS() {
+			t.Errorf("DetectCycleBSFIndegree should detect a cycle")
+		}
+	} else {
+		if graph.DetectCycleDFS() {
+			t.Errorf("DetectCycleBSFIndegree should not detect a cycle")
+		}
+	}
+
+}
+
+func TestDetectCycleDFS2(t *testing.T) {
+	graph := NewGraph()
+	graph.numOfNode = 5
+	graph.AddDirectedEdge(1, 2)
+	graph.AddDirectedEdge(1, 3)
+	graph.AddDirectedEdge(2, 4)
+	graph.AddDirectedEdge(4, 5)
+	graph.AddDirectedEdge(3, 2)
+	graph.AddDirectedEdge(3, 5)
+	// this add a cycle
+	addCycle := true
+	if addCycle {
+		graph.AddDirectedEdge(5, 3)
+		if !graph.DetectCycleDFSDirected() {
+			t.Errorf("DetectCycleBSFIndegree should detect a cycle")
+		}
+	} else {
+		if graph.DetectCycleDFSDirected() {
+			t.Errorf("DetectCycleBSFIndegree should not detect a cycle")
+		}
+	}
+
+}
+
 func TestTopologicalSortDFS(t *testing.T) {
 	dag := NewGraph()
 	dag.AddDirectedEdge(1, 2)

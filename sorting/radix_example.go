@@ -11,7 +11,7 @@ const maxbit = -1 << 31
 
 // Constants are already defined in radix_sort.go
 
-func main() {
+func mainRad() {
 	// Simple example with mixed positive/negative numbers
 	data := []int32{-2, 1, -1, 2}
 	fmt.Printf("Original data: %v\n\n", data)

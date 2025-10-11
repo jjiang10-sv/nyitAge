@@ -74,28 +74,27 @@ func Has(value interface{}, list *List) bool {
             }
         }
     }
- 
-    return false
 }
  
 func Remove(value interface{}, list *List) *List {
     list.locker.RLock()
-    
-    if list.head == nil {
-    return list
-    }
-
-    list.locker.RUnlock()
-
-    list.locker.RLock()
-    first := list.First()
-    last := list.Last()
-    list.locker.RUnlock()
-    list.locker.Lock()
     defer list.locker.Unlock()
     
+    if list.head == nil {
+        return list
+    }
+
+    // list.locker.RUnlock()
+
+    // list.locker.RLock()
+    first := list.First()
+    //last := list.Last()
+    // list.locker.RUnlock()
+    // list.locker.Lock()
+    
+    
     for {
-        if last.next == nil {
+        if first.next == nil {
             return list
         }
  

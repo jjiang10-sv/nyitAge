@@ -2,3 +2,16 @@ inheritance risk and risidual risk
 
 scattered spider:
 https://www.bbrown.com/us/insight/a-look-back-at-the-mgm-and-caesars-incident/
+
+a list of threats, vulnerabilities
+cost
+a list of recommendations to reduce the risks
+cost
+cost-benefit analysis
+reports
+
+asset and configuration management : 
+    how often do you check and update the service configuration?
+        Recovery
+    do you have a central place to monitor and adjust the assets and configurations?
+        Detect

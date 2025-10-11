@@ -1,3 +1,18 @@
+### Common uses of BFS (Breadth-First Search)
+
+- **Shortest path in unweighted graphs**: Finds minimum-edge paths (e.g., routing hops, word ladder).
+- **Level-order traversal**: Processes nodes by distance/layer (e.g., trees, org charts, influence levels).
+- **Multi-source shortest paths**: Start from many sources at once (e.g., nearest facility, contagion spread).
+- **Bipartite checking**: Color graph via BFS to detect odd cycles.
+- **Connected components (on unweighted/undirected graphs)**: Discover components by repeated BFS.
+- **Minimum depth/closest target**: First hit guarantees minimal steps (e.g., nearest exit/key).
+- **Topological processing via in-degree (Kahn’s algorithm)**: Queue-driven removal order in DAGs.
+- **Network broadcasting/peer discovery**: Simulate wavefront propagation across edges.
+- **Web crawling and recommendation layers**: Explore neighbors by radius (depth-limited BFS).
+- **Grid/maze pathfinding**: Shortest path on 4/8-direction grids when all moves cost 1.
+
+Tip: Use BFS when you need minimum number of edges (unit-cost) or level-by-level results. Use Dijkstra/A* when edges have weights.
+
 # Stacks and Queues in Graph BFS and DFS
 
 ## Overview

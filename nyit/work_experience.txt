@@ -1,0 +1,32 @@
+
+Typescript Development:
+    2017/03 - 2021/09: PWC
+        Full stack Development with Nodejs on Fraud Detection Platform and integrate with Python ML
+    2024/09 - 2025/03: Intersoul Startup
+        User Recommendation and Matching microservice in Typescrip and Devops in AWS and EKS
+    2025/05 - 2025/08 : Contractor Role on BC Specialist Membership Website
+        Next.js full stack on server less actions and api, integrated with RAG and AI agents for Document Libraries,
+            deployed in Vercel platform
+
+Golang Development:
+    2021/09 - 2023/09 : Kyligence and Gaussian (shanghai based startup company)
+        Built microservices to track AWS/Azure/Ali Cloud Resource usages and team CICD 
+        Built Robotics IOT simulator for remote command on the devices from Cloud platform
+    2023/09 - 2024/04 : Tesla as a contractor role
+        Built Micro service to schedule EV charging based on ML algorithms
+        Build ML platform with Bentoml and Yatai to serve and monotor the pioneering Auto Driving model
+    2024/09 - 2025/03: Intersoul Startup
+        Build K8s Operator to schedule and manage middlesware in k8s such as Postgres, Kafka,
+        Elastic Search, Milvus Vector DB, Promethesus, Grafana and Kong gateway
+
+DevOps:
+    2024/09 - 2025/03: Intersoul Startup
+        Setup and Manage the AWS CLoud resource like VPC , Gateway, Lambda, S3 and EKS.
+        Run microservices in k8s to handle the security and scaling
+    2024/10 - 2025/09. NYIT Research Assitance
+        Research Cloud Security on k8s KEDA pre-active scaling based on network traffic patterns
+            observed by ML model to handle DDOS attack
+        Research on malware detection to write ETL jobs , collect and clean malware datasets,
+            train a model and run this model in AWS EKS cloud.
+        Research on Falcon and Cilium eBPF tools to enhance the observality and detect network and 
+            malware drops based on heuristic checking methods and ML prediction.

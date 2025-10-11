@@ -39,6 +39,32 @@ func BellmanFord(vertices int, edges []EdgeBell, src int) ([]int, error) {
 	return distances, nil
 }
 
+type BellmanFord1001 struct {
+	edges []EdgeBell
+	vertices int
+}
+func (b *BellmanFord1001) findShortestPath(src int) ([]int, error) {
+	result := []int{}
+	for i:=0; i < b.vertices;i++{
+		result[i] = math.MaxInt
+	}
+	result[src] = 0
+	for i := 0; i < b.vertices-1;i++ {
+		for _, edge := range b.edges {
+			if result[edge.destination] > result[edge.source] + edge.weight && result[edge.source] != math.MaxInt{
+				result[edge.destination] = result[edge.source] + edge.weight
+			}
+		}
+	}
+	for _, edge := range b.edges{
+		if result[edge.source] != math.MaxInt && result[edge.source]+edge.weight < result[edge.destination]{
+			return nil, fmt.Errorf("there is a negtive weight in the graph")
+		}
+	}
+	return result, nil
+}
+
+
 func main() {
 	vertices := 5
 	edges := []EdgeBell{

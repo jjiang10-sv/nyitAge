@@ -186,3 +186,17 @@ print(result)
 # 3   28 * 7  
 
 # 4
+
+from typing import List
+class Solution:
+    def getLongestSubsequence(self, words: List[str], groups: List[int]) -> List[str]:
+        indexes = [0]
+
+        for idx, group in range(1,len(groups)):
+            print(idx, group)
+            if indexes[-1] != group:
+                indexes.append(idx)
+        
+        return [words[i] for i in indexes]
+
+        

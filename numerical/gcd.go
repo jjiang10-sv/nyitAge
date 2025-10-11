@@ -67,6 +67,13 @@ func GCD0521_2(x,y uint) uint {
 	return x
 }
 
+func gcd1001(x,y uint) uint {
+	for y != 0 {
+		x,y = y, x%y
+	}
+	return x
+}
+
 func GCD0521_3(x,y uint) uint {
 
 	if y == 0 {
