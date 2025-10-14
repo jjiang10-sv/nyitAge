@@ -1,0 +1,4 @@
+minitnet does not comes with controller as default/remote/ovsc so set it as none and then manually add flow
+
+sudo mn --topo single,3 --mac --switch ovsk --controller none
+sh ovs-ofctl add-flow s1 actions=normal
