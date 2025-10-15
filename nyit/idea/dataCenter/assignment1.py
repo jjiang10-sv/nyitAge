@@ -55,203 +55,210 @@ class BCube32(Topo):
 
 
 def configure_host_routing(net):
-    """
-    Configure host routing for BCube paths.
-    In BCube, hosts use different interfaces for different paths.
-    We need to add routes so traffic uses the correct interface.
-    """
+    """Configure host routing for BCube paths."""
     print("\n=== Configuring host routing ===")
     
-    # Get all hosts
     h00 = net.get('h00'); h40 = net.get('h40'); h50 = net.get('h50')
     h20 = net.get('h20'); h30 = net.get('h30')
     h60 = net.get('h60'); h61 = net.get('h61'); h70 = net.get('h70')
     
-    # Get switches
     s30 = net.get('s30'); s14 = net.get('s14'); s12 = net.get('s12')
     s06 = net.get('s06'); s16 = net.get('s16')
     
     # RED PATH: h00 ↔ h40 via s30
-    # Find which interface connects to s30
-    h00_s30_intf = None
+    h00_s30_intf = None; h00_s30_mac = None
     for intf in h00.intfList():
         if intf.name != 'lo' and intf.link:
             if intf.link.intf1.node == s30 or intf.link.intf2.node == s30:
-                h00_s30_intf = intf.name
-                break
+                h00_s30_intf = intf.name; h00_s30_mac = intf.MAC(); break
     
-    h40_s30_intf = None
+    h40_s30_intf = None; h40_s30_mac = None
     for intf in h40.intfList():
         if intf.name != 'lo' and intf.link:
             if intf.link.intf1.node == s30 or intf.link.intf2.node == s30:
-                h40_s30_intf = intf.name
-                break
+                h40_s30_intf = intf.name; h40_s30_mac = intf.MAC(); break
     
     if h00_s30_intf and h40_s30_intf:
-        # Route h40's IP via h00's s30 interface
         h00.cmd(f'ip route add {h40.IP()} dev {h00_s30_intf}')
         h40.cmd(f'ip route add {h00.IP()} dev {h40_s30_intf}')
-        print(f"✓ RED: h00 uses {h00_s30_intf} → h40 uses {h40_s30_intf}")
+        h00.cmd(f'arp -s {h40.IP()} {h40_s30_mac}')
+        h40.cmd(f'arp -s {h00.IP()} {h00_s30_mac}')
+        print(f"✓ RED: h00→s30→h40")
     
-    # GREEN PATH: h00 ↔ h50 (also needs h40 forwarding)
+    # GREEN PATH: h00 ↔ h50 via h40 relay
     h40.cmd('sysctl -w net.ipv4.ip_forward=1')
+    h40.cmd('sysctl -w net.ipv4.conf.all.rp_filter=0')
+    h40.cmd('sysctl -w net.ipv4.conf.default.rp_filter=0')
+    for intf in h40.intfList():
+        if intf.name != 'lo':
+            h40.cmd(f'sysctl -w net.ipv4.conf.{intf.name}.rp_filter=0')
     
-    h40_s14_intf = None
+    h40_s14_intf = None; h40_s14_mac = None
     for intf in h40.intfList():
         if intf.name != 'lo' and intf.link:
             if intf.link.intf1.node == s14 or intf.link.intf2.node == s14:
-                h40_s14_intf = intf.name
-                break
+                h40_s14_intf = intf.name; h40_s14_mac = intf.MAC(); break
     
-    h50_s14_intf = None
+    h50_s14_intf = None; h50_s14_mac = None
     for intf in h50.intfList():
         if intf.name != 'lo' and intf.link:
             if intf.link.intf1.node == s14 or intf.link.intf2.node == s14:
-                h50_s14_intf = intf.name
-                break
+                h50_s14_intf = intf.name; h50_s14_mac = intf.MAC(); break
     
     if h00_s30_intf:
         h00.cmd(f'ip route add {h50.IP()} dev {h00_s30_intf}')
+        h00.cmd(f'arp -s {h50.IP()} {h40_s30_mac}')
     if h50_s14_intf:
         h50.cmd(f'ip route add {h00.IP()} dev {h50_s14_intf}')
+        h50.cmd(f'arp -s {h00.IP()} {h40_s14_mac}')
     if h40_s30_intf and h40_s14_intf:
         h40.cmd(f'ip route add {h50.IP()} dev {h40_s14_intf}')
         h40.cmd(f'ip route add {h00.IP()} dev {h40_s30_intf}')
-    print(f"✓ GREEN: h00→h50 routing configured via h40")
+        h40.cmd(f'arp -s {h00.IP()} {h00_s30_mac}')
+        h40.cmd(f'arp -s {h50.IP()} {h50_s14_mac}')
+        print(f"✓ GREEN: h00→s30→h40→s14→h50 (relay)")
     
     # BLUE PATH: h20 ↔ h30 via s12
-    h20_s12_intf = None
+    h20_s12_intf = None; h20_s12_mac = None
     for intf in h20.intfList():
         if intf.name != 'lo' and intf.link:
             if intf.link.intf1.node == s12 or intf.link.intf2.node == s12:
-                h20_s12_intf = intf.name
-                break
+                h20_s12_intf = intf.name; h20_s12_mac = intf.MAC(); break
     
-    h30_s12_intf = None
+    h30_s12_intf = None; h30_s12_mac = None
     for intf in h30.intfList():
         if intf.name != 'lo' and intf.link:
             if intf.link.intf1.node == s12 or intf.link.intf2.node == s12:
-                h30_s12_intf = intf.name
-                break
+                h30_s12_intf = intf.name; h30_s12_mac = intf.MAC(); break
     
     if h20_s12_intf and h30_s12_intf:
         h20.cmd(f'ip route add {h30.IP()} dev {h20_s12_intf}')
         h30.cmd(f'ip route add {h20.IP()} dev {h30_s12_intf}')
-        print(f"✓ BLUE: h20 uses {h20_s12_intf} → h30 uses {h30_s12_intf}")
+        h20.cmd(f'arp -s {h30.IP()} {h30_s12_mac}')
+        h30.cmd(f'arp -s {h20.IP()} {h20_s12_mac}')
+        print(f"✓ BLUE: h20→s12→h30")
     
-    # PURPLE PATH: h60 ↔ h61 via s06 (level-0, already on same switch)
-    # No special routing needed as they're on s06
-    print(f"✓ PURPLE: h60 ↔ h61 (same level-0 switch)")
+    # PURPLE PATH: h60 ↔ h61 via s06
+    print(f"✓ PURPLE: h60↔h61 (s06)")
     
     # BLACK PATH: h60 ↔ h70 via s16
-    h60_s16_intf = None
+    h60_s16_intf = None; h60_s16_mac = None
     for intf in h60.intfList():
         if intf.name != 'lo' and intf.link:
             if intf.link.intf1.node == s16 or intf.link.intf2.node == s16:
-                h60_s16_intf = intf.name
-                break
+                h60_s16_intf = intf.name; h60_s16_mac = intf.MAC(); break
     
-    h70_s16_intf = None
+    h70_s16_intf = None; h70_s16_mac = None
     for intf in h70.intfList():
         if intf.name != 'lo' and intf.link:
             if intf.link.intf1.node == s16 or intf.link.intf2.node == s16:
-                h70_s16_intf = intf.name
-                break
+                h70_s16_intf = intf.name; h70_s16_mac = intf.MAC(); break
     
     if h60_s16_intf and h70_s16_intf:
         h60.cmd(f'ip route add {h70.IP()} dev {h60_s16_intf}')
         h70.cmd(f'ip route add {h60.IP()} dev {h70_s16_intf}')
-        print(f"✓ BLACK: h60 uses {h60_s16_intf} → h70 uses {h70_s16_intf}")
-    
+        h60.cmd(f'arp -s {h70.IP()} {h70_s16_mac}')
+        h70.cmd(f'arp -s {h60.IP()} {h60_s16_mac}')
+        print(f"✓ BLACK: h60→s16→h70")
     print()
 
 
 def add_flows_bcube(net):
-    """
-    Add OpenFlow rules for the 5 specific BCube paths.
-    """
-    # --- Get hosts ---
+    """Add OpenFlow rules for the 5 paths."""
     h00 = net.get('h00'); h40 = net.get('h40'); h50 = net.get('h50')
     h20 = net.get('h20'); h30 = net.get('h30')
     h60 = net.get('h60'); h61 = net.get('h61'); h70 = net.get('h70')
-
-    # --- Get switches ---
     s30 = net.get('s30'); s14 = net.get('s14'); s12 = net.get('s12')
     s06 = net.get('s06'); s16 = net.get('s16')
 
-    path_switches = [s30, s14, s12, s06, s16]
-
-    print("=== Configuring OpenFlow rules ===")
+    print("=== Configuring OpenFlow rules ===\n")
     
-    # Clear all flows and set default drop
-    for sw in path_switches:
+    for sw in [s30, s14, s12, s06, s16]:
         os.system(f"ovs-ofctl del-flows {sw.name}")
         os.system(f"ovs-ofctl add-flow {sw.name} 'priority=0,actions=drop'")
         os.system(f"ovs-ofctl add-flow {sw.name} 'priority=200,arp,actions=normal'")
     
-    print(f"\n[INFO] Host IPs: h00={h00.IP()}, h40={h40.IP()}, h50={h50.IP()}")
-    print(f"       h20={h20.IP()}, h30={h30.IP()}, h60={h60.IP()}, h61={h61.IP()}, h70={h70.IP()}")
-
-    # ========== RED PATH: h00 ↔ h40 via s30 ==========
-    print(f"\n[RED] h00({h00.IP()}) ↔ h40({h40.IP()}) via s30")
-    h00_conn = s30.connectionsTo(h00)
-    h40_conn = s30.connectionsTo(h40)
-    
+    # RED PATH
+    h00_conn = s30.connectionsTo(h00); h40_conn = s30.connectionsTo(h40)
     if h00_conn and h40_conn:
-        port_h00 = s30.ports[h00_conn[0][0]]
-        port_h40 = s30.ports[h40_conn[0][0]]
-        os.system(f"ovs-ofctl add-flow {s30.name} 'priority=100,ip,nw_src={h00.IP()},nw_dst={h40.IP()},actions=output:{port_h40}'")
-        os.system(f"ovs-ofctl add-flow {s30.name} 'priority=100,ip,nw_src={h40.IP()},nw_dst={h00.IP()},actions=output:{port_h00}'")
-        print(f"  ✓ s30: port {port_h00}(h00) ↔ port {port_h40}(h40)")
+        p_h00 = s30.ports[h00_conn[0][0]]; p_h40 = s30.ports[h40_conn[0][0]]
+        os.system(f"ovs-ofctl add-flow {s30.name} 'priority=100,ip,nw_src={h00.IP()},nw_dst={h40.IP()},actions=output:{p_h40}'")
+        os.system(f"ovs-ofctl add-flow {s30.name} 'priority=100,ip,nw_src={h40.IP()},nw_dst={h00.IP()},actions=output:{p_h00}'")
+        print(f"[RED] s30 flows added")
 
-    # ========== GREEN PATH: h00 ↔ h50 via s30 → h40 → s14 ==========
-    print(f"\n[GREEN] h00({h00.IP()}) ↔ h50({h50.IP()}) via s30→h40→s14")
-    os.system(f"ovs-ofctl add-flow {s30.name} 'priority=100,ip,nw_src={h00.IP()},nw_dst={h50.IP()},actions=output:{port_h40}'")
-    os.system(f"ovs-ofctl add-flow {s30.name} 'priority=100,ip,nw_src={h50.IP()},nw_dst={h00.IP()},actions=output:{port_h00}'")
-    
-    h40_s14_conn = s14.connectionsTo(h40)
-    h50_s14_conn = s14.connectionsTo(h50)
-    if h40_s14_conn and h50_s14_conn:
-        port_s14_h40 = s14.ports[h40_s14_conn[0][0]]
-        port_s14_h50 = s14.ports[h50_s14_conn[0][0]]
-        os.system(f"ovs-ofctl add-flow {s14.name} 'priority=100,ip,nw_src={h00.IP()},nw_dst={h50.IP()},actions=output:{port_s14_h50}'")
-        os.system(f"ovs-ofctl add-flow {s14.name} 'priority=100,ip,nw_src={h50.IP()},nw_dst={h00.IP()},actions=output:{port_s14_h40}'")
-        print(f"  ✓ s14: port {port_s14_h40}(h40) ↔ port {port_s14_h50}(h50)")
+    # GREEN PATH
+    os.system(f"ovs-ofctl add-flow {s30.name} 'priority=100,ip,nw_src={h00.IP()},nw_dst={h50.IP()},actions=output:{p_h40}'")
+    os.system(f"ovs-ofctl add-flow {s30.name} 'priority=100,ip,nw_src={h50.IP()},nw_dst={h00.IP()},actions=output:{p_h00}'")
+    h40_s14 = s14.connectionsTo(h40); h50_s14 = s14.connectionsTo(h50)
+    if h40_s14 and h50_s14:
+        p_h40_s14 = s14.ports[h40_s14[0][0]]; p_h50_s14 = s14.ports[h50_s14[0][0]]
+        os.system(f"ovs-ofctl add-flow {s14.name} 'priority=100,ip,nw_src={h00.IP()},nw_dst={h50.IP()},actions=output:{p_h50_s14}'")
+        os.system(f"ovs-ofctl add-flow {s14.name} 'priority=100,ip,nw_src={h50.IP()},nw_dst={h00.IP()},actions=output:{p_h40_s14}'")
+        print(f"[GREEN] s30,s14 flows added")
 
-    # ========== BLUE PATH: h20 ↔ h30 via s12 ==========
-    print(f"\n[BLUE] h20({h20.IP()}) ↔ h30({h30.IP()}) via s12")
-    h20_conn = s12.connectionsTo(h20)
-    h30_conn = s12.connectionsTo(h30)
+    # BLUE PATH
+    h20_conn = s12.connectionsTo(h20); h30_conn = s12.connectionsTo(h30)
     if h20_conn and h30_conn:
-        port_h20 = s12.ports[h20_conn[0][0]]
-        port_h30 = s12.ports[h30_conn[0][0]]
-        os.system(f"ovs-ofctl add-flow {s12.name} 'priority=100,ip,nw_src={h20.IP()},nw_dst={h30.IP()},actions=output:{port_h30}'")
-        os.system(f"ovs-ofctl add-flow {s12.name} 'priority=100,ip,nw_src={h30.IP()},nw_dst={h20.IP()},actions=output:{port_h20}'")
-        print(f"  ✓ s12: port {port_h20}(h20) ↔ port {port_h30}(h30)")
+        p_h20 = s12.ports[h20_conn[0][0]]; p_h30 = s12.ports[h30_conn[0][0]]
+        os.system(f"ovs-ofctl add-flow {s12.name} 'priority=100,ip,nw_src={h20.IP()},nw_dst={h30.IP()},actions=output:{p_h30}'")
+        os.system(f"ovs-ofctl add-flow {s12.name} 'priority=100,ip,nw_src={h30.IP()},nw_dst={h20.IP()},actions=output:{p_h20}'")
+        print(f"[BLUE] s12 flows added")
 
-    # ========== PURPLE PATH: h60 ↔ h61 via s06 ==========
-    print(f"\n[PURPLE] h60({h60.IP()}) ↔ h61({h61.IP()}) via s06")
-    h60_conn = s06.connectionsTo(h60)
-    h61_conn = s06.connectionsTo(h61)
+    # PURPLE PATH
+    h60_conn = s06.connectionsTo(h60); h61_conn = s06.connectionsTo(h61)
     if h60_conn and h61_conn:
-        port_h60 = s06.ports[h60_conn[0][0]]
-        port_h61 = s06.ports[h61_conn[0][0]]
-        os.system(f"ovs-ofctl add-flow {s06.name} 'priority=100,ip,nw_src={h60.IP()},nw_dst={h61.IP()},actions=output:{port_h61}'")
-        os.system(f"ovs-ofctl add-flow {s06.name} 'priority=100,ip,nw_src={h61.IP()},nw_dst={h60.IP()},actions=output:{port_h60}'")
-        print(f"  ✓ s06: port {port_h60}(h60) ↔ port {port_h61}(h61)")
+        p_h60 = s06.ports[h60_conn[0][0]]; p_h61 = s06.ports[h61_conn[0][0]]
+        os.system(f"ovs-ofctl add-flow {s06.name} 'priority=100,ip,nw_src={h60.IP()},nw_dst={h61.IP()},actions=output:{p_h61}'")
+        os.system(f"ovs-ofctl add-flow {s06.name} 'priority=100,ip,nw_src={h61.IP()},nw_dst={h60.IP()},actions=output:{p_h60}'")
+        print(f"[PURPLE] s06 flows added")
 
-    # ========== BLACK PATH: h60 ↔ h70 via s16 ==========
-    print(f"\n[BLACK] h60({h60.IP()}) ↔ h70({h70.IP()}) via s16")
-    h60_s16_conn = s16.connectionsTo(h60)
-    h70_s16_conn = s16.connectionsTo(h70)
-    if h60_s16_conn and h70_s16_conn:
-        port_h60 = s16.ports[h60_s16_conn[0][0]]
-        port_h70 = s16.ports[h70_s16_conn[0][0]]
-        os.system(f"ovs-ofctl add-flow {s16.name} 'priority=100,ip,nw_src={h60.IP()},nw_dst={h70.IP()},actions=output:{port_h70}'")
-        os.system(f"ovs-ofctl add-flow {s16.name} 'priority=100,ip,nw_src={h70.IP()},nw_dst={h60.IP()},actions=output:{port_h60}'")
-        print(f"  ✓ s16: port {port_h60}(h60) ↔ port {port_h70}(h70)")
+    # BLACK PATH
+    h60_s16 = s16.connectionsTo(h60); h70_s16 = s16.connectionsTo(h70)
+    if h60_s16 and h70_s16:
+        p_h60_s16 = s16.ports[h60_s16[0][0]]; p_h70_s16 = s16.ports[h70_s16[0][0]]
+        os.system(f"ovs-ofctl add-flow {s16.name} 'priority=100,ip,nw_src={h60.IP()},nw_dst={h70.IP()},actions=output:{p_h70_s16}'")
+        os.system(f"ovs-ofctl add-flow {s16.name} 'priority=100,ip,nw_src={h70.IP()},nw_dst={h60.IP()},actions=output:{p_h60_s16}'")
+        print(f"[BLACK] s16 flows added")
+    print()
 
-    print("\n✅ All flows configured!\n")
+
+def test_connectivity(net):
+    """Test connectivity with ping."""
+    print("\n" + "="*70)
+    print("AUTOMATED CONNECTIVITY TESTS (PING)")
+    print("="*70)
+    
+    h00 = net.get('h00'); h40 = net.get('h40'); h50 = net.get('h50')
+    h20 = net.get('h20'); h30 = net.get('h30')
+    h60 = net.get('h60'); h61 = net.get('h61'); h70 = net.get('h70')
+    
+    tests = [
+        ('RED', h00, h40, 's30'),
+        ('GREEN', h00, h50, 's30→h40→s14'),
+        ('BLUE', h20, h30, 's12'),
+        ('PURPLE', h60, h61, 's06'),
+        ('BLACK', h60, h70, 's16')
+    ]
+    
+    for name, src, dst, path in tests:
+        print(f"\n[{name}] {src.name} ping {dst.name} (via {path})")
+        result = src.cmd(f'ping -c 3 -W 2 {dst.IP()}')
+        
+        if '3 received' in result or '3 packets transmitted, 3 received' in result:
+            import re
+            rtt = re.search(r'rtt min/avg/max/mdev = ([\d.]+)/([\d.]+)/([\d.]+)/([\d.]+)', result)
+            if rtt:
+                print(f"  ✓ PASS - 3/3 packets, avg RTT: {rtt.group(2)} ms")
+            else:
+                print(f"  ✓ PASS - 3/3 packets received")
+        elif '0 received' in result:
+            print(f"  ✗ FAIL - 0/3 packets received")
+        else:
+            print(f"  ⚠ PARTIAL - Some packet loss")
+    
+    print("\n" + "="*70)
+    print("CONNECTIVITY TESTS COMPLETE")
+    print("="*70 + "\n")
 
 
 def run():
@@ -260,23 +267,25 @@ def run():
     net.start()
     info("\n*** BCube(3,2) topology built ***\n")
     
-    # Configure host routing FIRST (so packets use correct interfaces)
     configure_host_routing(net)
-    
-    # Then add OpenFlow rules
     add_flows_bcube(net)
+    test_connectivity(net)
     
-    info("\n*** Testing the 5 paths ***\n")
-    info("=" * 60 + "\n")
-    info("  h00 ping -c 3 h40  # RED path via s30\n")
-    info("  h00 ping -c 3 h50  # GREEN path via s30 → h40 → s14\n")
-    info("  h20 ping -c 3 h30  # BLUE path via s12\n")
-    info("  h60 ping -c 3 h61  # PURPLE path via s06\n")
-    info("  h60 ping -c 3 h70  # BLACK path via s16\n")
-    info("=" * 60 + "\n")
-    info("\nDebug:\n")
-    info("  h00 ip route       # Check routing table\n")
-    info("  sh ovs-ofctl dump-flows s30  # Check flows\n\n")
+    info("\n*** Manual Testing Commands ***\n")
+    info("="*70 + "\n")
+    info("IPERF bandwidth tests:\n")
+    info("  iperf h00 h40  # RED path\n")
+    info("  iperf h00 h50  # GREEN path\n")
+    info("  iperf h20 h30  # BLUE path\n")
+    info("  iperf h60 h61  # PURPLE path\n")
+    info("  iperf h60 h70  # BLACK path\n")
+    info("\nPING tests:\n")
+    info("  h00 ping -c 3 h40\n")
+    info("  h00 ping -c 3 h50\n")
+    info("  h20 ping -c 3 h30\n")
+    info("  h60 ping -c 3 h61\n")
+    info("  h60 ping -c 3 h70\n")
+    info("="*70 + "\n\n")
 
     CLI(net)
     net.stop()
