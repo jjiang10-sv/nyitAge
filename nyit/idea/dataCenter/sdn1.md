@@ -1,3 +1,76 @@
+Found and fixed the root cause! The issue was that **h00's eth4 interface** (which connects to s30) **has no IP address**. When h00 pings h40, it uses its default interface eth0 → s00, not eth4 → s30.
+
+## The Problem
+
+From your debug output:
+- h00-eth0 has IP 10.0.0.1 (default interface)
+- h00-eth4 connects to s30 but has **no IP**
+- Flows on s30 are correct but **n_packets=0** (no traffic!)
+- Packets never reach s30 because h00 routes via eth0 → s00
+
+## The Solution
+
+I've updated [`assignment1.py`](nyit/idea/dataCenter/assignment1.py:1) with a new [`configure_host_routing()`](nyit/idea/dataCenter/assignment1.py:55) function that adds **static routes** to force hosts to use the correct interfaces:
+
+```python
+h00.cmd('ip route add 10.0.0.9 dev h00-eth4')  # h40's IP via s30 interface
+h40.cmd('ip route add 10.0.0.1 dev h40-eth4')  # h00's IP via s30 interface
+```
+
+This tells h00: "To reach h40 (10.0.0.9), use your eth4 interface (which connects to s30)"
+
+## Test It
+
+Run the updated script:
+```bash
+sudo python3 nyit/idea/dataCenter/assignment1.py
+```
+
+Then test:
+```bash
+mininet> h00 ping -c 3 h40
+```
+
+You should see successful pings!
+
+To verify the routes are working:
+```bash
+mininet> h00 ip route
+# Should show: 10.0.0.9 dev h00-eth4
+
+mininet> sh ovs-ofctl dump-flows s30 | grep n_packets
+# Should show n_packets > 0 now!
+```
+
+## Manual Setup Alternative
+
+If you need to set this up manually in Mininet:
+
+```bash
+# Add routes on hosts
+mininet> h00 ip route add 10.0.0.9 dev h00-eth4
+mininet> h40 ip route add 10.0.0.1 dev h40-eth4
+
+# For green path
+mininet> h40 sysctl -w net.ipv4.ip_forward=1
+mininet> h00 ip route add 10.0.0.11 dev h00-eth4
+mininet> h50 ip route add 10.0.0.1 dev h50-eth1
+
+# For blue path
+mininet> h20 ip route add 10.0.0.5 dev h20-eth1
+mininet> h30 ip route add 10.0.0.3 dev h30-eth1
+
+# For black path
+mininet> h60 ip route add 10.0.0.9 dev h60-eth1
+mininet> h70 ip route add 10.0.0.7 dev h70-eth1
+
+# Then test
+mininet> h00 ping -c 3 h40
+```
+
+The updated script now automatically configures all these routes for all 5 paths!
+
+
 Excellent debugging question — this is a **classic Mininet + remote controller connectivity issue**.
 Let’s go step by step and figure out why all hosts can’t ping each other (`100% packet loss`).
 
