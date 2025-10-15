@@ -57,6 +57,8 @@ class BCube32(Topo):
 def configure_host_routing(net):
     """
     Configure host routing for BCube paths.
+    In BCube, hosts use different interfaces for different paths.
+    We need to add routes so traffic uses the correct interface.
     """
     print("\n=== Configuring host routing ===")
     
@@ -70,142 +72,96 @@ def configure_host_routing(net):
     s06 = net.get('s06'); s16 = net.get('s16')
     
     # RED PATH: h00 ↔ h40 via s30
+    # Find which interface connects to s30
     h00_s30_intf = None
-    h00_s30_mac = None
     for intf in h00.intfList():
         if intf.name != 'lo' and intf.link:
             if intf.link.intf1.node == s30 or intf.link.intf2.node == s30:
                 h00_s30_intf = intf.name
-                h00_s30_mac = intf.MAC()
                 break
     
     h40_s30_intf = None
-    h40_s30_mac = None
     for intf in h40.intfList():
         if intf.name != 'lo' and intf.link:
             if intf.link.intf1.node == s30 or intf.link.intf2.node == s30:
                 h40_s30_intf = intf.name
-                h40_s30_mac = intf.MAC()
                 break
     
     if h00_s30_intf and h40_s30_intf:
+        # Route h40's IP via h00's s30 interface
         h00.cmd(f'ip route add {h40.IP()} dev {h00_s30_intf}')
         h40.cmd(f'ip route add {h00.IP()} dev {h40_s30_intf}')
-        # Add static ARP entries
-        h00.cmd(f'arp -s {h40.IP()} {h40_s30_mac}')
-        h40.cmd(f'arp -s {h00.IP()} {h00_s30_mac}')
-        print(f"✓ RED: h00→{h00_s30_intf}({h00_s30_mac})→s30→{h40_s30_intf}({h40_s30_mac})→h40")
+        print(f"✓ RED: h00 uses {h00_s30_intf} → h40 uses {h40_s30_intf}")
     
-    # GREEN PATH: h00 ↔ h50 (requires h40 as relay)
-    # Enable IP forwarding on h40
+    # GREEN PATH: h00 ↔ h50 (also needs h40 forwarding)
     h40.cmd('sysctl -w net.ipv4.ip_forward=1')
     
-    # Disable reverse path filtering on h40
-    h40.cmd('sysctl -w net.ipv4.conf.all.rp_filter=0')
-    h40.cmd('sysctl -w net.ipv4.conf.default.rp_filter=0')
-    for intf in h40.intfList():
-        if intf.name != 'lo':
-            h40.cmd(f'sysctl -w net.ipv4.conf.{intf.name}.rp_filter=0')
-    
-    # Find h40's interface to s14
     h40_s14_intf = None
-    h40_s14_mac = None
     for intf in h40.intfList():
         if intf.name != 'lo' and intf.link:
             if intf.link.intf1.node == s14 or intf.link.intf2.node == s14:
                 h40_s14_intf = intf.name
-                h40_s14_mac = intf.MAC()
                 break
     
-    # Find h50's interface to s14
     h50_s14_intf = None
-    h50_s14_mac = None
     for intf in h50.intfList():
         if intf.name != 'lo' and intf.link:
             if intf.link.intf1.node == s14 or intf.link.intf2.node == s14:
                 h50_s14_intf = intf.name
-                h50_s14_mac = intf.MAC()
                 break
     
-    # Configure routes for green path
-    if h00_s30_intf and h00_s30_mac:
-        # h00: route to h50 via s30 interface, use h40's MAC
+    if h00_s30_intf:
         h00.cmd(f'ip route add {h50.IP()} dev {h00_s30_intf}')
-        h00.cmd(f'arp -s {h50.IP()} {h40_s30_mac}')  # Critical: h00 thinks h50 is at h40's MAC
-    
-    if h50_s14_intf and h50_s14_mac:
-        # h50: route to h00 via s14 interface, use h40's MAC
+    if h50_s14_intf:
         h50.cmd(f'ip route add {h00.IP()} dev {h50_s14_intf}')
-        h50.cmd(f'arp -s {h00.IP()} {h40_s14_mac}')  # Critical: h50 thinks h00 is at h40's MAC
-    
     if h40_s30_intf and h40_s14_intf:
-        # h40: specific routes for forwarding
         h40.cmd(f'ip route add {h50.IP()} dev {h40_s14_intf}')
         h40.cmd(f'ip route add {h00.IP()} dev {h40_s30_intf}')
-        
-        # h40 needs to know the real MACs
-        if h00_s30_mac:
-            h40.cmd(f'arp -s {h00.IP()} {h00_s30_mac}')
-        if h50_s14_mac:
-            h40.cmd(f'arp -s {h50.IP()} {h50_s14_mac}')
-        
-        print(f"✓ GREEN: h00→{h00_s30_intf}→s30→{h40_s30_intf}→h40→{h40_s14_intf}→s14→{h50_s14_intf}→h50")
-        print(f"  Static ARP: h00 maps h50→{h40_s30_mac}, h50 maps h00→{h40_s14_mac}")
+    print(f"✓ GREEN: h00→h50 routing configured via h40")
     
     # BLUE PATH: h20 ↔ h30 via s12
     h20_s12_intf = None
-    h20_s12_mac = None
     for intf in h20.intfList():
         if intf.name != 'lo' and intf.link:
             if intf.link.intf1.node == s12 or intf.link.intf2.node == s12:
                 h20_s12_intf = intf.name
-                h20_s12_mac = intf.MAC()
                 break
     
     h30_s12_intf = None
-    h30_s12_mac = None
     for intf in h30.intfList():
         if intf.name != 'lo' and intf.link:
             if intf.link.intf1.node == s12 or intf.link.intf2.node == s12:
                 h30_s12_intf = intf.name
-                h30_s12_mac = intf.MAC()
                 break
     
     if h20_s12_intf and h30_s12_intf:
         h20.cmd(f'ip route add {h30.IP()} dev {h20_s12_intf}')
         h30.cmd(f'ip route add {h20.IP()} dev {h30_s12_intf}')
-        h20.cmd(f'arp -s {h30.IP()} {h30_s12_mac}')
-        h30.cmd(f'arp -s {h20.IP()} {h20_s12_mac}')
-        print(f"✓ BLUE: h20→{h20_s12_intf}→s12→{h30_s12_intf}→h30")
+        print(f"✓ BLUE: h20 uses {h20_s12_intf} → h30 uses {h30_s12_intf}")
     
-    # PURPLE PATH: h60 ↔ h61 via s06 (already on level-0)
-    print(f"✓ PURPLE: h60 ↔ h61 (level-0 switch s06)")
+    # PURPLE PATH: h60 ↔ h61 via s06 (level-0, already on same switch)
+    # No special routing needed as they're on s06
+    print(f"✓ PURPLE: h60 ↔ h61 (same level-0 switch)")
     
     # BLACK PATH: h60 ↔ h70 via s16
     h60_s16_intf = None
-    h60_s16_mac = None
     for intf in h60.intfList():
         if intf.name != 'lo' and intf.link:
             if intf.link.intf1.node == s16 or intf.link.intf2.node == s16:
                 h60_s16_intf = intf.name
-                h60_s16_mac = intf.MAC()
                 break
     
     h70_s16_intf = None
-    h70_s16_mac = None
     for intf in h70.intfList():
         if intf.name != 'lo' and intf.link:
             if intf.link.intf1.node == s16 or intf.link.intf2.node == s16:
                 h70_s16_intf = intf.name
-                h70_s16_mac = intf.MAC()
                 break
     
     if h60_s16_intf and h70_s16_intf:
         h60.cmd(f'ip route add {h70.IP()} dev {h60_s16_intf}')
         h70.cmd(f'ip route add {h60.IP()} dev {h70_s16_intf}')
-        h60.cmd(f'arp -s {h70.IP()} {h70_s16_mac}')
-        h70.cmd(f'arp -s {h60.IP()} {h60_s16_mac}')
-        print(f"✓ BLACK: h60→{h60_s16_intf}→s16→{h70_s16_intf}→h70")
+        print(f"✓ BLACK: h60 uses {h60_s16_intf} → h70 uses {h70_s16_intf}")
     
     print()
 
@@ -231,7 +187,6 @@ def add_flows_bcube(net):
     for sw in path_switches:
         os.system(f"ovs-ofctl del-flows {sw.name}")
         os.system(f"ovs-ofctl add-flow {sw.name} 'priority=0,actions=drop'")
-        # Allow ARP (critical for communication)
         os.system(f"ovs-ofctl add-flow {sw.name} 'priority=200,arp,actions=normal'")
     
     print(f"\n[INFO] Host IPs: h00={h00.IP()}, h40={h40.IP()}, h50={h50.IP()}")
@@ -251,12 +206,9 @@ def add_flows_bcube(net):
 
     # ========== GREEN PATH: h00 ↔ h50 via s30 → h40 → s14 ==========
     print(f"\n[GREEN] h00({h00.IP()}) ↔ h50({h50.IP()}) via s30→h40→s14")
-    # s30: forward packets between h00 and h40
     os.system(f"ovs-ofctl add-flow {s30.name} 'priority=100,ip,nw_src={h00.IP()},nw_dst={h50.IP()},actions=output:{port_h40}'")
     os.system(f"ovs-ofctl add-flow {s30.name} 'priority=100,ip,nw_src={h50.IP()},nw_dst={h00.IP()},actions=output:{port_h00}'")
-    print(f"  ✓ s30: forwards h00↔h50 traffic via h40")
     
-    # s14: forward packets between h40 and h50
     h40_s14_conn = s14.connectionsTo(h40)
     h50_s14_conn = s14.connectionsTo(h50)
     if h40_s14_conn and h50_s14_conn:
@@ -308,25 +260,23 @@ def run():
     net.start()
     info("\n*** BCube(3,2) topology built ***\n")
     
-    # Configure host routing FIRST
+    # Configure host routing FIRST (so packets use correct interfaces)
     configure_host_routing(net)
     
     # Then add OpenFlow rules
     add_flows_bcube(net)
     
-    info("\n*** Test the 5 paths ***\n")
+    info("\n*** Testing the 5 paths ***\n")
     info("=" * 60 + "\n")
     info("  h00 ping -c 3 h40  # RED path via s30\n")
-    info("  h00 ping -c 3 h50  # GREEN path via s30→h40→s14\n")
+    info("  h00 ping -c 3 h50  # GREEN path via s30 → h40 → s14\n")
     info("  h20 ping -c 3 h30  # BLUE path via s12\n")
     info("  h60 ping -c 3 h61  # PURPLE path via s06\n")
     info("  h60 ping -c 3 h70  # BLACK path via s16\n")
     info("=" * 60 + "\n")
     info("\nDebug:\n")
-    info("  h00 arp -a            # Check ARP cache\n")
-    info("  h40 arp -a            # Check ARP cache\n")
-    info("  sh ovs-ofctl dump-flows s30 | grep n_packets\n")
-    info("  sh ovs-ofctl dump-flows s14 | grep n_packets\n\n")
+    info("  h00 ip route       # Check routing table\n")
+    info("  sh ovs-ofctl dump-flows s30  # Check flows\n\n")
 
     CLI(net)
     net.stop()
