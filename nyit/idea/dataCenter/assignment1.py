@@ -39,20 +39,85 @@ class BCube32(Topo):
 
         # --- Higher-level connections (BCube formula) ---
         for lvl in range(1, levels):
-            counter = 0
-            for cube in range(2 ** k):
+            # counter = 0
+            # prev_idx = 0
+            # jump = False
+            # old_stage = 0
+            for cube in range(n ** k):
                 sw = f's{lvl}{cube}'
-                counter +=1
+                #counter +=1
+                # goes to the server in each cube
+                serverIdx = cube % n
+                # the increment in jumping
+                jumpIncrement = n ** lvl
+                # how many jumps to made
+                div = cube // jumpIncrement
+                # to adjust within the jump increment
+                reminder = cube % jumpIncrement
+                # go to the correct jump span
+                cubeIdx = div * jumpIncrement
+                # finetune within the jump span
+                cubeIdx += (reminder // n)
+                # if idx1 > old_stage:
+                #     jump = True
+                #     old_stage = idx1
+                # else:
+                #     jump = False
+                
                 for h in range(n):
-                    idx0 = cube % 2
-                    idx1 = (cube // (2 ** lvl) ) * (2**lvl)
-                    if counter == 2 and lvl > 1:
-                        idx1 += 1
-                        counter = 0
-                    idx1 += h%2 * (2**(lvl-1))
-                    host = f'h{idx1}{idx0}'
+                    # increment within the n
+                    cubeIdx += ((h%n ) * jumpIncrement//n)
+                    host = f'h{cubeIdx}{serverIdx}'
                     self.addLink(host, sw, bw=bw, delay=delay)
 
+    
+    # Layer 0
+        # add_pair_links(self, hosts['h00'], hosts['h01'], s0[0])
+        # add_pair_links(self, hosts['h10'], hosts['h11'], s0[1])
+        # add_pair_links(self, hosts['h20'], hosts['h21'], s0[2])
+        # add_pair_links(self, hosts['h30'], hosts['h31'], s0[3])
+        # add_pair_links(self, hosts['h40'], hosts['h41'], s0[4])
+        # add_pair_links(self, hosts['h50'], hosts['h51'], s0[5])
+        # add_pair_links(self, hosts['h60'], hosts['h61'], s0[6])
+        # add_pair_links(self, hosts['h70'], hosts['h71'], s0[7])
+
+        # # Layer 1
+        # add_pair_links(self, hosts['h00'], hosts['h10'], s1[0])
+        # add_pair_links(self, hosts['h01'], hosts['h11'], s1[1])
+        # add_pair_links(self, hosts['h20'], hosts['h30'], s1[2])
+        # add_pair_links(self, hosts['h21'], hosts['h31'], s1[3])
+        # add_pair_links(self, hosts['h40'], hosts['h50'], s1[4])
+        # add_pair_links(self, hosts['h41'], hosts['h51'], s1[5])
+        # add_pair_links(self, hosts['h60'], hosts['h70'], s1[6])
+        # add_pair_links(self, hosts['h61'], hosts['h71'], s1[7])
+
+        # # Layer 2
+        # add_pair_links(self, hosts['h00'], hosts['h20'], s2[0])
+        # add_pair_links(self, hosts['h01'], hosts['h21'], s2[1])
+        # add_pair_links(self, hosts['h10'], hosts['h30'], s2[2])
+        # add_pair_links(self, hosts['h11'], hosts['h31'], s2[3])
+        # add_pair_links(self, hosts['h40'], hosts['h60'], s2[4])
+        # add_pair_links(self, hosts['h41'], hosts['h61'], s2[5])
+        # add_pair_links(self, hosts['h50'], hosts['h70'], s2[6])
+        # add_pair_links(self, hosts['h51'], hosts['h71'], s2[7])
+
+        # # Layer 3
+        # add_pair_links(self, hosts['h00'], hosts['h40'], s3[0])
+        # add_pair_links(self, hosts['h01'], hosts['h41'], s3[1])
+        # add_pair_links(self, hosts['h10'], hosts['h50'], s3[2])
+        # add_pair_links(self, hosts['h11'], hosts['h51'], s3[3])
+        # add_pair_links(self, hosts['h20'], hosts['h60'], s3[4])
+        # add_pair_links(self, hosts['h21'], hosts['h61'], s3[5])
+        # add_pair_links(self, hosts['h30'], hosts['h70'], s3[6])
+        # add_pair_links(self, hosts['h31'], hosts['h71'], s3[7])
+    # level 2 switch s22 connects to h10 and h30
+    # level 2 switch s23 connects to h11 and h31
+
+    # h01  s11 s21 s31
+
+    # level 3 switch s32 connects to h10 and h60
+    # level 3 switch s34 connects to h21 and h60
+    # level 3 switch s36 connects to h30 and h70
 
 def configure_host_routing(net):
     """Configure host routing for BCube paths."""
@@ -269,7 +334,7 @@ def run():
     
     configure_host_routing(net)
     add_flows_bcube(net)
-    test_connectivity(net)
+    #test_connectivity(net)
     
     info("\n*** Manual Testing Commands ***\n")
     info("="*70 + "\n")
