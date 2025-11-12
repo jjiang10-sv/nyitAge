@@ -1,0 +1,20 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: scalingapp-monitor
+  namespace: monitoring  # Same namespace as Prometheus Operator
+  labels:
+    app: scalingapp
+    release: kube-prometheus-stack
+spec:
+  jobLabel: scalingapp-metrics
+  endpoints:
+  - port: http-metrics  # Matches the Service port name
+    interval: 10s
+    path: /metrics
+  namespaceSelector:
+    matchNames:
+    - keda  # Where your service lives
+  selector:
+    matchLabels:
+      app: scalingapp  # Matches the Service labels

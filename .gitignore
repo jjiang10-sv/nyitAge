@@ -1,4 +1,5 @@
 nyit/RApro/modelTrain/network/db/
+nyit/RApro/keda/model/dataset/nasa.txt
 nyit/RApro/modelTrain/ai-video-sentiment-model/dataset/
 .venv/
 .vscode/

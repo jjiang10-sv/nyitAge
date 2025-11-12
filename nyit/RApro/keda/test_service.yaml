@@ -1,0 +1,80 @@
+#base64 -i keda/tests/john/predictkube-api-key.txt
+# echo -n "username" | base64
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: predictkube-secrets
+#   namespace: keda
+# type: Opaque
+# data:
+#   apiKey: ZXlKaGJHY2lPaUpJVXpVeE1pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmhkV1FpT2lKaGRYUnZaMlZ1WlhKaGRHVmtMVFE1SWl3aWFYTnpJam9pTjJVd056VXdPV1V0TmpjeFpDMHhNV1ZqTFdGaFl6VXRZV05rWlRRNE1EQXhNVEl5SW4wLk5Cb0FaYUw5QVl2QW5zRkpiQU41THpVRG1rMW5oVXNmbFVTVDdvMUJacHlHcE9nRENtNUxGMG4zOUxQRVVFUTV3NGhhVkxuMF9WbmhpTGgwSGMzYjl3
+
+# ---
+# apiVersion: keda.sh/v1alpha1
+# kind: TriggerAuthentication
+# metadata:
+#   name: keda-trigger-auth-predictkube-secret
+#   namespace: keda
+# spec:
+#   secretTargetRef:
+#   - parameter: apiKey
+#     name: predictkube-secrets
+#     key: apiKey
+# ---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: scalingtest-scaler
+  namespace: keda
+spec:
+  scaleTargetRef:
+    apiVersion:    apps/v1        # Optional. Default: apps/v1
+    kind:          Deployment     # Optional. Default: Deployment
+    name:          scalingtest      # Mandatory. Must be in the same namespace as the ScaledObject
+  pollingInterval: 3
+  cooldownPeriod: 3
+  minReplicaCount: 1
+  maxReplicaCount: 3
+  triggers:
+  # - type: predictkube
+  #   metadata:
+  #     # 2h 
+  #     predictHorizon: "2m"
+  #     # 3d
+  #     historyTimeWindow: "3m"  # We recomend to use minimum 7-14 days time window as historical data
+  #     #prometheusAddress: http://kube-prometheus-stack-prometheus.monitoring:9090
+  #     prometheusAddress: http://localhost:9090
+  #     #prometheusAddress: http://a1e41beb870ec425daedcb8253afa1de-1397416898.us-west-1.elb.amazonaws.com:9090
+  #     #query: sum(irate(kong_http_requests_total{status=~"200|202|204"}[2m]))
+  #     # query: sum(irate(kong_http_requests_total{status=~"2[0-9][0-9]|300"}[2m]))
+  #     # query: sum(irate(kong_http_requests_total{status=~"303"}[2m]))
+  #     #query: sum(irate(http_requests_total{pod=~"scalingtest-.*"}[2m]))
+  #     query: sum(irate(testservice_http_requests_total{status="304"}[5m])) or sum(irate(testservice_http_requests_total{status="200"}[5m]))
+  #     queryStep: "2m" # Note: query step duration for range prometheus queries
+  #     # 50.5
+  #     threshold: '3.50' # Value to start scaling for
+  #     activationThreshold: '3.5'
+  #   authenticationRef:
+  #     name: keda-trigger-auth-predictkube-secret
+  # - type: prometheus
+  #   metadata:
+  #     # Required fields:
+  #     serverAddress: http://kube-prometheus-stack-prometheus.monitoring:9090
+  #     #serverAddress: http://localhost:9090
+  #     #serverAddress: http://a1e41beb870ec425daedcb8253afa1de-1397416898.us-west-1.elb.amazonaws.com:9090
+  #     #query: sum(rate(http_requests_total{deployment="scalingtest"}[2m])) # Note: query must return a vector/scalar single element response
+  #     #Use Case: rate is better for smooth, long-term trends, while irate is useful for capturing short-term, rapid changes or spikes.
+  #     #query: sum(irate(kong_http_requests_total[2m])) 
+  #     #query: sum(rate(kong_http_requests_total[2m])) 
+  #     query: sum(irate(testservice_http_requests_total{status="304"}[5m])) or sum(irate(testservice_http_requests_total{status="200"}[5m]))
+  #     threshold: '1.50'
+  #     activationThreshold: '1.0'
+
+  - type: prometheus
+    metadata:
+      serverAddress: http://kube-prometheus-stack-prometheus.monitoring:9090
+      # go_memstats_alloc_bytes{service="scalingtest"}
+      query: avg(go_memstats_alloc_bytes{service="scalingtest"})
+      activationThreshold: '3000000'  # scale down when reaching 3MB
+      threshold: '4500000'  # scale up when reaching 4.5MB
+
