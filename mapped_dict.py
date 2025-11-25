@@ -97,3 +97,43 @@ mapped_dict = {
     "9093": "F/T",
     "9948": "F/T"
 }
+
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+from collections import deque
+class Solution:
+    def levelOrderBottom(self, root: Optional[TreeNode]) -> List[List[int]]:
+        len_root = len(root)
+        bfs_result = []
+        #for i in range(len(root)):
+        i = 0
+        queue = deque(root)
+        
+        while queue:
+            next_level_queue = deque()
+            same_level_nodes_val = []
+            while queue:
+                node = queue.popleft()
+                if node.left is not None:
+                    next_level_queue.append(node.left)
+                if node.right is not None:
+                    next_level_queue.append(node.right)
+                same_level_nodes_val.append(node.val)
+            queue = next_level_queue
+            bfs_result.append(same_level_nodes_val)
+        
+        while i := 0 j:= len(bfs_result)-1; i< j :
+            bfs_result[i], bfs_result[j] = bfs_result[j], bfs_result[i]
+            i += 1
+            j -= 1
+        print("the result is ",bfs_result)
+        return bfs_result
+
+
+            
+

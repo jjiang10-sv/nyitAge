@@ -1,5 +1,0 @@
-OS is managing the computer resource like input/output device, memmory, harddriver, files and provide service to the 
-application processes. It has a kernel and the processes interact with the computer resource through the kernel.
-
-processes, threads and concurrency:
-    deadlock: two processs holds the data other need and want the data others have.

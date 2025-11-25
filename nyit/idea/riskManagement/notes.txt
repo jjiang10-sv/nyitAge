@@ -1,3 +1,9 @@
+final example: BCP : mitigrating risk with a disaster recovery plan
+last two lectures
+
+Term2 : PCI can be talked but need detail what exact daa has been breached.
+tell and explain the law. what has happened in the case
+
 inheritance risk and risidual risk
 
 scattered spider:
@@ -15,3 +21,39 @@ asset and configuration management :
         Recovery
     do you have a central place to monitor and adjust the assets and configurations?
         Detect
+
+integrity in ticket master data breach:
+
+integrity is all about ensuring that data is secure, complete and unaltered.
+
+1, snowflake as the data hub: 
+it integrate multiple datasources such as ticket, marketing, CRM,
+    payment processors and third-party vendors.
+breaks allows the attacks to read and modify the centralized data in snowflake as the integration hub
+Impact: any downstream system relying on the integrated data( analytics dashboard,
+    recomendation engine and fraud detection) could operate on corrupted or falsied data. for example
+    the attacker could change the tickets record availability or event attendance numbers, causing
+    overselling reports
+
+2, downstream propagation;
+snowflake data flows to multiple downstream system such as CRM, market automation analytics and customer service.
+even a small tampering can propagate into all depending systems, compouding the errors.
+for examples, errors in the snowflake sales data can lead to inaccurate business decision such as
+mis-targeted market campaign or incorrect business revenue.
+
+3, thir-party data sources.
+ticketmaster integrate data from outside system such as EPAM system.
+compromised third-party credentials means malicious or unverified data could enter the integrated datahub.
+impact: integration pipeline might process false or inconsistent data recourds, thus undermining 
+    the trust in the system.
+
+4, auditing and validating challenges.
+post the data breach, ticketmaster can not fully trust the integrated dataset without auditing.
+so it need to verify the lineage and provenance for every dataset. the additional validation in
+the integration process might slowdown the real-time pipelines.
+
+5, real time vs batch pipelines
+realtime pipelines are more vulnerable as the compromised data can propagate instantially while
+batch pipeline can have the verification process before publishing the dataset. this data breach 
+means the real-time analytics and recommendation system need be secured in their ETL pipeline whch
+would caused slowdown in performance.

@@ -1,0 +1,10 @@
+{
+  "admin-contact": "fvadmin@pink-slice",
+  "admin-status": true,
+  "controller-url": "tcp:127.0.0.1:7000",
+  "current-flowmod-usage": 468,
+  "current-rate": 1,
+  "drop-policy": "exact",
+  "recv-lldp": false,
+  "slice-name": "PINK"
+}

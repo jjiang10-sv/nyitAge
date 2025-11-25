@@ -1,0 +1,8 @@
+Name:	Vinay Kumar Narayana
+id:	1343077
+Email:	vnarayan@nyit.edu
+
+
+Name:	Zhijun Jiang
+id:	1339481
+Email:	cjiang11@nyit.edu

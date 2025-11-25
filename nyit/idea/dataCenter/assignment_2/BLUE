@@ -1,0 +1,10 @@
+{
+  "admin-contact": "fvadmin@blue-slice",
+  "admin-status": true,
+  "controller-url": "tcp:127.0.0.1:6000",
+  "current-flowmod-usage": 23,
+  "current-rate": 1,
+  "drop-policy": "exact",
+  "recv-lldp": false,
+  "slice-name": "BLUE"
+}

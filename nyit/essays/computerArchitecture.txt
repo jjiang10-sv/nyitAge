@@ -1,6 +1,0 @@
-computer architecture :
-    CPU is mostly made of sand and processed into chips. it process the instructure by cycles, runs very fast 10^9 times 
-per seconds. the performance is measured by the number of instructure processed per sond. registry pipelines , 
-load and write into memory. If/jump/alogirum instructuion went through different stages.
-
-

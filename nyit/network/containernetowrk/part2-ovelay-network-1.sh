@@ -61,7 +61,7 @@ sudo sysctl -w net.ipv4.ip_forward=1
 
 # ------------------- Overlay setup --------------------- #
 
-To establish the udp tunnel (make sure to run these as root (sudo -i)):
+#To establish the udp tunnel (make sure to run these as root (sudo -i)):
 
 1- On "ubuntu1" run: 
 socat UDP:192.168.0.11:9000,bind=192.168.0.10:9000 TUN:172.16.0.100/16,tun-name=tundudp,iff-no-pi,tun-type=tun &
