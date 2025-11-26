@@ -95,8 +95,8 @@ SECTION 2: FILE PREPARATION
 Navigate to the assignment directory:
 
     cd ~/
-    mkdir -p nyit/idea/dataCenter/assignment_1
-    cd nyit/idea/dataCenter/assignment_1
+    mkdir -p nyit/idea/dataCenter/assignment_3
+    cd nyit/idea/dataCenter/assignment_3
 
 2.2 VERIFY FILE STRUCTURE
 ---------------------------

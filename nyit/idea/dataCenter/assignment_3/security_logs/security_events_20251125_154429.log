@@ -1,0 +1,164 @@
+[2025-11-25 15:44:29] [SYSTEM] Starting secure BCube topology
+[2025-11-25 15:44:31] [SYSTEM] Topology started
+[2025-11-25 15:44:31] [CONFIG] Starting VLAN configuration
+[2025-11-25 15:44:31] [VLAN] Configured s00 with VLAN 10
+[2025-11-25 15:44:31] [VLAN] Configured s01 with VLAN 10
+[2025-11-25 15:44:31] [VLAN] Configured s02 with VLAN 20
+[2025-11-25 15:44:31] [VLAN] Configured s03 with VLAN 20
+[2025-11-25 15:44:31] [VLAN] Configured s04 with VLAN 30
+[2025-11-25 15:44:31] [VLAN] Configured s05 with VLAN 30
+[2025-11-25 15:44:31] [VLAN] Configured s06 with VLAN 40
+[2025-11-25 15:44:31] [VLAN] Configured s07 with VLAN 40
+[2025-11-25 15:44:31] [CONFIG] Starting ACL configuration
+[2025-11-25 15:44:31] [ACL] Configured base ACLs on s00
+[2025-11-25 15:44:31] [ACL] Configured base ACLs on s01
+[2025-11-25 15:44:31] [ACL] Configured base ACLs on s02
+[2025-11-25 15:44:31] [ACL] Configured base ACLs on s03
+[2025-11-25 15:44:31] [ACL] Configured base ACLs on s04
+[2025-11-25 15:44:31] [ACL] Configured base ACLs on s05
+[2025-11-25 15:44:32] [ACL] Configured base ACLs on s06
+[2025-11-25 15:44:32] [ACL] Configured base ACLs on s07
+[2025-11-25 15:44:32] [ACL] Configured base ACLs on s10
+[2025-11-25 15:44:32] [ACL] Configured base ACLs on s11
+[2025-11-25 15:44:32] [ACL] Configured base ACLs on s12
+[2025-11-25 15:44:32] [ACL] Configured base ACLs on s13
+[2025-11-25 15:44:32] [ACL] Configured base ACLs on s14
+[2025-11-25 15:44:32] [ACL] Configured base ACLs on s15
+[2025-11-25 15:44:32] [ACL] Configured base ACLs on s16
+[2025-11-25 15:44:32] [ACL] Configured base ACLs on s17
+[2025-11-25 15:44:32] [ACL] Configured base ACLs on s20
+[2025-11-25 15:44:32] [ACL] Configured base ACLs on s21
+[2025-11-25 15:44:32] [ACL] Configured base ACLs on s22
+[2025-11-25 15:44:32] [ACL] Configured base ACLs on s23
+[2025-11-25 15:44:32] [ACL] Configured base ACLs on s24
+[2025-11-25 15:44:32] [ACL] Configured base ACLs on s25
+[2025-11-25 15:44:32] [ACL] Configured base ACLs on s26
+[2025-11-25 15:44:32] [ACL] Configured base ACLs on s27
+[2025-11-25 15:44:32] [ACL] Configured base ACLs on s30
+[2025-11-25 15:44:32] [ACL] Configured base ACLs on s31
+[2025-11-25 15:44:32] [ACL] Configured base ACLs on s32
+[2025-11-25 15:44:32] [ACL] Configured base ACLs on s33
+[2025-11-25 15:44:32] [ACL] Configured base ACLs on s34
+[2025-11-25 15:44:32] [ACL] Configured base ACLs on s35
+[2025-11-25 15:44:32] [ACL] Configured base ACLs on s36
+[2025-11-25 15:44:32] [ACL] Configured base ACLs on s37
+[2025-11-25 15:44:32] [CONFIG] Starting iptables configuration
+[2025-11-25 15:44:33] [FIREWALL] Configured iptables on h00
+[2025-11-25 15:44:33] [FIREWALL] Configured iptables on h01
+[2025-11-25 15:44:33] [FIREWALL] Configured iptables on h10
+[2025-11-25 15:44:33] [FIREWALL] Configured iptables on h11
+[2025-11-25 15:44:33] [FIREWALL] Configured iptables on h20
+[2025-11-25 15:44:33] [FIREWALL] Configured iptables on h21
+[2025-11-25 15:44:33] [FIREWALL] Configured iptables on h30
+[2025-11-25 15:44:33] [FIREWALL] Configured iptables on h31
+[2025-11-25 15:44:33] [FIREWALL] Configured iptables on h40
+[2025-11-25 15:44:33] [FIREWALL] Configured iptables on h41
+[2025-11-25 15:44:33] [FIREWALL] Configured iptables on h50
+[2025-11-25 15:44:33] [FIREWALL] Configured iptables on h51
+[2025-11-25 15:44:33] [FIREWALL] Configured iptables on h60
+[2025-11-25 15:44:33] [FIREWALL] Configured iptables on h61
+[2025-11-25 15:44:34] [FIREWALL] Configured iptables on h70
+[2025-11-25 15:44:34] [FIREWALL] Configured iptables on h71
+[2025-11-25 15:44:34] [CONFIG] Starting rate limiting configuration
+[2025-11-25 15:44:34] [RATE_LIMIT] Configured rate limiting on s00
+[2025-11-25 15:44:34] [RATE_LIMIT] Configured rate limiting on s01
+[2025-11-25 15:44:34] [RATE_LIMIT] Configured rate limiting on s02
+[2025-11-25 15:44:34] [RATE_LIMIT] Configured rate limiting on s03
+[2025-11-25 15:44:34] [RATE_LIMIT] Configured rate limiting on s04
+[2025-11-25 15:44:34] [RATE_LIMIT] Configured rate limiting on s05
+[2025-11-25 15:44:34] [RATE_LIMIT] Configured rate limiting on s06
+[2025-11-25 15:44:34] [RATE_LIMIT] Configured rate limiting on s07
+[2025-11-25 15:44:34] [RATE_LIMIT] Configured rate limiting on s10
+[2025-11-25 15:44:34] [RATE_LIMIT] Configured rate limiting on s11
+[2025-11-25 15:44:34] [RATE_LIMIT] Configured rate limiting on s12
+[2025-11-25 15:44:34] [RATE_LIMIT] Configured rate limiting on s13
+[2025-11-25 15:44:34] [RATE_LIMIT] Configured rate limiting on s14
+[2025-11-25 15:44:34] [RATE_LIMIT] Configured rate limiting on s15
+[2025-11-25 15:44:34] [RATE_LIMIT] Configured rate limiting on s16
+[2025-11-25 15:44:34] [RATE_LIMIT] Configured rate limiting on s17
+[2025-11-25 15:44:34] [RATE_LIMIT] Configured rate limiting on s20
+[2025-11-25 15:44:34] [RATE_LIMIT] Configured rate limiting on s21
+[2025-11-25 15:44:34] [RATE_LIMIT] Configured rate limiting on s22
+[2025-11-25 15:44:34] [RATE_LIMIT] Configured rate limiting on s23
+[2025-11-25 15:44:34] [RATE_LIMIT] Configured rate limiting on s24
+[2025-11-25 15:44:34] [RATE_LIMIT] Configured rate limiting on s25
+[2025-11-25 15:44:34] [RATE_LIMIT] Configured rate limiting on s26
+[2025-11-25 15:44:34] [RATE_LIMIT] Configured rate limiting on s27
+[2025-11-25 15:44:34] [RATE_LIMIT] Configured rate limiting on s30
+[2025-11-25 15:44:34] [RATE_LIMIT] Configured rate limiting on s31
+[2025-11-25 15:44:34] [RATE_LIMIT] Configured rate limiting on s32
+[2025-11-25 15:44:34] [RATE_LIMIT] Configured rate limiting on s33
+[2025-11-25 15:44:34] [RATE_LIMIT] Configured rate limiting on s34
+[2025-11-25 15:44:34] [RATE_LIMIT] Configured rate limiting on s35
+[2025-11-25 15:44:34] [RATE_LIMIT] Configured rate limiting on s36
+[2025-11-25 15:44:34] [RATE_LIMIT] Configured rate limiting on s37
+[2025-11-25 15:44:34] [CONFIG] Starting encryption setup
+[2025-11-25 15:44:35] [ENCRYPTION] SSH keys generated for h00
+[2025-11-25 15:44:35] [ENCRYPTION] SSH keys generated for h01
+[2025-11-25 15:44:35] [ENCRYPTION] SSH keys generated for h10
+[2025-11-25 15:44:35] [ENCRYPTION] SSH keys generated for h11
+[2025-11-25 15:44:35] [ENCRYPTION] SSH keys generated for h20
+[2025-11-25 15:44:35] [ENCRYPTION] SSH keys generated for h21
+[2025-11-25 15:44:35] [ENCRYPTION] SSH keys generated for h30
+[2025-11-25 15:44:35] [ENCRYPTION] SSH keys generated for h31
+[2025-11-25 15:44:35] [ENCRYPTION] SSH keys generated for h40
+[2025-11-25 15:44:36] [ENCRYPTION] SSH keys generated for h41
+[2025-11-25 15:44:36] [ENCRYPTION] SSH keys generated for h50
+[2025-11-25 15:44:36] [ENCRYPTION] SSH keys generated for h51
+[2025-11-25 15:44:36] [ENCRYPTION] SSH keys generated for h60
+[2025-11-25 15:44:36] [ENCRYPTION] SSH keys generated for h61
+[2025-11-25 15:44:36] [ENCRYPTION] SSH keys generated for h70
+[2025-11-25 15:44:36] [ENCRYPTION] SSH keys generated for h71
+[2025-11-25 15:44:36] [CONFIG] Starting monitoring setup
+[2025-11-25 15:44:36] [MONITORING] sFlow enabled on s00
+[2025-11-25 15:44:36] [MONITORING] sFlow enabled on s01
+[2025-11-25 15:44:36] [MONITORING] sFlow enabled on s02
+[2025-11-25 15:44:36] [MONITORING] sFlow enabled on s03
+[2025-11-25 15:44:36] [MONITORING] sFlow enabled on s04
+[2025-11-25 15:44:36] [MONITORING] sFlow enabled on s05
+[2025-11-25 15:44:36] [MONITORING] sFlow enabled on s06
+[2025-11-25 15:44:36] [MONITORING] sFlow enabled on s07
+[2025-11-25 15:44:36] [MONITORING] sFlow enabled on s10
+[2025-11-25 15:44:36] [MONITORING] sFlow enabled on s11
+[2025-11-25 15:44:36] [MONITORING] sFlow enabled on s12
+[2025-11-25 15:44:36] [MONITORING] sFlow enabled on s13
+[2025-11-25 15:44:36] [MONITORING] sFlow enabled on s14
+[2025-11-25 15:44:36] [MONITORING] sFlow enabled on s15
+[2025-11-25 15:44:36] [MONITORING] sFlow enabled on s16
+[2025-11-25 15:44:36] [MONITORING] sFlow enabled on s17
+[2025-11-25 15:44:36] [MONITORING] sFlow enabled on s20
+[2025-11-25 15:44:36] [MONITORING] sFlow enabled on s21
+[2025-11-25 15:44:36] [MONITORING] sFlow enabled on s22
+[2025-11-25 15:44:36] [MONITORING] sFlow enabled on s23
+[2025-11-25 15:44:36] [MONITORING] sFlow enabled on s24
+[2025-11-25 15:44:36] [MONITORING] sFlow enabled on s25
+[2025-11-25 15:44:36] [MONITORING] sFlow enabled on s26
+[2025-11-25 15:44:36] [MONITORING] sFlow enabled on s27
+[2025-11-25 15:44:36] [MONITORING] sFlow enabled on s30
+[2025-11-25 15:44:36] [MONITORING] sFlow enabled on s31
+[2025-11-25 15:44:36] [MONITORING] sFlow enabled on s32
+[2025-11-25 15:44:36] [MONITORING] sFlow enabled on s33
+[2025-11-25 15:44:36] [MONITORING] sFlow enabled on s34
+[2025-11-25 15:44:36] [MONITORING] sFlow enabled on s35
+[2025-11-25 15:44:36] [MONITORING] sFlow enabled on s36
+[2025-11-25 15:44:36] [MONITORING] sFlow enabled on s37
+[2025-11-25 15:44:36] [CONFIG] Starting host routing configuration
+[2025-11-25 15:44:36] [ROUTING] Host routing configured
+[2025-11-25 15:44:36] [CONFIG] Adding security flow rules
+[2025-11-25 15:44:36] [FLOWS] Security flows configured
+[2025-11-25 15:44:46] [TEST] Starting security validation tests
+[2025-11-25 15:44:46] [TEST_PASS] Firewall rules validated
+[2025-11-25 15:44:46] [TEST_PASS] ACL flows validated
+[2025-11-25 15:44:46] [TEST_PASS] Encryption validated
+[2025-11-25 15:44:46] [TEST_PASS] Rate limiting validated
+[2025-11-25 15:44:46] [ATTACK] Starting unauthorized access simulation
+[2025-11-25 15:44:51] [ATTACK_BLOCKED] Direct access from h60 to h00 blocked
+[2025-11-25 15:44:51] [ATTACK_ATTEMPT] IP spoofing attempted by h60
+[2025-11-25 15:44:51] [ATTACK_ATTEMPT] Port scan attempted by h60
+[2025-11-25 15:44:54] [CAPTURE] Unauthorized access capture saved to ./packet_captures/unauthorized_access_154446.pcap
+[2025-11-25 15:44:54] [ATTACK] Starting DDoS simulation
+[2025-11-25 15:44:59] [ATTACK_MITIGATED] SYN flood mitigated by rate limiting
+[2025-11-25 15:45:04] [ATTACK_ATTEMPT] UDP flood attempted
+[2025-11-25 15:45:09] [ATTACK_ATTEMPT] ICMP flood attempted, loss: 0%
+[2025-11-25 15:45:15] [CAPTURE] DDoS capture saved to ./packet_captures/ddos_attack_154454.pcap
+[2025-11-25 15:45:15] [COMPARISON] Starting before/after comparison

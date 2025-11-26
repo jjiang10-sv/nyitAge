@@ -820,7 +820,7 @@ def run():
     
     info("\n" + "="*70)
     info("BCube(3,2) SECURITY-ENHANCED DATA CENTER")
-    info("Assignment 2: Tasks 2-5 Implementation")
+    info("Assignment 3: Tasks 2-5 Implementation")
     info("="*70 + "\n")
     
     log_event(log_file, "SYSTEM", "Starting secure BCube topology")
