@@ -29,6 +29,7 @@ func radixsort(data []int32) {
 		buf.Read(b)
 		ds[i] = b
 	}
+
 	countingSort := make([][][]byte, 256)
 	for i := 0; i < digit; i++ {
 		for _, b := range ds {
@@ -41,6 +42,7 @@ func radixsort(data []int32) {
 			countingSort[k] = bs[:0]
 		}
 	}
+
 	var w int32
 	for i, b := range ds {
 		buf.Write(b)

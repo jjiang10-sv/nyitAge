@@ -6,7 +6,7 @@ import (
 )
 
 func mainBytesd() {
-	fmt.Println("=== Different ways to represent 253 with []byte ===\n")
+	fmt.Println("=== Different ways to represent 253 with []byte ===")
 
 	// Method 1: Single byte (most common for 253)
 	fmt.Println("1. Single byte representation:")

@@ -1,0 +1,23 @@
+name: Terraform Plan
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.0
+      - name: Terraform Init (AWS)
+        working-directory: terraform/aws
+        run: terraform init
+      - name: Terraform Plan (AWS)
+        working-directory: terraform/aws
+        run: terraform plan -out=tfplan || true

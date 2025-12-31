@@ -175,7 +175,7 @@ def run():
     info('*** Host IP Table ***\n')
     for host in net.hosts:
     	ip_addr = host.cmd("ip -4 addr show br0 | grep -oP '(?<=inet\\s)\\d+(\\.\\d+){3}'").strip()
-    	info(f"{host.name}: {ip_addr}\n")
+        info(f"{host.name}: {ip_addr}\n")
 
     print_switch_dpids(net)
 

@@ -7,6 +7,10 @@ import (
 )
 
 // var arr = []int{3, 5, 2, 11, 4, 1, 8, 2}
+
+func TestRadixSort(t *testing.T) {
+	mainRad()
+}
 func TestCocktailSort(t *testing.T) {
 	data1 := []int{3, 5, 2, 11, 4, 1, 8, 2}
 	now := time.Now()

@@ -62,7 +62,7 @@ func (g *Graph) TopologicalSort() []int {
 }
 
 // Main function
-func main() {
+func mainBs() {
 	g := NewGraph(6)
 	g.AddEdge(5, 2)
 	g.AddEdge(5, 0)

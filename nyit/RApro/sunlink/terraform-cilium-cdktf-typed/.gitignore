@@ -1,0 +1,4 @@
+.venv/
+cdktf.out/
+.terraform/
+node_modules/

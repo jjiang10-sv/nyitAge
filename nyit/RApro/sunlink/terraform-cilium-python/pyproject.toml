@@ -1,0 +1,4 @@
+[tool.poetry]
+name = "terraform-cilium-python"
+version = "0.1.0"
+description = "Python wrapper for terraform to provision EKS/AKS and install Cilium"

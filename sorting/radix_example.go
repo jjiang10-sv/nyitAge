@@ -29,6 +29,8 @@ func radixSortWithTrace(data []int32) {
 
 	for i, e := range data {
 		fmt.Printf("Original: %d (binary: %032b)\n", e, uint32(e))
+		fmt.Printf("%b", maxbit)
+		//fmt.Sprintf("%b", e)
 		flipped := e ^ maxbit
 		fmt.Printf("After XOR:  %d (binary: %032b)\n", flipped, uint32(flipped))
 
