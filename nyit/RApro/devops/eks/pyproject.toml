@@ -1,0 +1,10 @@
+[project]
+name = "eks-cilium-platform"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "pulumi>=3.100.0",
+    "pulumi-aws>=6.15.0",
+    "pulumi-eks>=2.3.0",
+    "pulumi-kubernetes>=4.6.0",
+]

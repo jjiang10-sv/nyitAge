@@ -1,362 +1,268 @@
-# Enhanced AKS Platform
+# AKS vs EKS Platform Guide - Documentation Index
 
-Production-grade Azure Kubernetes Service (AKS) platform with advanced cloud-native features.
+This directory contains comprehensive documentation comparing AKS and EKS platforms with Cilium CNI.
 
-## Features
+## 📚 Core Documentation
 
-### 🏗️ Infrastructure
-- **Multi-AZ Deployment**: System and workload node pools across 3 availability zones
-- **Private AKS Cluster**: API server accessible only via private network
-- **Azure Firewall**: Centralized egress control with user-defined routing
-- **Optimized CIDR Planning**: 
-  - Pod CIDR: `10.32.0.0/13` (524,288 IPs)
-  - Service CIDR: `10.96.0.0/12` (1,048,576 IPs)
-  - Supports massive scale (2,000+ nodes, 500,000+ pods)
+### Platform Implementation
+- **[aks/platform.py](aks/platform.py)** - AKS platform with Azure CNI + Cilium hybrid (533 lines)
+- **[aks/example_usage.py](aks/example_usage.py)** - AKS multi-region deployment example
+- **[eks/platform.py](eks/platform.py)** - EKS platform with pure Cilium (390 lines, 26% simpler!)
+- **[eks/example_usage.py](eks/example_usage.py)** - EKS multi-region deployment example
 
-### 🌐 Networking
-- **Cilium CNI**: eBPF-based dataplane for high-performance networking
-- **Hubble**: Network observability and security monitoring
-- **Gateway API**: Modern, extensible Kubernetes ingress (replaces traditional Ingress)
-- **Azure Front Door**: Global load balancing with WAF protection
+---
 
-### 🔐 Security & Identity
-- **SPIFFE/SPIRE**: Platform-agnostic workload identity and automatic mTLS
-- **Azure Workload Identity**: Native Azure service authentication
-- **Key Vault Integration**: Secrets management with RBAC
-- **Network Policies**: eBPF-based microsegmentation
+## 🎯 Quick Start Guides
 
-### 🚀 GitOps & Deployment
-- **Argo CD**: Declarative GitOps continuous deployment
-- **ApplicationSet**: Multi-cluster and multi-tenant application management
-- **Automated Sync**: Self-healing deployments with drift detection
+### AKS Quick Start
+- **[aks/README.md](aks/README.md)** - Complete AKS setup guide
+- **[MULTI_REGION_QUICKSTART.md](MULTI_REGION_QUICKSTART.md)** - AKS multi-region deployment
 
-### 🌍 Multi-Region (Optional)
-- Support for deploying across multiple Azure regions
-- Global traffic management via Azure Front Door
-- Regional failover capabilities
+### EKS Quick Start
+- **[eks/README.md](eks/README.md)** - Complete EKS setup guide (simpler than AKS!)
 
-## Architecture
+---
 
-```
-Internet
-   ↓
-Azure Front Door (WAF, Global LB)
-   ↓
-Private Link / Private Endpoint
-   ↓
-Azure Firewall (Egress Control)
-   ↓
-Private AKS Cluster
-   ├── Cilium (eBPF CNI)
-   ├── Gateway API (Ingress)
-   ├── SPIRE (mTLS Identity)
-   ├── Argo CD (GitOps)
-   └── Multi-AZ Node Pools
-       ├── System Pool (3 nodes)
-       └── Workload Pool (6 nodes)
-```
+## 📊 Comparison Documents
 
-## Prerequisites
+### Architecture & Complexity
+- **[AKS_VS_EKS_COMPLEXITY.md](AKS_VS_EKS_COMPLEXITY.md)** ⭐ **START HERE**
+  - Why EKS is 26% simpler (630 vs 849 lines)
+  - Architecture comparison
+  - Feature availability
 
-```bash
-# Install Pulumi
-brew install pulumi
+### Cost Analysis
+- **[COST_ANALYSIS.md](COST_ANALYSIS.md)** 💰 **CRITICAL FOR DECISION**
+  - Why EKS is 5-6x cheaper ($470 vs $2,650/month)
+  - Azure Firewall deep dive
+  - 3-year TCO comparison
+  - Decision framework
 
-# Install Azure CLI
-brew install azure-cli
+### Support & Risk
+- **[EKS_CILIUM_TRAPS.md](EKS_CILIUM_TRAPS.md)** ⚠️ **READ BEFORE EKS**
+  - 10 major traps with EKS + Cilium
+  - No official AWS support
+  - Upgrade risks
+  - Mitigation strategies
 
-# Login to Azure
-az login
+---
 
-# Install Python dependencies
-pip install pulumi pulumi-azure-native pulumi-kubernetes
-```
+## 🔧 Technical Deep Dives
 
-## Quick Start
+### Networking Fundamentals
+- **[NETWORKING_DEEP_DIVE.md](NETWORKING_DEEP_DIVE.md)**
+  - Overlay networking explained (Geneve/VXLAN)
+  - Virtual service IPs (eBPF magic)
+  - How packets flow
+  - Performance analysis
 
-### 1. Configure Pulumi
+### CNI Architecture
+- **[AZURE_CNI_CILIUM_EXPLAINED.md](AZURE_CNI_CILIUM_EXPLAINED.md)**
+  - AKS hybrid architecture
+  - Control plane vs dataplane
+  - IPAM ownership
+  - Feature comparison
 
-```bash
-# Create new Pulumi project
-pulumi new python
+- **[EKS_VS_AKS_CNI.md](EKS_VS_AKS_CNI.md)**
+  - CNI flexibility comparison
+  - Pure Cilium vs hybrid
+  - When to use each
 
-# Set Azure region
-pulumi config set location canadacentral
+### CIDR Planning
+- **[CIDR_GUIDE.md](CIDR_GUIDE.md)**
+  - Pod CIDR vs Service CIDR
+  - Single subnet vs per-AZ subnets
+  - CIDR allocation best practices
+  - Avoid IP exhaustion
 
-# Set GitOps repository
-pulumi config set gitops_repo https://github.com/your-org/gitops
-```
+### VNet/VPC Connectivity
+- **[VNET_PEERING_GUIDE.md](VNET_PEERING_GUIDE.md)**
+  - Can pods ping across VNets?
+  - When you need peering
+  - Overlay network limitations
+  - Cilium Cluster Mesh solution
 
-### 2. Deploy Platform
+---
 
-```python
-from platform import AKSPlatform
+## 🌍 Multi-Region Deployment
 
-platform = AKSPlatform(
-    "production",
-    vnet_id=vnet.name,
-    subnet_id=subnet_id,
-    resource_group_name=rg.name,
-    location="canadacentral",
-    gitops_repo="https://github.com/your-org/gitops",
-    enable_spire=True,
-    enable_gateway_api=True,
-    enable_front_door=True,
-)
-```
+- **[MULTI_REGION_GUIDE.md](MULTI_REGION_GUIDE.md)**
+  - Complete multi-region architecture
+  - Azure Front Door / CloudFront
+  - CIDR allocation across regions
+  - Disaster recovery
 
-See [`example_usage.py`](./example_usage.py) for complete example.
+---
 
-### 3. Deploy Infrastructure
+## 📖 Reference Materials
 
-```bash
-pulumi up
-```
+### Quick References
+- **[QUICK_REFERENCE.md](QUICK_REFERENCE.md)**
+  - Common commands
+  - CIDR cheat sheet
+  - Troubleshooting
 
-### 4. Access Cluster
+### Original Research
+- **[1230.md](1230.md)**
+  - CIDR concepts
+  - VPC/VNet planning
+  - Per-AZ subnet pattern
+  - Pulumi implementation examples
 
-```bash
-# Get kubeconfig
-az aks get-credentials \
-  --resource-group <rg-name> \
-  --name <cluster-name>
+---
 
-# Verify cluster
-kubectl get nodes
-kubectl get pods -A
-```
+## 🎯 Decision Matrix
 
-## Feature Flags
-
-| Parameter | Default | Description |
-|-----------|---------|-------------|
-| `enable_multi_region` | `False` | Deploy to multiple regions |
-| `enable_spire` | `True` | Install SPIFFE/SPIRE for workload identity |
-| `enable_gateway_api` | `True` | Enable Gateway API for modern ingress |
-| `enable_front_door` | `False` | Deploy Azure Front Door for global traffic management |
-
-## GitOps Repository Structure
-
-Your GitOps repository should follow this structure:
+Use this flowchart to choose your platform:
 
 ```
-gitops/
-├── apps/
-│   ├── frontend/
-│   │   ├── deployment.yaml
-│   │   └── service.yaml
-│   └── backend/
-│       ├── deployment.yaml
-│       └── service.yaml
-├── platform/
-│   ├── monitoring/
-│   ├── security/
-│   └── networking/
-└── clusters/
-    ├── production/
-    └── staging/
+Do you need official vendor support?
+├─ Yes → AKS
+│  ├─ Microsoft officially supports Cilium
+│  ├─ Tested configurations
+│  ├─ Enterprise SLA
+│  └─ Cost: $2,650/month per region
+│
+└─ No → Consider EKS
+   │
+   Do you have Cilium/eBPF expertise?
+   ├─ Yes → EKS
+   │  ├─ Pure Cilium (all features)
+   │  ├─ 5-6x cheaper
+   │  ├─ More flexibility
+   │  └─ Cost: $470/month per region
+   │
+   └─ No → Can you get Cilium Enterprise support?
+      ├─ Yes → EKS + Cilium Enterprise
+      │  ├─ Still cheaper than AKS
+      │  ├─ Professional support
+      │  └─ Total: ~$25k/year + infra
+      │
+      └─ No → AKS (safer choice)
+         └─ Official support included
 ```
 
-Argo CD ApplicationSet will automatically discover and deploy applications from the `apps/` and `platform/` directories.
+---
 
-## Verification
+## 📋 Summary Comparison
 
-### Check Cilium Status
+| Aspect | AKS | EKS |
+|--------|-----|-----|
+| **Architecture** | Hybrid (Azure CNI + Cilium) | Pure Cilium |
+| **Complexity** | 849 lines | 630 lines (26% simpler) |
+| **Cost (single region)** | $2,650/month | $470/month (5.6x cheaper) |
+| **Cost (3 regions)** | $8,073/month | $1,332/month (6.1x cheaper) |
+| **Official Support** | ✅ Microsoft | ❌ Community only |
+| **Cilium Features** | ⚠️ Dataplane only | ✅ Full control |
+| **IPAM Control** | ❌ Azure controls | ✅ Cilium controls |
+| **Cluster Mesh** | ⚠️ Limited | ✅ Full support |
+| **BGP** | ⚠️ Limited | ✅ Full support |
+| **Native Routing** | ❌ Always overlay | ✅ ENI mode available |
+| **Setup Difficulty** | Medium | Medium |
+| **Operational Risk** | Low (vendor support) | Higher (DIY) |
 
-```bash
-# Install Cilium CLI
-brew install cilium-cli
+---
 
-# Check status
-cilium status
+## 🚀 Getting Started
 
-# Run connectivity test
-cilium connectivity test
+### New to Kubernetes + Cilium?
+1. Read **[AKS_VS_EKS_COMPLEXITY.md](AKS_VS_EKS_COMPLEXITY.md)** first
+2. Then **[COST_ANALYSIS.md](COST_ANALYSIS.md)**
+3. If choosing EKS, read **[EKS_CILIUM_TRAPS.md](EKS_CILIUM_TRAPS.md)**
+4. Follow platform-specific README in `aks/` or `eks/`
+
+### Want to Understand Networking?
+1. **[NETWORKING_DEEP_DIVE.md](NETWORKING_DEEP_DIVE.md)** - Core concepts
+2. **[AZURE_CNI_CILIUM_EXPLAINED.md](AZURE_CNI_CILIUM_EXPLAINED.md)** - AKS specifics
+3. **[VNET_PEERING_GUIDE.md](VNET_PEERING_GUIDE.md)** - Cross-region connectivity
+
+### Planning Deployment?
+1. **[CIDR_GUIDE.md](CIDR_GUIDE.md)** - Plan your IP ranges
+2. **[MULTI_REGION_GUIDE.md](MULTI_REGION_GUIDE.md)** - Multi-region architecture
+3. Platform-specific `example_usage.py`
+
+---
+
+## 💡 Key Takeaways
+
+### AKS Advantages
+- ✅ **Official Microsoft support** (biggest advantage)
+- ✅ Managed Cilium updates
+- ✅ Lower operational risk
+- ✅ Faster time to production
+- ✅ Better for enterprise/regulated industries
+
+### EKS Advantages
+- ✅ **5-6x cheaper** (biggest advantage)
+- ✅ Pure Cilium architecture (simpler)
+- ✅ Full Cilium feature set
+- ✅ More networking flexibility
+- ✅ Better for cost-conscious orgs
+
+### The Real Trade-off
+```
+AKS: Pay $2,180/month extra for official support & lower risk
+EKS: Save $26,160/year but need Cilium expertise & accept higher risk
 ```
 
-### Check Hubble (Network Observability)
+---
 
-```bash
-# Port-forward Hubble UI
-kubectl port-forward -n kube-system svc/hubble-ui 8080:80
+## 🛠️ Tools & Technologies
 
-# Open http://localhost:8080
-```
+Both platforms use:
+- **Pulumi** - Infrastructure as Code
+- **Cilium** - eBPF-based CNI
+- **Argo CD** - GitOps deployment
+- **SPIFFE/SPIRE** - Workload identity
+- **Gateway API** - Modern ingress
+- **Hubble** - Network observability
 
-### Check SPIRE
+Platform-specific:
+- **AKS**: Azure Firewall, Azure Front Door, Azure CNI
+- **EKS**: NAT Gateway, CloudFront, Pure Cilium
 
-```bash
-# Check SPIRE server health
-kubectl exec -n spire spire-server-0 -- \
-  /opt/spire/bin/spire-server healthcheck
+---
 
-# List registered workloads
-kubectl exec -n spire spire-server-0 -- \
-  /opt/spire/bin/spire-server entry show
-```
+## 📞 Support
 
-### Check Argo CD
+### AKS
+- **Official**: Azure Support tickets
+- **Community**: Azure Kubernetes Slack
+- **Docs**: Microsoft Learn
 
-```bash
-# Port-forward Argo CD UI
-kubectl port-forward -n argocd svc/argocd-server 8080:443
+### EKS
+- **Official**: AWS Support (VPC CNI only, not Cilium!)
+- **Community**: Cilium Slack, eBPF Slack
+- **Enterprise**: Cilium Enterprise Support ($10k-50k/year)
+- **Docs**: Cilium.io, AWS EKS docs
 
-# Get admin password
-kubectl -n argocd get secret argocd-initial-admin-secret \
-  -o jsonpath="{.data.password}" | base64 -d
+---
 
-# Open https://localhost:8080
-```
+## 🎓 Learning Resources
 
-### Check Gateway API
+1. **Cilium Official Docs**: https://docs.cilium.io
+2. **eBPF.io**: https://ebpf.io
+3. **Kubernetes Networking**: https://kubernetes.io/docs/concepts/services-networking/
+4. **This Repository**: All guides above! 📚
 
-```bash
-# List gateways
-kubectl get gateway -A
+---
 
-# List HTTP routes
-kubectl get httproute -A
-```
+## ✅ Final Recommendation
 
-## CIDR Planning
+**For most organizations:**
+- **Start with AKS** if you need official support
+- **Consider EKS** if you have expertise and budget constraints
 
-The platform uses the following CIDR allocation:
+**Best of both worlds:**
+- **EKS + Cilium Enterprise support** ($25k/year)
+- Still cheaper than AKS
+- Get professional Cilium support
+- Access to full features
 
-| Component | CIDR | IPs | Purpose |
-|-----------|------|-----|---------|
-| VNet | `10.0.0.0/14` | 262,144 | Main virtual network |
-| Node Subnet | `10.0.0.0/16` | 65,536 | AKS node VMs |
-| Firewall Subnet | `10.0.128.0/26` | 64 | Azure Firewall (fixed) |
-| Pod CIDR | `10.32.0.0/13` | 524,288 | Kubernetes pods |
-| Service CIDR | `10.96.0.0/12` | 1,048,576 | Kubernetes services |
+**Both platforms are production-ready and excellent!** Your choice depends on your organization's needs, budget, and risk tolerance. 🚀
 
-This allocation supports:
-- **2,000+ nodes**
-- **500,000+ pods**
-- **1M+ services**
+---
 
-## Multi-Region Deployment
-
-For multi-region deployments, use separate CIDR ranges per region:
-
-| Region | VNet CIDR | Pod CIDR |
-|--------|-----------|----------|
-| Region 1 | `10.0.0.0/14` | `10.32.0.0/13` |
-| Region 2 | `10.4.0.0/14` | `10.40.0.0/13` |
-| Region 3 | `10.8.0.0/14` | `10.48.0.0/13` |
-
-## Security Considerations
-
-### Egress Control
-
-All pod egress traffic is routed through Azure Firewall. Configure firewall rules to allow necessary destinations:
-
-```python
-# Example: Allow HTTPS egress
-network.AzureFirewallApplicationRule(
-    "allow-https",
-    rule_collections=[
-        {
-            "name": "allow-https",
-            "priority": 100,
-            "action": "Allow",
-            "rules": [
-                {
-                    "name": "https",
-                    "protocols": [{"port": 443, "protocol_type": "Https"}],
-                    "target_fqdns": ["*.microsoft.com", "*.github.com"],
-                }
-            ]
-        }
-    ]
-)
-```
-
-### Network Policies
-
-Use Cilium NetworkPolicies for microsegmentation:
-
-```yaml
-apiVersion: cilium.io/v2
-kind: CiliumNetworkPolicy
-metadata:
-  name: backend-policy
-spec:
-  endpointSelector:
-    matchLabels:
-      app: backend
-  ingress:
-  - fromEndpoints:
-    - matchLabels:
-        app: frontend
-    toPorts:
-    - ports:
-      - port: "8080"
-```
-
-### Workload Identity
-
-SPIRE automatically provisions X.509 certificates to workloads. Example usage:
-
-```yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: app
-spec:
-  containers:
-  - name: app
-    volumeMounts:
-    - name: spire-agent-socket
-      mountPath: /run/spire/sockets
-  volumes:
-  - name: spire-agent-socket
-    hostPath:
-      path: /run/spire/sockets
-      type: Directory
-```
-
-## Cost Optimization
-
-- **System Pool**: 3x `Standard_D4s_v5` (~$280/month)
-- **Workload Pool**: 6x `Standard_D8s_v5` (~$1,120/month)
-- **Azure Firewall**: ~$1,200/month
-- **Front Door**: ~$35/month + data transfer
-
-**Total**: ~$2,635/month (baseline, excluding data transfer and storage)
-
-## Troubleshooting
-
-### Private Cluster Access
-
-If you can't access the private cluster, ensure you're on the VNet or use Azure Bastion:
-
-```bash
-# Option 1: Deploy jumpbox in same VNet
-# Option 2: Use Azure Bastion
-# Option 3: VPN Gateway
-```
-
-### Firewall Blocking Traffic
-
-Check firewall logs:
-
-```bash
-az monitor diagnostic-settings create \
-  --resource <firewall-id> \
-  --workspace <log-analytics-id> \
-  --logs '[{"category": "AzureFirewallApplicationRule", "enabled": true}]'
-```
-
-## References
-
-- [AKS Best Practices](https://learn.microsoft.com/en-us/azure/aks/best-practices)
-- [Cilium Documentation](https://docs.cilium.io/)
-- [Gateway API](https://gateway-api.sigs.k8s.io/)
-- [SPIFFE/SPIRE](https://spiffe.io/docs/latest/)
-- [Argo CD](https://argo-cd.readthedocs.io/)
-- [Azure Front Door](https://learn.microsoft.com/en-us/azure/frontdoor/)
-
-## License
-
-MIT
+*Last Updated: 2025-12-30*
+*Total Documentation: 15+ comprehensive guides*
+*Combined Length: 10,000+ lines of detailed analysis*
