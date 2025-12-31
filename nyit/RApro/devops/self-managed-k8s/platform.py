@@ -242,6 +242,86 @@ class SelfManagedK8sCluster(ComponentResource):
             opts=ResourceOptions(parent=self),
         )
 
+        # Policy for AWS EBS CSI Driver (for persistent storage)
+        ebs_csi_policy = aws.iam.Policy(
+            f"{name}-ebs-csi-policy",
+            policy=pulumi.Output.json_dumps({
+                "Version": "2012-10-17",
+                "Statement": [
+                    {
+                        "Effect": "Allow",
+                        "Action": [
+                            "ec2:CreateSnapshot",
+                            "ec2:AttachVolume",
+                            "ec2:DetachVolume",
+                            "ec2:ModifyVolume",
+                            "ec2:DescribeAvailabilityZones",
+                            "ec2:DescribeInstances",
+                            "ec2:DescribeSnapshots",
+                            "ec2:DescribeTags",
+                            "ec2:DescribeVolumes",
+                            "ec2:DescribeVolumesModifications"
+                        ],
+                        "Resource": "*"
+                    },
+                    {
+                        "Effect": "Allow",
+                        "Action": ["ec2:CreateTags"],
+                        "Resource": [
+                            "arn:aws:ec2:*:*:volume/*",
+                            "arn:aws:ec2:*:*:snapshot/*"
+                        ]
+                    },
+                    {
+                        "Effect": "Allow",
+                        "Action": ["ec2:DeleteTags"],
+                        "Resource": [
+                            "arn:aws:ec2:*:*:volume/*",
+                            "arn:aws:ec2:*:*:snapshot/*"
+                        ]
+                    },
+                    {
+                        "Effect": "Allow",
+                        "Action": ["ec2:CreateVolume"],
+                        "Resource": "*",
+                        "Condition": {
+                            "StringLike": {
+                                "aws:RequestTag/ebs.csi.aws.com/cluster": "true"
+                            }
+                        }
+                    },
+                    {
+                        "Effect": "Allow",
+                        "Action": ["ec2:DeleteVolume"],
+                        "Resource": "*",
+                        "Condition": {
+                            "StringLike": {
+                                "ec2:ResourceTag/ebs.csi.aws.com/cluster": "true"
+                            }
+                        }
+                    },
+                    {
+                        "Effect": "Allow",
+                        "Action": ["ec2:DeleteSnapshot"],
+                        "Resource": "*",
+                        "Condition": {
+                            "StringLike": {
+                                "ec2:ResourceTag/CSIVolumeSnapshotName": "*"
+                            }
+                        }
+                    },
+                ]
+            }),
+            opts=ResourceOptions(parent=self),
+        )
+
+        aws.iam.RolePolicyAttachment(
+            f"{name}-ebs-csi-policy-attach",
+            role=self.instance_role.name,
+            policy_arn=ebs_csi_policy.arn,
+            opts=ResourceOptions(parent=self),
+        )
+
         # Instance profile
         self.instance_profile = aws.iam.InstanceProfile(
             f"{name}-instance-profile",
@@ -312,7 +392,7 @@ EOF
 sysctl --system
 
 # Install Kubernetes components
-curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /' | tee /etc/apt/sources.list.d/kubernetes.list
 apt-get update
 apt-get install -y kubelet={kubernetes_version}-1.1 kubeadm={kubernetes_version}-1.1 kubectl={kubernetes_version}-1.1
@@ -355,7 +435,50 @@ cilium install \\
   --set hubble.relay.enabled=true \\
   --set hubble.ui.enabled=true
 
-echo "Cluster initialized! Join command:"
+echo "Waiting for Cilium to be ready..."
+kubectl wait --for=condition=ready pod -l k8s-app=cilium -n kube-system --timeout=300s
+
+# Install AWS EBS CSI Driver for persistent storage
+echo "Installing AWS EBS CSI Driver..."
+kubectl apply -k "github.com/kubernetes-sigs/aws-ebs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-1.26"
+
+# Wait for CSI driver to be ready
+echo "Waiting for EBS CSI Driver..."
+sleep 30
+kubectl wait --for=condition=ready pod -l app=ebs-csi-controller -n kube-system --timeout=300s
+
+# Create default StorageClass using EBS gp3
+echo "Creating default StorageClass..."
+cat <<'STORAGECLASS' | kubectl apply -f -
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: ebs-sc
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "true"
+provisioner: ebs.csi.aws.com
+parameters:
+  type: gp3
+  encrypted: "true"
+  iops: "3000"
+  throughput: "125"
+volumeBindingMode: WaitForFirstConsumer
+allowVolumeExpansion: true
+reclaimPolicy: Delete
+STORAGECLASS
+
+echo ""
+echo "========================================"
+echo "Cluster initialized successfully!"
+echo "========================================"
+echo ""
+echo "Installed components:"
+echo "- Kubernetes {kubernetes_version}"
+echo "- Cilium {cilium_version}"
+echo "- AWS EBS CSI Driver"
+echo "- Default StorageClass: ebs-sc"
+echo ""
+echo "Join command:"
 kubeadm token create --print-join-command
 INITSCRIPT
 
