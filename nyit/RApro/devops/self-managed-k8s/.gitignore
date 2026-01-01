@@ -1,0 +1,32 @@
+# Pulumi
+.pulumi/
+Pulumi.*.yaml
+!Pulumi.dev.yaml
+
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.Python
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# SSH keys (keep local only)
+*.pem
+*.key
+
+# Terraform (if any)
+.terraform/
+*.tfstate
+*.tfstate.backup

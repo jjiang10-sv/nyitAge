@@ -19,7 +19,7 @@ Trade-offs:
 
 import pulumi
 import pulumi_aws as aws
-from platform import SelfManagedK8sCluster
+from k8s_self_host import SelfManagedK8sCluster
 
 # ========================================
 # Configuration
@@ -99,7 +99,7 @@ cluster = SelfManagedK8sCluster(
     control_plane_count=1,  # For production, use 3
     worker_count=3,
     control_plane_instance_type="t3.medium",
-    worker_instance_type="t3.large",
+    worker_instance_type="t3.medium",
     pod_cidr="10.32.0.0/13",
     service_cidr="10.96.0.0/12",
 )

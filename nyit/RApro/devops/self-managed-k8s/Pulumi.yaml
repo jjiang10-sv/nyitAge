@@ -1,0 +1,7 @@
+name: self-managed-k8s-cilium
+description: Self-managed Kubernetes cluster on AWS EC2 with pure Cilium CNI and SPIRE/mTLS
+runtime:
+  name: python
+  options:
+    virtualenv: ../../../../.venv
+main: example_usage.py
