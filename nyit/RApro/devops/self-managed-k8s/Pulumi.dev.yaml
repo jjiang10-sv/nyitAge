@@ -1,5 +1,0 @@
-config:
-  aws:region: us-west-1
-  cluster_name: dev-k8s
-  k8s_version: 1.29.0
-  cilium_version: 1.15.1
