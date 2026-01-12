@@ -1,0 +1,19 @@
+Traditional packet-based network monitoring tools are limited in their ability 
+to understand cloud native environments like Kubernetes, because they rely on IP addresses, 
+which are ephemeral in a cloud native environment and thus meaningless for security monitoring 
+and incident investigation.
+
+Using the Hubble user interface, you can see the flows between services represented 
+by their logical, long-lasting identities instead of their IP addresses.
+
+node-role.kubernetes.io/control-plane=
+
+build daemon:
+     RUN_AS_ROOT=1 make run-builder
+     git config --global --add safe.directory /go/src/github.com/cilium/cilium
+
+       cd daemon
+   CGO_ENABLED=0 GOOS=linux go build -buildvcs=false -mod=vendor -o cilium-agent
+
+
+   @tag:nextEditSuggestions

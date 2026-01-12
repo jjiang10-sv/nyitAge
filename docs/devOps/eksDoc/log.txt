@@ -1,0 +1,1 @@
+scp -i ~/.ssh/k8s-dev-key.pem ubuntu@13.57.3.190:/etc/kubernetes/admin.conf ~/.kube/config

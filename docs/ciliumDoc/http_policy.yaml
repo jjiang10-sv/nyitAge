@@ -1,0 +1,30 @@
+#kubectl -n tenant-jobs apply -f https://docs.isovalent.com/public/http-ingress-visibility.yaml
+
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: http-ingress-visibility
+spec:
+  endpointSelector:
+    matchLabels: {}
+  ingress:
+    - fromEntities:
+        - all
+    - toPorts:
+        - ports:
+            - port: "80"
+              protocol: "TCP"
+            - port: "8080"
+              protocol: "TCP"
+            - port: "9080"
+              protocol: "TCP"
+            - port: "50051"
+              protocol: "TCP"
+            - port: "9200"
+              protocol: "TCP"
+          rules:
+            http:
+              - {}
+
+#In this policy, we are again applying the policy to all endpoints using the endpointSelector 
+#field, against all ingress traffic coming all fromEntities regardless if they are internal or external to the cluster. We have specified a number of toPorts to capture the incoming traffic, with the rule specifying this applies to all http traffic.

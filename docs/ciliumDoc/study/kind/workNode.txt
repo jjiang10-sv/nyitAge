@@ -1,0 +1,411 @@
+# pwd
+/
+# id
+uid=0(root) gid=0(root) groups=0(root)
+# docker ps
+/bin/sh: 3: docker: not found
+# ifconfig
+/bin/sh: 4: ifconfig: not found
+# ls /etc
+10-network-magic.conf  debian_version  hosts  ld.so.conf.d  nfs.conf.d rc3.d       skel
+10-network-security.conf  default  hosts.allow  libaudit.conf   nftables.conf  rc4.d       ssl
+adduser.conf  deluser.conf  hosts.deny  localtime  nsswitch.conf  rc5.d       subgid
+alternatives  dpkg  idmapd.conf  login.defs  opt rc6.d       subuid
+apt  e2scrub.conf  init.d  logrotate.d  os-release rcS.d       sysctl.conf
+bash.bashrc  environment  inputrc  machine-id  pam.conf request-key.conf      sysctl.d
+bindresvport.blacklist  ethertypes  insserv.conf.d  mime.types  pam.d request-key.d       system
+binfmt.d  fstab  iproute2  mke2fs.conf  passwd resolv.conf       systemd
+ca-certificates  fuse.conf  iscsi  modprobe.d  passwd- resolv.conf.original  terminfo
+ca-certificates.conf  gai.conf  issue  modules  profile rmt       timezone
+cni  group  issue.net  modules-load.d  profile.d rpc       tmpfiles.d
+config.toml  group-  kernel  motd  protocols security       ucf.conf
+containerd  gshadow  keyutils  mtab  python3 selinux       udev
+crictl.yaml  gshadow-  kubelet  netconfig  python3.11 services       update-motd.d
+cron.d  gss  kubernetes  network  rc0.d shadow       xattr.conf
+cron.daily  host.conf  ld.so.cache  networks  rc1.d shadow-       xdg
+debconf.conf  hostname  ld.so.conf  nfs.conf  rc2.d shells
+# cat etc/os-release
+PRETTY_NAME="Debian GNU/Linux 12 (bookworm)"
+NAME="Debian GNU/Linux"
+VERSION_ID="12"
+VERSION="12 (bookworm)"
+VERSION_CODENAME=bookworm
+ID=debian
+HOME_URL="https://www.debian.org/"
+SUPPORT_URL="https://www.debian.org/support"
+BUG_REPORT_URL="https://bugs.debian.org/"
+# ipconfig
+/bin/sh: 7: ipconfig: not found
+# ip link list
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+2: tunl0@NONE: <NOARP> mtu 1480 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+    link/ipip 0.0.0.0 brd 0.0.0.0
+3: ip6tnl0@NONE: <NOARP> mtu 1452 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+    link/tunnel6 :: brd :: permaddr 320a:3f53:5adc::
+4: cilium_net@cilium_host: <BROADCAST,MULTICAST,NOARP,UP,LOWER_UP> mtu 65520 qdisc noqueue state UP mode DEFAULT group default qlen 1000
+    link/ether b2:c1:90:78:b5:45 brd ff:ff:ff:ff:ff:ff
+5: cilium_host@cilium_net: <BROADCAST,MULTICAST,NOARP,UP,LOWER_UP> mtu 65520 qdisc noqueue state UP mode DEFAULT group default qlen 1000
+    link/ether 4e:e4:ae:21:a7:20 brd ff:ff:ff:ff:ff:ff
+6: cilium_vxlan: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 65520 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+    link/ether 76:da:0e:98:e8:35 brd ff:ff:ff:ff:ff:ff
+8: lxcdbd688399eb4@if7: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 65520 qdisc noqueue state UP mode DEFAULT group default qlen 1000
+    link/ether 76:a4:28:04:53:12 brd ff:ff:ff:ff:ff:ff link-netns cni-361dff79-331f-5439-cec8-279ce1f8ea3c
+10: lxc5acb8a1220a5@if9: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 65520 qdisc noqueue state UP mode DEFAULT group default qlen 1000
+    link/ether 46:1a:02:f0:73:f8 brd ff:ff:ff:ff:ff:ff link-netns cni-52fa2833-7c60-c93c-3a96-b77af9d3e3be
+12: lxc3f5d525b1ac6@if11: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 65520 qdisc noqueue state UP mode DEFAULT group default qlen 1000
+    link/ether 9a:ba:72:11:05:34 brd ff:ff:ff:ff:ff:ff link-netns cni-5c270bdd-bd6f-6bf4-c747-0d47ad7bc483
+14: eth0@if15: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 65535 qdisc noqueue state UP mode DEFAULT group default qlen 1000
+    link/ether 02:42:ac:13:00:04 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+15: lxc72869527b377@if13: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 65520 qdisc noqueue state UP mode DEFAULT group default qlen 1000
+    link/ether 0e:63:fd:b5:52:de brd ff:ff:ff:ff:ff:ff link-netns cni-1a99ae45-4d83-4469-606f-408aa6bc5dfa
+17: lxc_health@if16: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 65520 qdisc noqueue state UP mode DEFAULT group default qlen 1000
+    link/ether 86:77:9e:fe:dc:b6 brd ff:ff:ff:ff:ff:ff link-netnsid 7
+19: lxcdebf51a90c72@if18: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 65520 qdisc noqueue state UP mode DEFAULT group default qlen 1000
+    link/ether be:57:e1:76:10:3e brd ff:ff:ff:ff:ff:ff link-netns cni-32805d1c-d978-255f-aaad-15f5265a9cdd
+21: lxc2b7ebfbfbbd2@if20: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 65520 qdisc noqueue state UP mode DEFAULT group default qlen 1000
+    link/ether 2e:09:56:72:1a:6a brd ff:ff:ff:ff:ff:ff link-netns cni-5dfecf1f-b804-2f67-1a40-dca2d7bd85cd
+23: lxc5044f15707b7@if22: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 65520 qdisc noqueue state UP mode DEFAULT group default qlen 1000
+    link/ether 5e:7f:6c:75:22:3e brd ff:ff:ff:ff:ff:ff link-netns cni-3d8c9d0f-64d6-d124-2fc4-1e6f9f0d09cd
+25: lxc4c88f21ef993@if24: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 65520 qdisc noqueue state UP mode DEFAULT group default qlen 1000
+    link/ether d2:6f:c8:e9:ca:ee brd ff:ff:ff:ff:ff:ff link-netns cni-750fcc5c-779c-f810-7af1-c5587036c659
+
+k get nodes -o wide
+NAME                 STATUS     ROLES           AGE   VERSION   INTERNAL-IP   EXTERNAL-IP   OS-IMAGE                         KERNEL-VERSION        CONTAINER-RUNTIME
+kind-control-plane   NotReady   control-plane   92d   v1.33.1   172.19.0.2    <none>        Debian GNU/Linux 12 (bookworm)   5.15.49-linuxkit-pr   containerd://2.1.1
+kind-worker          Ready      <none>          92d   v1.33.1   172.19.0.4    <none>        Debian GNU/Linux 12 (bookworm)   5.15.49-linuxkit-pr   containerd://2.1.1
+kind-worker2         Ready      <none>          92d   v1.33.1   172.19.0.2    <none>        Debian GNU/Linux 12 (bookworm)   5.15.49-linuxkit-pr   containerd://2.1.1
+kind-worker3         Ready      <none>          92d   v1.33.1   172.19.0.3    <none>        Debian GNU/Linux 12 (bookworm)   5.15.49-linuxkit-pr   containerd://2.1.1
+
+
+# ip route list
+default via 172.19.0.1 dev eth0 
+10.244.0.0/24 via 10.244.2.74 dev cilium_host proto kernel src 10.244.2.74 mtu 65470 
+10.244.1.0/24 via 10.244.2.74 dev cilium_host proto kernel src 10.244.2.74 mtu 65470 
+10.244.2.0/24 via 10.244.2.74 dev cilium_host proto kernel src 10.244.2.74 
+10.244.2.74 dev cilium_host proto kernel scope link 
+10.244.3.0/24 via 10.244.2.74 dev cilium_host proto kernel src 10.244.2.74 mtu 65470 
+172.19.0.0/16 dev eth0 proto kernel scope link src 172.19.0.4 
+# ip link list | grep cilium
+4: cilium_net@cilium_host: <BROADCAST,MULTICAST,NOARP,UP,LOWER_UP> mtu 65520 qdisc noqueue state UP mode DEFAULT group default qlen 1000
+5: cilium_host@cilium_net: <BROADCAST,MULTICAST,NOARP,UP,LOWER_UP> mtu 65520 qdisc noqueue state UP mode DEFAULT group default qlen 1000
+6: cilium_vxlan: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 65520 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+# kubectl -h
+kubectl controls the Kubernetes cluster manager.
+
+ Find more information at: https://kubernetes.io/docs/reference/kubectl/
+
+Basic Commands (Beginner):
+  create          Create a resource from a file or from stdin
+  expose          Take a replication controller, service, deployment or pod and expose it as a new Kubernetes service
+  run             Run a particular image on the cluster
+  set             Set specific features on objects
+
+Basic Commands (Intermediate):
+  explain         Get documentation for a resource
+  get             Display one or many resources
+  edit            Edit a resource on the server
+  delete          Delete resources by file names, stdin, resources and names, or by resources and label selector
+
+Deploy Commands:
+  rollout         Manage the rollout of a resource
+  scale           Set a new size for a deployment, replica set, or replication controller
+  autoscale       Auto-scale a deployment, replica set, stateful set, or replication controller
+
+Cluster Management Commands:
+  certificate     Modify certificate resources
+  cluster-info    Display cluster information
+  top             Display resource (CPU/memory) usage
+  cordon          Mark node as unschedulable
+  uncordon        Mark node as schedulable
+  drain           Drain node in preparation for maintenance
+  taint           Update the taints on one or more nodes
+
+Troubleshooting and Debugging Commands:
+  describe        Show details of a specific resource or group of resources
+  logs            Print the logs for a container in a pod
+  attach          Attach to a running container
+  exec            Execute a command in a container
+  port-forward    Forward one or more local ports to a pod
+  proxy           Run a proxy to the Kubernetes API server
+  cp              Copy files and directories to and from containers
+  auth            Inspect authorization
+  debug           Create debugging sessions for troubleshooting workloads and nodes
+  events          List events
+
+Advanced Commands:
+  diff            Diff the live version against a would-be applied version
+  apply           Apply a configuration to a resource by file name or stdin
+  patch           Update fields of a resource
+  replace         Replace a resource by file name or stdin
+  wait            Experimental: Wait for a specific condition on one or many resources
+  kustomize       Build a kustomization target from a directory or URL
+
+Settings Commands:
+  label           Update the labels on a resource
+  annotate        Update the annotations on a resource
+  completion      Output shell completion code for the specified shell (bash, zsh, fish, or powershell)
+
+Subcommands provided by plugins:
+
+Other Commands:
+  api-resources   Print the supported API resources on the server
+  api-versions    Print the supported API versions on the server, in the form of "group/version"
+  config          Modify kubeconfig files
+  plugin          Provides utilities for interacting with plugins
+  version         Print the client and server version information
+
+Usage:
+  kubectl [flags] [options]
+
+top - 05:03:54 up 14 min,  0 user,  load average: 0.37, 1.37, 1.26
+Tasks:  52 total,   1 running,  51 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  9.0 us,  4.2 sy,  0.0 ni, 86.3 id,  0.1 wa,  0.0 hi,  0.4 si,  0.0 st 
+MiB Mem :   7851.4 total,    488.1 free,   4422.7 used,   3446.8 buff/cache     
+MiB Swap:   1024.0 total,    985.4 free,     38.6 used.   3428.7 avail Mem 
+
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND                                                  
+    199 root      20   0 2415244  93432  40736 S   8.3   1.2   0:39.54 kubelet                                                  
+   1427 root      20   0 1423372 167964  62296 S   5.3   2.1   0:46.21 cilium-agent                                             
+   2612 1000      20   0 1940444 460776  44228 S   2.7   5.7   0:46.01 prometheus                                               
+    114 root      20   0 3384676  79800  34068 S   1.3   1.0   0:17.36 containerd                                               
+    313 root      20   0 1233452   9916   6496 S   0.7   0.1   0:00.78 containerd-shim                                          
+    763 root      20   0 3360984  39652  26400 S   0.7   0.5   0:04.05 cilium-envoy                                             
+   1885 root      20   0 1233708  10252   6616 S   0.7   0.1   0:01.15 containerd-shim                                          
+   2532 root      20   0 1189640  70624  32568 S   0.7   0.9   0:06.99 MainThread                                               
+    384 root      20   0 1233452   9788   6424 S   0.3   0.1   0:00.75 containerd-shim                                          
+    410 root      20   0 1233452   9948   6548 S   0.3   0.1   0:01.04 containerd-shim                                          
+    631 root      20   0 1294704  39940  26676 S   0.3   0.5   0:01.82 kube-proxy                                               
+    647 nobody    20   0  724912  18432  10936 S   0.3   0.2   0:02.02 node_exporter                                            
+   1832 root      20   0 1233452  10156   6556 S   0.3   0.1   0:00.90 containerd-shim                                          
+   1856 root      20   0 1233452   9356   5740 S   0.3   0.1   0:00.80 containerd-shim                                          
+   1952 root      20   0 1233708   9796   6492 S   0.3   0.1   0:00.75 containerd-shim                                          
+   2084 root      20   0 1233196   9660   6724 S   0.3   0.1   0:00.91 containerd-shim                                          
+   2420 65532     20   0 1331292  61872  37780 S   0.3   0.8   0:05.41 keda-adapter                                             
+   2518 65532     20   0 1294684  33004  24724 S   0.3   0.4   0:02.03 coredns                                                  
+   2902 root      20   0    8576   4276   2412 R   0.3   0.1   0:00.10 top                                                      
+      1 root      20   0   23196  13864   8316 S   0.0   0.2   0:01.01 systemd                                                  
+     98 root      20   0   25116   9056   8064 S   0.0   0.1   0:00.19 systemd-journal                                          
+    314 root      20   0 1233452   9900   6728 S   0.0   0.1   0:00.69 containerd-shim                                          
+    341 root      20   0 1233452   9588   6480 S   0.0   0.1   0:00.72 containerd-shim                                          
+    495 nobody    20   0     792      4      0 S   0.0   0.0   0:00.02 pause                                                    
+    497 65535     20   0     792      4      0 S   0.0   0.0   0:00.01 pause                                                    
+    512 65535     20   0     792      4      0 S   0.0   0.0   0:00.01 pause                                                    
+    532 65535     20   0     792      4      0 S   0.0   0.0   0:00.01 pause                                                    
+    546 65535     20   0     792      4      0 S   0.0   0.0   0:00.00 pause                                                    
+
+# ip link | grep cilium_vxlan
+6: cilium_vxlan: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 65520 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+# ip link | grep lo          
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+
+# crictl pods
+POD ID              CREATED             STATE               NAME                                                   NAMESPACE           ATTEMPT             RUNTIME
+0c8937ba87507       24 minutes ago      Ready               keda-operator-metrics-apiserver-74bcc6f665-fh968       keda                24                  (default)
+5151ff1104f60       24 minutes ago      Ready               echo-same-node-798cc5d967-dkq6t                        cilium-test-1       29                  (default)
+05186021ae20d       24 minutes ago      Ready               client2-66475877c6-vjcm5                               cilium-test-1       29                  (default)
+ee2c00cbcdf95       24 minutes ago      Ready               client-645b68dcf7-48wxs                                cilium-test-1       29                  (default)
+80519c1c00133       24 minutes ago      Ready               kube-prometheus-stack-operator-66b66f559f-2scbg        monitoring          29                  (default)
+1bf9f30abb08e       24 minutes ago      Ready               prometheus-kube-prometheus-stack-prometheus-0          monitoring          29                  (default)
+c4050d2225f72       24 minutes ago      Ready               argocd-repo-server-cbc75d656-5sss4                     argocd              4                   (default)
+78ef9f4dbc7f9       24 minutes ago      Ready               argocd-dex-server-7469685587-kr8v5                     argocd              4                   (default)
+ca2a98145792a       25 minutes ago      Ready               cilium-bpvqb                                           kube-system         31                  (default)
+f1488f036c5e2       25 minutes ago      Ready               cilium-envoy-gfwrk                                     kube-system         31                  (default)
+d550669fbb83b       25 minutes ago      Ready               host-netns-pjnch                                       cilium-test-1       31                  (default)
+3e84b865d2219       25 minutes ago      Ready               kube-proxy-hkkb9                                       kube-system         31                  (default)
+f65cb4764ebca       25 minutes ago      Ready               kube-prometheus-stack-prometheus-node-exporter-tsx2l   monitoring          31                  (default)
+fff747614dc00       8 hours ago         NotReady            client2-66475877c6-vjcm5                               cilium-test-1       28                  (default)
+f54c57e43b31a       8 hours ago         NotReady            keda-operator-metrics-apiserver-74bcc6f665-fh968       keda                23                  (default)
+4c7b664c02143       8 hours ago         NotReady            kube-prometheus-stack-operator-66b66f559f-2scbg        monitoring          28                  (default)
+3bd081aae1ca4       8 hours ago         NotReady            prometheus-kube-prometheus-stack-prometheus-0          monitoring          28                  (default)
+807c3604f54fb       8 hours ago         NotReady            echo-same-node-798cc5d967-dkq6t                        cilium-test-1       28                  (default)
+17468557b37fd       8 hours ago         NotReady            argocd-dex-server-7469685587-kr8v5                     argocd              3                   (default)
+8416acd76cc8f       8 hours ago         NotReady            argocd-repo-server-cbc75d656-5sss4                     argocd              3                   (default)
+ef3b104892443       8 hours ago         NotReady            client-645b68dcf7-48wxs                                cilium-test-1       28                  (default)
+3a8703faee9ab       8 hours ago         NotReady            kube-prometheus-stack-prometheus-node-exporter-tsx2l   monitoring          30                  (default)
+a98cf49655b9e       8 hours ago         NotReady            cilium-bpvqb                                           kube-system         30                  (default)
+9e5f6ddb1da0b       8 hours ago         NotReady            host-netns-pjnch                                       cilium-test-1       30                  (default)
+1604faf6c0077       8 hours ago         NotReady            cilium-envoy-gfwrk                                     kube-system         30                  (default)
+cdb8b905d3999       8 hours ago         NotReady            kube-proxy-hkkb9                                       kube-system         30                  (default)
+# crictl pods -h
+NAME:
+   crictl pods - List pods
+
+USAGE:
+   crictl pods [command options]
+
+OPTIONS:
+   --id value                       filter by pod id
+   --label value [ --label value ]  Filter by key=value label
+   --last value, -n value           Show last n recently created pods. Set 0 for unlimited (default: 0)
+   --latest, -l                     Show the most recently created pod (default: false)
+   --name value                     Filter by pod name regular expression pattern
+   --namespace value                Filter by pod namespace regular expression pattern
+   --no-trunc                       Show output without truncating the ID (default: false)
+   --output value, -o value         Output format, One of: json|yaml|table (default: "table")
+   --quiet, -q                      List only pod IDs (default: false)
+   --state value, -s value          Filter by pod state
+   --verbose, -v                    Show verbose info for pods (default: false)
+   --help, -h                       show help
+# crictl pods -v
+ID: 0c8937ba8750739a00ffac26a8147f4f2dfebff5c3094f48ce124f82fbd9f3a5
+Name: keda-operator-metrics-apiserver-74bcc6f665-fh968
+UID: 8fbbda1d-12db-4542-9fd8-d25a80ecf3b1
+Namespace: keda
+Attempt: 24
+Status: Ready
+Created: 2025-12-30 04:50:03.291737013 +0000 UTC
+Labels:
+app -> keda-operator-metrics-apiserver
+app.kubernetes.io/component -> operator
+app.kubernetes.io/instance -> keda
+app.kubernetes.io/managed-by -> Helm
+app.kubernetes.io/name -> keda-operator-metrics-apiserver
+app.kubernetes.io/part-of -> keda-operator
+app.kubernetes.io/version -> 2.18.0
+helm.sh/chart -> keda-2.18.0
+io.kubernetes.pod.name -> keda-operator-metrics-apiserver-74bcc6f665-fh968
+io.kubernetes.pod.namespace -> keda
+io.kubernetes.pod.uid -> 8fbbda1d-12db-4542-9fd8-d25a80ecf3b1
+pod-template-hash -> 74bcc6f665
+Annotations:
+kubernetes.io/config.seen -> 2025-12-30T04:49:12.938134545Z
+kubernetes.io/config.source -> api
+Runtime: (default)
+---
+
+# crictl ps
+CONTAINER           IMAGE               CREATED             STATE               NAME                              ATTEMPT             POD ID              POD                                                    NAMESPACE
+3bd0db9b54fad       52fcb9ac20842       25 minutes ago      Running             config-reloader                   29                  1bf9f30abb08e       prometheus-kube-prometheus-stack-prometheus-0          monitoring
+8c3f50921a75f       d2525ab881e33       25 minutes ago      Running             prometheus                        31                  1bf9f30abb08e       prometheus-kube-prometheus-stack-prometheus-0          monitoring
+a0c372b1ce18f       635d59859eb72       25 minutes ago      Running             repo-server                       5                   c4050d2225f72       argocd-repo-server-cbc75d656-5sss4                     argocd
+0b3e59f42e34e       7ff8c97cbda19       25 minutes ago      Running             dns-test-server                   29                  5151ff1104f60       echo-same-node-798cc5d967-dkq6t                        cilium-test-1
+c3e1f31819eea       1efb6bb19cec2       25 minutes ago      Running             dex-server                        4                   78ef9f4dbc7f9       argocd-dex-server-7469685587-kr8v5                     argocd
+b83aba59036ad       5a2b32c2a1ea9       25 minutes ago      Running             echo-same-node                    29                  5151ff1104f60       echo-same-node-798cc5d967-dkq6t                        cilium-test-1
+32f9763c0971a       70bb8ce039112       25 minutes ago      Running             keda-operator-metrics-apiserver   26                  0c8937ba87507       keda-operator-metrics-apiserver-74bcc6f665-fh968       keda
+dad5905489c7e       92a9e5de224f7       25 minutes ago      Running             kube-prometheus-stack             29                  80519c1c00133       kube-prometheus-stack-operator-66b66f559f-2scbg        monitoring
+71a70f8cd3342       f57b7e3868d91       25 minutes ago      Running             client2                           29                  05186021ae20d       client2-66475877c6-vjcm5                               cilium-test-1
+359b39529c370       f57b7e3868d91       25 minutes ago      Running             client                            29                  ee2c00cbcdf95       client-645b68dcf7-48wxs                                cilium-test-1
+af1f04e04af4f       5e0b814da3e64       26 minutes ago      Running             cilium-agent                      30                  ca2a98145792a       cilium-bpvqb                                           kube-system
+c88c5eafc4cd9       f57b7e3868d91       26 minutes ago      Running             host-netns                        31                  d550669fbb83b       host-netns-pjnch                                       cilium-test-1
+e1b1164c53d83       05f3fa001d284       26 minutes ago      Running             cilium-envoy                      31                  f1488f036c5e2       cilium-envoy-gfwrk                                     kube-system
+cf36fbf0ab5e6       3e58848989f55       26 minutes ago      Running             kube-proxy                        31                  3e84b865d2219       kube-proxy-hkkb9                                       kube-system
+520b659ee5a09       29488b0a42a6c       26 minutes ago      Running             node-exporter                     32                  f65cb4764ebca       kube-prometheus-stack-prometheus-node-exporter-tsx2l   monitoring
+# ip -h
+Usage: ip [ OPTIONS ] OBJECT { COMMAND | help }
+       ip [ -force ] -batch filename
+where  OBJECT := { address | addrlabel | amt | fou | help | ila | ioam | l2tp |
+                   link | macsec | maddress | monitor | mptcp | mroute | mrule |
+                   neighbor | neighbour | netconf | netns | nexthop | ntable |
+                   ntbl | route | rule | sr | tap | tcpmetrics |
+                   token | tunnel | tuntap | vrf | xfrm }
+       OPTIONS := { -V[ersion] | -s[tatistics] | -d[etails] | -r[esolve] |
+                    -h[uman-readable] | -iec | -j[son] | -p[retty] |
+                    -f[amily] { inet | inet6 | mpls | bridge | link } |
+                    -4 | -6 | -M | -B | -0 |
+                    -l[oops] { maximum-addr-flush-attempts } | -br[ief] |
+                    -o[neline] | -t[imestamp] | -ts[hort] | -b[atch] [filename] |
+                    -rc[vbuf] [size] | -n[etns] name | -N[umeric] | -a[ll] |
+                    -c[olor]}
+# ip address
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+2: tunl0@NONE: <NOARP> mtu 1480 qdisc noop state DOWN group default qlen 1000
+    link/ipip 0.0.0.0 brd 0.0.0.0
+3: ip6tnl0@NONE: <NOARP> mtu 1452 qdisc noop state DOWN group default qlen 1000
+    link/tunnel6 :: brd :: permaddr 320a:3f53:5adc::
+4: cilium_net@cilium_host: <BROADCAST,MULTICAST,NOARP,UP,LOWER_UP> mtu 65520 qdisc noqueue state UP group default qlen 1000
+    link/ether b2:c1:90:78:b5:45 brd ff:ff:ff:ff:ff:ff
+5: cilium_host@cilium_net: <BROADCAST,MULTICAST,NOARP,UP,LOWER_UP> mtu 65520 qdisc noqueue state UP group default qlen 1000
+    link/ether 4e:e4:ae:21:a7:20 brd ff:ff:ff:ff:ff:ff
+    inet 10.244.2.74/32 scope global cilium_host
+       valid_lft forever preferred_lft forever
+6: cilium_vxlan: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 65520 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/ether 76:da:0e:98:e8:35 brd ff:ff:ff:ff:ff:ff
+8: lxcdbd688399eb4@if7: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 65520 qdisc noqueue state UP group default qlen 1000
+    link/ether 76:a4:28:04:53:12 brd ff:ff:ff:ff:ff:ff link-netns cni-361dff79-331f-5439-cec8-279ce1f8ea3c
+10: lxc5acb8a1220a5@if9: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 65520 qdisc noqueue state UP group default qlen 1000
+    link/ether 46:1a:02:f0:73:f8 brd ff:ff:ff:ff:ff:ff link-netns cni-52fa2833-7c60-c93c-3a96-b77af9d3e3be
+12: lxc3f5d525b1ac6@if11: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 65520 qdisc noqueue state UP group default qlen 1000
+    link/ether 9a:ba:72:11:05:34 brd ff:ff:ff:ff:ff:ff link-netns cni-5c270bdd-bd6f-6bf4-c747-0d47ad7bc483
+14: eth0@if15: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 65535 qdisc noqueue state UP group default qlen 1000
+    link/ether 02:42:ac:13:00:04 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet 172.19.0.4/16 brd 172.19.255.255 scope global eth0
+       valid_lft forever preferred_lft forever
+    inet6 fc00:f853:ccd:e793::4/64 scope global nodad 
+       valid_lft forever preferred_lft forever
+    inet6 fe80::42:acff:fe13:4/64 scope link 
+       valid_lft forever preferred_lft forever
+15: lxc72869527b377@if13: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 65520 qdisc noqueue state UP group default qlen 1000
+    link/ether 0e:63:fd:b5:52:de brd ff:ff:ff:ff:ff:ff link-netns cni-1a99ae45-4d83-4469-606f-408aa6bc5dfa
+17: lxc_health@if16: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 65520 qdisc noqueue state UP group default qlen 1000
+    link/ether 86:77:9e:fe:dc:b6 brd ff:ff:ff:ff:ff:ff link-netnsid 7
+19: lxcdebf51a90c72@if18: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 65520 qdisc noqueue state UP group default qlen 1000
+    link/ether be:57:e1:76:10:3e brd ff:ff:ff:ff:ff:ff link-netns cni-32805d1c-d978-255f-aaad-15f5265a9cdd
+21: lxc2b7ebfbfbbd2@if20: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 65520 qdisc noqueue state UP group default qlen 1000
+    link/ether 2e:09:56:72:1a:6a brd ff:ff:ff:ff:ff:ff link-netns cni-5dfecf1f-b804-2f67-1a40-dca2d7bd85cd
+23: lxc5044f15707b7@if22: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 65520 qdisc noqueue state UP group default qlen 1000
+    link/ether 5e:7f:6c:75:22:3e brd ff:ff:ff:ff:ff:ff link-netns cni-3d8c9d0f-64d6-d124-2fc4-1e6f9f0d09cd
+25: lxc4c88f21ef993@if24: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 65520 qdisc noqueue state UP group default qlen 1000
+    link/ether d2:6f:c8:e9:ca:ee brd ff:ff:ff:ff:ff:ff link-netns cni-750fcc5c-779c-f810-7af1-c5587036c659
+
+# export CILIUM_ID=$(crictl ps --name cilium-agent -q | head -n 1)
+# crictl exec $CILIUM_ID cilium bpf endpoint list
+IP ADDRESS       LOCAL ENDPOINT INFO
+10.244.2.159:0   id=3910  sec_id=4     flags=0x0000 ifindex=17  mac=06:49:60:2D:EC:FA nodemac=86:77:9E:FE:DC:B6 parent_ifindex=0     
+10.244.2.74:0    (localhost)                                                                                                         
+10.244.2.150:0   id=424   sec_id=6749  flags=0x0000 ifindex=23  mac=BE:C8:95:CC:D6:AC nodemac=5E:7F:6C:75:22:3E parent_ifindex=0     
+10.244.2.89:0    id=3672  sec_id=7990  flags=0x0000 ifindex=15  mac=92:F1:81:6A:A0:FE nodemac=0E:63:FD:B5:52:DE parent_ifindex=0     
+10.244.2.210:0   id=805   sec_id=44715 flags=0x0000 ifindex=8   mac=6E:36:EC:80:C2:DF nodemac=76:A4:28:04:53:12 parent_ifindex=0     
+10.244.2.72:0    id=3160  sec_id=28401 flags=0x0000 ifindex=25  mac=FE:01:17:CC:E2:65 nodemac=D2:6F:C8:E9:CA:EE parent_ifindex=0     
+172.19.0.4:0     (localhost)                                                                                                         
+10.244.2.14:0    id=1585  sec_id=63234 flags=0x0000 ifindex=12  mac=B2:F0:46:32:26:9F nodemac=9A:BA:72:11:05:34 parent_ifindex=0     
+10.244.2.253:0   id=503   sec_id=5033  flags=0x0000 ifindex=19  mac=C6:EC:18:82:0A:36 nodemac=BE:57:E1:76:10:3E parent_ifindex=0     
+10.244.2.240:0   id=2141  sec_id=24117 flags=0x0000 ifindex=21  mac=DE:EB:10:06:F3:4B nodemac=2E:09:56:72:1A:6A parent_ifindex=0     
+10.244.2.6:0     id=1779  sec_id=33279 flags=0x0000 ifindex=10  mac=9E:DE:60:95:81:EA nodemac=46:1A:02:F0:73:F8 parent_ifindex=0     
+# crictl exec $CILIUM_ID cilium bpf tunnel list
+Direct access to local BPF maps
+
+Usage:
+  cilium-dbg bpf [command]
+
+Available Commands:
+  auth        Manage authenticated connections between identities
+  bandwidth   BPF datapath bandwidth settings
+  config      Manage runtime config
+  ct          Connection tracking tables
+  egress      Manage the egress routing rules
+  endpoint    Local endpoint map
+  frag        Manage the IPv4 datagram fragments
+  fs          BPF filesystem mount
+  ipcache     Manage the IPCache mappings for IP/CIDR <-> Identity
+  ipmasq      ip-masq-agent CIDRs
+  lb          Load-balancing configuration
+  metrics     BPF datapath traffic metrics
+  multicast   Manage multicast BPF programs
+  nat         NAT mapping tables
+  nodeid      Manage the node IDs
+  policy      Manage policy related BPF maps
+  recorder    PCAP recorder
+  sha         Manage compiled BPF template objects
+  socknat     Socket NAT operations
+  srv6        Manage the SRv6 routing rules
+  vtep        Manage the VTEP mappings for IP/CIDR <-> VTEP MAC/IP
+
+Flags:
+  -h, --help   help for bpf
+
+Global Flags:
+      --config string        Config file (default is $HOME/.cilium.yaml)
+  -D, --debug                Enable debug messages
+  -H, --host string          URI to server-side API
+      --log-driver strings   Logging endpoints to use (example: syslog)
+      --log-opt map          Log driver options (example: format=json)
+
+Use "cilium-dbg bpf [command] --help" for more information about a command.
+# 

@@ -1,0 +1,38 @@
+#https://docs.isovalent.com/public/dns-visibility.yaml
+# This simple visibility policy works for this scenario when we are not trying to implement a zero-trust networking policy.
+
+# However, this dns-visibility.yaml policy should not be used in combination with other egress network policies as it will allow all egress connectivity
+
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: dns-visibility
+spec:
+  endpointSelector:
+    matchLabels: {}
+  egress:
+  - toEntities:
+    - all
+  - toEndpoints:
+    - matchLabels:
+        k8s:io.kubernetes.pod.namespace: kube-system
+        k8s:k8s-app: kube-dns
+    toPorts:
+    - ports:
+      - port: "53"
+        protocol: ANY
+      rules:
+        dns:
+        - matchPattern: '*'
+
+# kubectl get cnp dns-visibility -n tenant-jobs -o yaml | yq .spec
+# In this policy we can see the following configuration:
+
+# egress is a list of Egress rules which are enforced at egress
+# toEntities is used to describe the entities that can be accessed by the selected endpoints
+# toEndpoints a selector inside the rule specifies which endpoints with Kubernetes labels the traffic can be sent to.
+# toPorts specifies an Layer 4 port with an optional transport protocol that traffic can be sent to.
+# rules configures the DNS proxy at Layer 7 to capture all FQDN DNS requests
+# endpointSelector selects all endpoints which should be subject the rules defined in this policy. {} is the default to apply to all.
+
+
